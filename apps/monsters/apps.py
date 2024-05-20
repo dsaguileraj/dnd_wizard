@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PlayersConfig(AppConfig):
+class MonstersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.players'
+    name = 'apps.monsters'

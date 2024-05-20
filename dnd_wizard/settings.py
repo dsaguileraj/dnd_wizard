@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'apps.characters',
     'apps.equipment',
     'apps.matches',
-    'apps.players',
+    'apps.monsters',
     'apps.spells'
 ]
 
