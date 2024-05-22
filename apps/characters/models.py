@@ -5,16 +5,43 @@ from spells.models import Spell
 
 class Race(models.Model):
     name = models.CharField(max_length=50)
+    
+    # Inherited Stats
+    strength = models.PositiveSmallIntegerField(verbose_name='STR', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    dexterity = models.PositiveSmallIntegerField(verbose_name='DEX', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    constitution = models.PositiveSmallIntegerField(verbose_name='CON', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    intelligence = models.PositiveSmallIntegerField(verbose_name='INT', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    wisdom = models.PositiveSmallIntegerField(verbose_name='WIS', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    charisma = models.PositiveSmallIntegerField(verbose_name='CHA', validators=[
+        models.MinValueValidator(0),
+        models.MaxValueValidator(2)
+    ])
+    
     # ...
 
     def __str__(self) -> str:
         return self.name
-    
+
 
 class EntityClass(models.Model):
     name = models.CharField(max_length=50)
     # ...
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -25,9 +52,10 @@ class Background(models.Model):
     # ideals
     # bonds
     # flaws
+
     def __str__(self) -> str:
         return self.name
-    
+
 
 class Language(models.Model):
     name = models.CharField(max_length=50)
@@ -39,7 +67,7 @@ class Language(models.Model):
 class Proficiency(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=255)
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -57,13 +85,15 @@ class Trait(models.Model):
     description = models.CharField(max_length=255)
 
     def __str__(self) -> str:
-        return self.name    
+        return self.name
 
 
 class AbstractEntity(models.Model):
     name = models.CharField(max_length=30)
 
     entity_class = models.ForeignKey(EntityClass, on_delete=models.SET_NULL)
+    experience = models.PositiveIntegerField(default=0)
+    
     race = models.ForeignKey(Race, on_delete=models.SET_NULL)
     SIZE_CHOICES = {
         'XS': 'Diminuto',
@@ -74,7 +104,7 @@ class AbstractEntity(models.Model):
         'XXL': 'Gigante'
     }
     size = models.CharField(max_length=3, choices=SIZE_CHOICES)
-    speed = models.IntegerField(verbose_name='SPEED', validators=[
+    speed = models.PositiveSmallIntegerField(verbose_name='SPEED', validators=[
         models.MinValueValidator(0)
     ])
 
@@ -94,30 +124,32 @@ class AbstractEntity(models.Model):
     background = models.ForeignKey(Background, on_delete=models.SET_NULL)
 
     # Stats
-    strength = models.IntegerField(verbose_name='STR', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    strength = models.PositiveSmallIntegerField(verbose_name='STR', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
-    dexterity = models.IntegerField(verbose_name='DEX', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    dexterity = models.PositiveSmallIntegerField(verbose_name='DEX', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
-    constitution = models.IntegerField(verbose_name='CON', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    constitution = models.PositiveSmallIntegerField(verbose_name='CON', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
-    intelligence = models.IntegerField(verbose_name='INT', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    intelligence = models.PositiveSmallIntegerField(verbose_name='INT', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
-    wisdom = models.IntegerField(verbose_name='WIS', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    wisdom = models.PositiveSmallIntegerField(verbose_name='WIS', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
-    charisma = models.IntegerField(verbose_name='CHA', validators=[
-        models.MaxValueValidator(30),
-        models.MinValueValidator(1)
+    charisma = models.PositiveSmallIntegerField(verbose_name='CHA', validators=[
+        models.MinValueValidator(1),
+        models.MaxValueValidator(30)        
     ])
+    
+    inspiration = models.BooleanField()
 
     # Saving Throws
     st_strength = models.BooleanField(verbose_name='STR Saving Throw')
@@ -156,6 +188,9 @@ class AbstractEntity(models.Model):
     # Actions
     equipment = models.ManyToManyField(Equipment)
     spells = models.ManyToManyField(Spell)
-    
+
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        abstract = True
