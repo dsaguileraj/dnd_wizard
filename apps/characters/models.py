@@ -44,6 +44,10 @@ class Race(models.Model):
 
 class EntityClass(models.Model):
     name = models.CharField(max_length=50)
+    hit_dice = models.PositiveSmallIntegerField(validators=[
+        models.MinValueValidator(3),
+        models.MaxValueValidator(20)
+    ])
     # ...
 
     def __str__(self) -> str:
@@ -93,23 +97,56 @@ class Trait(models.Model):
 
 
 def calculate_modifier(stat: int) -> int:
-        base_bonus = -5
-        if stat < 30:
-            if stat % 2 == 0:
-                stat += 1
-            for modifier in range(1, 30, 2):
-                if stat == modifier:
-                    return base_bonus
-                base_bonus += 1
-        return 10
-    
+    base_bonus = -5
+    if stat < 30:
+        if stat % 2 == 0:
+            stat += 1
+        for modifier in range(1, 30, 2):
+            if stat == modifier:
+                return base_bonus
+            base_bonus += 1
+    return 10
+
 
 class AbstractEntity(models.Model):
     name = models.CharField(max_length=30)
 
     entity_class = models.ForeignKey(
         EntityClass, blank=True, on_delete=models.SET_NULL)
+    
+    LEVELS = {
+        1: 0,
+        2: 300,
+        3: 900,
+        4: 2700,
+        5: 6500,
+        6: 14000,
+        7: 23000,
+        8: 34000,
+        9: 48000,
+        10: 64000,
+        11: 85000,
+        12: 100000,
+        13: 120000,
+        14: 140000,
+        15: 165000,
+        16: 195000,
+        17: 225000,
+        18: 265000,
+        19: 305000,
+        20: 355000
+    }        
+    
+    def calculate_level(self) -> int:
+        level = 0
+        for points in self.LEVELS.values():            
+            if self.experience >= points:
+                level += 1
+            else:
+                return level
+            
     experience = models.PositiveIntegerField(default=0)
+    level = models.PositiveSmallIntegerField(editable=False, default=calculate_level())
 
     race = models.ForeignKey(Race, on_delete=models.SET_NULL)
     SIZE_CHOICES = {
@@ -138,9 +175,9 @@ class AbstractEntity(models.Model):
         'CM': 'Caótico Malvado'
     }
     aligment = models.CharField(max_length=2, choices=ALIGMENT_CHOICES)
-    background = models.ForeignKey(Background, on_delete=models.SET_NULL)
+    background = models.ForeignKey(Background, blank=True, on_delete=models.SET_NULL)
 
-    # Stats    
+    # Stats
 
     # Strength
     def calculate_strength(self) -> int:
@@ -156,7 +193,7 @@ class AbstractEntity(models.Model):
     def calculate_strength_modifier(self) -> int:
         modifier = calculate_modifier(self.strength)
         return modifier
-    
+
     strength_modifier = models.PositiveSmallIntegerField(
         editable=False, default=calculate_strength_modifier())
 
@@ -174,7 +211,7 @@ class AbstractEntity(models.Model):
     def calculate_dexterity_modifier(self) -> int:
         modifier = calculate_modifier(self.dexterity)
         return modifier
-    
+
     dexterity_modifier = models.PositiveSmallIntegerField(
         editable=False, default=calculate_dexterity_modifier())
 
@@ -192,7 +229,7 @@ class AbstractEntity(models.Model):
     def calculate_constitution_modifier(self) -> int:
         modifier = calculate_modifier(self.constitution)
         return modifier
-    
+
     constitution_modifier = models.PositiveSmallIntegerField(
         editable=False, default=calculate_constitution_modifier())
 
@@ -206,7 +243,7 @@ class AbstractEntity(models.Model):
     ])
     calculated_intelligence = models.PositiveSmallIntegerField(
         editable=False, default=calculate_intelligence())
-    
+
     def calculate_intelligence_modifier(self) -> int:
         modifier = calculate_modifier(self.intelligence)
         return modifier
@@ -224,7 +261,7 @@ class AbstractEntity(models.Model):
     ])
     calculated_wisdom = models.PositiveSmallIntegerField(
         editable=False, default=calculate_wisdom())
-    
+
     def calculate_wisdom_modifier(self) -> int:
         modifier = calculate_modifier(self.wisdom)
         return modifier
@@ -246,7 +283,7 @@ class AbstractEntity(models.Model):
     def calculate_charisma_modifier(self) -> int:
         modifier = calculate_modifier(self.charisma)
         return modifier
-    
+
     charisma_modifier = models.PositiveSmallIntegerField(
         editable=False, default=calculate_charisma_modifier())
 
@@ -290,29 +327,27 @@ class AbstractEntity(models.Model):
     equipment = models.ManyToManyField(Equipment)
     spells = models.ManyToManyField(Spell)
 
-    def roll_dice(self, dices: int, sides: int, modifier: str = None) -> list:
-        throws = []
+    def roll_dice(self, dices: int, sides: int, modifier: str = None) -> int:
+        throws = 0
         for throw in range(dices):
             match modifier:
                 case 'STR':
-                    throws.append(randint(1, sides) + self.strength_modifier)
+                    throws + randint(1, sides) + self.strength_modifier
                 case 'DEX':
-                    throws.append(randint(1, sides) + self.dexterity_modifier)
+                    throws + randint(1, sides) + self.dexterity_modifier
                 case 'CON':
-                    throws.append(randint(1, sides) +
-                                  self.constitution_modifier)
+                    throws + randint(1, sides) + self.constitution_modifier
                 case 'INT':
-                    throws.append(randint(1, sides) +
-                                  self.intelligence_modifier)
+                    throws + randint(1, sides) + self.intelligence_modifier
                 case 'WIS':
-                    throws.append(randint(1, sides) + self.wisdom_modifier)
+                    throws + randint(1, sides) + self.wisdom_modifier
                 case 'CHA':
-                    throws.append(randint(1, sides) + self.charisma_modifier)
+                    throws + randint(1, sides) + self.charisma_modifier
                 case _:
-                    throws.append(randint(1, sides))
+                    throws + randint(1, sides)
         return throws
 
-    def advantage_roll(self, dices: int, sides: int, modifier: str = None) -> list:
+    def advantage_roll(self, dices: int, sides: int, modifier: str = None) -> int:
         first_throw = self.roll_dice(dices, sides, modifier)
         first_throw_sum = 0
         for throw in first_throw:
@@ -327,7 +362,7 @@ class AbstractEntity(models.Model):
             return first_throw_sum
         return second_throw_sum
 
-    def disadvantage_roll(self, dices: int, sides: int, modifier: str = None) -> list:
+    def disadvantage_roll(self, dices: int, sides: int, modifier: str = None) -> int:
         first_throw = self.roll_dice(dices, sides, modifier)
         first_throw_sum = 0
         for throw in first_throw:
