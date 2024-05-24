@@ -4,31 +4,6 @@ from django.db import models
 from equipment.models import Equipment
 from spells.models import Spell
 
-MODIFIERS = {
-    -5: [1],
-    -4: [2, 3],
-    -3: [4, 5],
-    -2: [6, 7],
-    -1: [8, 9],
-    0: [10, 11],
-    1: [12, 13],
-    2: [14, 15],
-    3: [16, 17],
-    4: [18, 19],
-    5: [20, 21],
-    6: [22, 23],
-    7: [24, 25],
-    8: [26, 27],
-    9: [28, 29],
-    10: [30],
-}
-
-m = 13
-
-for i in MODIFIERS.values():
-    if m in i:
-        print(i)
-
 
 class Race(models.Model):
     name = models.CharField(max_length=50)
@@ -117,6 +92,18 @@ class Trait(models.Model):
         return self.name
 
 
+def calculate_modifier(stat: int) -> int:
+        base_bonus = -5
+        if stat < 30:
+            if stat % 2 == 0:
+                stat += 1
+            for modifier in range(1, 30, 2):
+                if stat == modifier:
+                    return base_bonus
+                base_bonus += 1
+        return 10
+    
+
 class AbstractEntity(models.Model):
     name = models.CharField(max_length=30)
 
@@ -153,7 +140,8 @@ class AbstractEntity(models.Model):
     aligment = models.CharField(max_length=2, choices=ALIGMENT_CHOICES)
     background = models.ForeignKey(Background, on_delete=models.SET_NULL)
 
-    # Stats
+    # Stats    
+
     # Strength
     def calculate_strength(self) -> int:
         return self.strength + self.race.strength
@@ -164,11 +152,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_strength = models.PositiveSmallIntegerField(
         editable=False, default=calculate_strength())
-    
-    def calculate_strength_bonus(self) -> int:
-        pass
 
-    strength_modifier = 0  # Update Later
+    def calculate_strength_modifier(self) -> int:
+        modifier = calculate_modifier(self.strength)
+        return modifier
+    
+    strength_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_strength_modifier())
 
     # Dexterity
     def calculate_dexterity(self) -> int:
@@ -180,7 +170,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_dexterity = models.PositiveSmallIntegerField(
         editable=False, default=calculate_dexterity())
-    dexterity_modifier = 0  # Update Later
+
+    def calculate_dexterity_modifier(self) -> int:
+        modifier = calculate_modifier(self.dexterity)
+        return modifier
+    
+    dexterity_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_dexterity_modifier())
 
     # Constitution
     def calculate_constitution(self) -> int:
@@ -192,7 +188,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_constitution = models.PositiveSmallIntegerField(
         editable=False, default=calculate_constitution())
-    constitution_modifier = 0  # Update Later
+
+    def calculate_constitution_modifier(self) -> int:
+        modifier = calculate_modifier(self.constitution)
+        return modifier
+    
+    constitution_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_constitution_modifier())
 
     # Intelligence
     def calculate_intelligence(self) -> int:
@@ -204,7 +206,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_intelligence = models.PositiveSmallIntegerField(
         editable=False, default=calculate_intelligence())
-    intelligence_modifier = 0  # Update Later
+    
+    def calculate_intelligence_modifier(self) -> int:
+        modifier = calculate_modifier(self.intelligence)
+        return modifier
+
+    intelligence_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_intelligence_modifier())
 
     # Wisdom
     def calculate_wisdom(self) -> int:
@@ -216,7 +224,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_wisdom = models.PositiveSmallIntegerField(
         editable=False, default=calculate_wisdom())
-    wisdom_modifier = 0  # Update Later
+    
+    def calculate_wisdom_modifier(self) -> int:
+        modifier = calculate_modifier(self.wisdom)
+        return modifier
+
+    wisdom_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_wisdom_modifier())
 
     # Charisma
     def calculate_charisma(self):
@@ -228,7 +242,13 @@ class AbstractEntity(models.Model):
     ])
     calculated_charisma = models.PositiveSmallIntegerField(
         editable=False, default=calculate_charisma())
-    charisma_modifier = 0  # Update Later
+
+    def calculate_charisma_modifier(self) -> int:
+        modifier = calculate_modifier(self.charisma)
+        return modifier
+    
+    charisma_modifier = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_charisma_modifier())
 
     inspiration = models.BooleanField()
 
@@ -270,38 +290,57 @@ class AbstractEntity(models.Model):
     equipment = models.ManyToManyField(Equipment)
     spells = models.ManyToManyField(Spell)
 
-    def roll_dice(self, dices: int, sides: int, modifier: str) -> list:
-        modifiers = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA']
+    def roll_dice(self, dices: int, sides: int, modifier: str = None) -> list:
         throws = []
         for throw in range(dices):
-            if modifier in modifiers:
-                match modifier:
-                    case 'STR':
-                        throws.append(randint(1, sides) +
-                                      self.strength_modifier)
-                        return throws
-                    case 'DEX':
-                        throws.append(randint(1, sides) +
-                                      self.dexterity_modifier)
-                        return throws
-                    case 'CON':
-                        throws.append(randint(1, sides) +
-                                      self.constitution_modifier)
-                        return throws
-                    case 'INT':
-                        throws.append(randint(1, sides) +
-                                      self.intelligence_modifier)
-                        return throws
-                    case 'WIS':
-                        throws.append(randint(1, sides) + self.wisdom_modifier)
-                        return throws
-                    case 'CHA':
-                        throws.append(randint(1, sides) +
-                                      self.charisma_modifier)
-                        return throws
-                    case _:
-                        throws.append(randint(1, sides))
-                        return throws
+            match modifier:
+                case 'STR':
+                    throws.append(randint(1, sides) + self.strength_modifier)
+                case 'DEX':
+                    throws.append(randint(1, sides) + self.dexterity_modifier)
+                case 'CON':
+                    throws.append(randint(1, sides) +
+                                  self.constitution_modifier)
+                case 'INT':
+                    throws.append(randint(1, sides) +
+                                  self.intelligence_modifier)
+                case 'WIS':
+                    throws.append(randint(1, sides) + self.wisdom_modifier)
+                case 'CHA':
+                    throws.append(randint(1, sides) + self.charisma_modifier)
+                case _:
+                    throws.append(randint(1, sides))
+        return throws
+
+    def advantage_roll(self, dices: int, sides: int, modifier: str = None) -> list:
+        first_throw = self.roll_dice(dices, sides, modifier)
+        first_throw_sum = 0
+        for throw in first_throw:
+            first_throw_sum += throw
+
+        second_throw = self.roll_dice(dices, sides, modifier)
+        second_throw_sum = 0
+        for throw in second_throw:
+            second_throw_sum += throw
+
+        if first_throw_sum > second_throw_sum:
+            return first_throw_sum
+        return second_throw_sum
+
+    def disadvantage_roll(self, dices: int, sides: int, modifier: str = None) -> list:
+        first_throw = self.roll_dice(dices, sides, modifier)
+        first_throw_sum = 0
+        for throw in first_throw:
+            first_throw_sum += throw
+
+        second_throw = self.roll_dice(dices, sides, modifier)
+        second_throw_sum = 0
+        for throw in second_throw:
+            second_throw_sum += throw
+
+        if first_throw_sum < second_throw_sum:
+            return first_throw_sum
+        return second_throw_sum
 
     def __str__(self) -> str:
         return self.name
