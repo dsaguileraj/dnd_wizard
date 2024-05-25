@@ -1,68 +1,8 @@
-from enum import Enum
 from random import randint
 from django.db import models
-from equipment.models import Equipment
-from spells.models import Spell
-
-
-class Race(models.Model):
-    name = models.CharField(max_length=50)
-
-    # Inherited Stat Bonus
-    strength = models.PositiveSmallIntegerField(verbose_name='STR', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-    dexterity = models.PositiveSmallIntegerField(verbose_name='DEX', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-    constitution = models.PositiveSmallIntegerField(verbose_name='CON', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-    intelligence = models.PositiveSmallIntegerField(verbose_name='INT', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-    wisdom = models.PositiveSmallIntegerField(verbose_name='WIS', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-    charisma = models.PositiveSmallIntegerField(verbose_name='CHA', validators=[
-        models.MinValueValidator(0),
-        models.MaxValueValidator(2)
-    ])
-
-    is_playable = models.BooleanField()
-
-    # ...
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class EntityClass(models.Model):
-    name = models.CharField(max_length=50)
-    hit_dice = models.PositiveSmallIntegerField(validators=[
-        models.MinValueValidator(3),
-        models.MaxValueValidator(20)
-    ])
-    # ...
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class Background(models.Model):
-    name = models.CharField(max_length=50)
-    # personality
-    # ideals
-    # bonds
-    # flaws
-
-    def __str__(self) -> str:
-        return self.name
+from django.core.validators import MinValueValidator, MaxValueValidator
+from apps.equipment.models import Equipment
+from apps.spells.models import Spell
 
 
 class Language(models.Model):
@@ -96,16 +36,81 @@ class Trait(models.Model):
         return self.name
 
 
-def calculate_modifier(stat: int) -> int:
-    base_bonus = -5
-    if stat < 30:
-        if stat % 2 == 0:
-            stat += 1
-        for modifier in range(1, 30, 2):
-            if stat == modifier:
-                return base_bonus
-            base_bonus += 1
-    return 10
+# Background
+class Background(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Personality(models.Model):
+    background = models.ForeignKey(Background, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+
+
+class Ideal(models.Model):
+    background = models.ForeignKey(Background, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+
+
+class Bond(models.Model):
+    background = models.ForeignKey(Background, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+
+
+class Flaw(models.Model):
+    background = models.ForeignKey(Background, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255)
+
+
+class Race(models.Model):
+    name = models.CharField(max_length=50)
+
+    # Inherited Stat Bonus
+    strength = models.PositiveSmallIntegerField(verbose_name='STR', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+    dexterity = models.PositiveSmallIntegerField(verbose_name='DEX', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+    constitution = models.PositiveSmallIntegerField(verbose_name='CON', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+    intelligence = models.PositiveSmallIntegerField(verbose_name='INT', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+    wisdom = models.PositiveSmallIntegerField(verbose_name='WIS', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+    charisma = models.PositiveSmallIntegerField(verbose_name='CHA', validators=[
+        MinValueValidator(0),
+        MaxValueValidator(2)
+    ])
+
+    is_playable = models.BooleanField()
+
+    # ...
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class EntityClass(models.Model):
+    name = models.CharField(max_length=50)
+    hit_dice = models.PositiveSmallIntegerField(validators=[
+        MinValueValidator(3),
+        MaxValueValidator(20)
+    ])
+    # ...
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class AbstractEntity(models.Model):
@@ -113,7 +118,7 @@ class AbstractEntity(models.Model):
 
     entity_class = models.ForeignKey(
         EntityClass, blank=True, on_delete=models.SET_NULL)
-    
+
     LEVELS = {
         1: 0,
         2: 300,
@@ -135,18 +140,19 @@ class AbstractEntity(models.Model):
         18: 265000,
         19: 305000,
         20: 355000
-    }        
-    
+    }
+
     def calculate_level(self) -> int:
         level = 0
-        for points in self.LEVELS.values():            
+        for points in self.LEVELS.values():
             if self.experience >= points:
                 level += 1
             else:
                 return level
-            
+
     experience = models.PositiveIntegerField(default=0)
-    level = models.PositiveSmallIntegerField(editable=False, default=calculate_level())
+    level = models.PositiveSmallIntegerField(
+        editable=False, default=calculate_level)
 
     race = models.ForeignKey(Race, on_delete=models.SET_NULL)
     SIZE_CHOICES = {
@@ -159,7 +165,7 @@ class AbstractEntity(models.Model):
     }
     size = models.CharField(max_length=3, choices=SIZE_CHOICES)
     speed = models.PositiveSmallIntegerField(verbose_name='SPEED', validators=[
-        models.MinValueValidator(0)
+        MinValueValidator(0)
     ])
 
     # Aligment
@@ -175,117 +181,129 @@ class AbstractEntity(models.Model):
         'CM': 'Caótico Malvado'
     }
     aligment = models.CharField(max_length=2, choices=ALIGMENT_CHOICES)
-    background = models.ForeignKey(Background, blank=True, on_delete=models.SET_NULL)
+    background = models.ForeignKey(
+        Background, blank=True, on_delete=models.SET_NULL)
 
     # Stats
+
+    def calculate_modifier(stat: int) -> int:
+        base_bonus = -5
+        if stat < 30:
+            if stat % 2 == 0:
+                stat += 1
+            for modifier in range(1, 30, 2):
+                if stat == modifier:
+                    return base_bonus
+                base_bonus += 1
+        return 10
 
     # Strength
     def calculate_strength(self) -> int:
         return self.strength + self.race.strength
 
     strength = models.PositiveSmallIntegerField(verbose_name='STR', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_strength = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_strength())
+        editable=False, default=calculate_strength)
 
     def calculate_strength_modifier(self) -> int:
-        modifier = calculate_modifier(self.strength)
+        modifier = self.calculate_modifier(self.strength)
         return modifier
 
     strength_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_strength_modifier())
+        editable=False, default=calculate_strength_modifier)
 
     # Dexterity
     def calculate_dexterity(self) -> int:
         return self.dexterity + self.race.dexterity
 
     dexterity = models.PositiveSmallIntegerField(verbose_name='DEX', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_dexterity = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_dexterity())
+        editable=False, default=calculate_dexterity)
 
     def calculate_dexterity_modifier(self) -> int:
-        modifier = calculate_modifier(self.dexterity)
+        modifier = self.calculate_modifier(self.dexterity)
         return modifier
 
     dexterity_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_dexterity_modifier())
+        editable=False, default=calculate_dexterity_modifier)
 
     # Constitution
     def calculate_constitution(self) -> int:
         return self.constitution + self.race.constitution
 
     constitution = models.PositiveSmallIntegerField(verbose_name='CON', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_constitution = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_constitution())
+        editable=False, default=calculate_constitution)
 
     def calculate_constitution_modifier(self) -> int:
-        modifier = calculate_modifier(self.constitution)
+        modifier = self.calculate_modifier(self.constitution)
         return modifier
 
     constitution_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_constitution_modifier())
+        editable=False, default=calculate_constitution_modifier)
 
     # Intelligence
     def calculate_intelligence(self) -> int:
         return self.intelligence + self.race.intelligence
 
     intelligence = models.PositiveSmallIntegerField(verbose_name='INT', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_intelligence = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_intelligence())
+        editable=False, default=calculate_intelligence)
 
     def calculate_intelligence_modifier(self) -> int:
-        modifier = calculate_modifier(self.intelligence)
+        modifier = self.calculate_modifier(self.intelligence)
         return modifier
 
     intelligence_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_intelligence_modifier())
+        editable=False, default=calculate_intelligence_modifier)
 
     # Wisdom
     def calculate_wisdom(self) -> int:
         return self.wisdom + self.race.wisdom
 
     wisdom = models.PositiveSmallIntegerField(verbose_name='WIS', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_wisdom = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_wisdom())
+        editable=False, default=calculate_wisdom)
 
     def calculate_wisdom_modifier(self) -> int:
-        modifier = calculate_modifier(self.wisdom)
+        modifier = self.calculate_modifier(self.wisdom)
         return modifier
 
     wisdom_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_wisdom_modifier())
+        editable=False, default=calculate_wisdom_modifier)
 
     # Charisma
     def calculate_charisma(self):
         return self.charisma + self.race.charisma
 
     charisma = models.PositiveSmallIntegerField(verbose_name='CHA', validators=[
-        models.MinValueValidator(1),
-        models.MaxValueValidator(30)
+        MinValueValidator(1),
+        MaxValueValidator(30)
     ])
     calculated_charisma = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_charisma())
+        editable=False, default=calculate_charisma)
 
     def calculate_charisma_modifier(self) -> int:
-        modifier = calculate_modifier(self.charisma)
+        modifier = self.calculate_modifier(self.charisma)
         return modifier
 
     charisma_modifier = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_charisma_modifier())
+        editable=False, default=calculate_charisma_modifier)
 
     inspiration = models.BooleanField()
 

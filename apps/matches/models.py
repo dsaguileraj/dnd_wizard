@@ -11,8 +11,7 @@ class Player(User):
 
 class Match(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=255)
-    dungeon_master = models.ForeignKey(Player, on_delete=models.SET_NULL)
+    description = models.CharField(max_length=255)    
     players = models.ManyToManyField(Player)
     created_at = models.DateField(auto_now=True)
     
