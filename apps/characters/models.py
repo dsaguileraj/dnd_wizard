@@ -36,7 +36,6 @@ class Trait(models.Model):
         return self.name
 
 
-# Background
 class Background(models.Model):
     name = models.CharField(max_length=50)
 
@@ -44,21 +43,25 @@ class Background(models.Model):
         return self.name
 
 
+# Background
 class Personality(models.Model):
     background = models.ForeignKey(Background, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
 
 
+# Background
 class Ideal(models.Model):
     background = models.ForeignKey(Background, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
 
 
+# Background
 class Bond(models.Model):
     background = models.ForeignKey(Background, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
 
 
+# Background
 class Flaw(models.Model):
     background = models.ForeignKey(Background, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
@@ -93,9 +96,24 @@ class Race(models.Model):
         MaxValueValidator(2)
     ])
 
-    is_playable = models.BooleanField()
+    SIZE_CHOICES = {
+        'XS': 'Diminuto',
+        'S': 'Pequeño',
+        'M': 'Mediano',
+        'L': 'Grande',
+        'XL': 'Enorme',
+        'XXL': 'Gigante'
+    }
+    size = models.CharField(max_length=3, choices=SIZE_CHOICES)
+    speed = models.PositiveSmallIntegerField(
+        verbose_name='SPEED', validators=[MinValueValidator(0)])
 
-    # ...
+    languages = models.ManyToManyField(Language)
+    proficiencies = models.ManyToManyField(Proficiency)
+    features = models.ManyToManyField(Feature)
+    traits = models.ManyToManyField(Trait)
+
+    is_playable = models.BooleanField()
 
     def __str__(self) -> str:
         return self.name
@@ -107,6 +125,9 @@ class EntityClass(models.Model):
         MinValueValidator(3),
         MaxValueValidator(20)
     ])
+
+    proficiencies = models.ManyToManyField(Proficiency)
+
     # ...
 
     def __str__(self) -> str:
@@ -155,18 +176,6 @@ class AbstractEntity(models.Model):
         editable=False, default=calculate_level)
 
     race = models.ForeignKey(Race, on_delete=models.SET_NULL)
-    SIZE_CHOICES = {
-        'XS': 'Diminuto',
-        'S': 'Pequeño',
-        'M': 'Mediano',
-        'L': 'Grande',
-        'XL': 'Enorme',
-        'XXL': 'Gigante'
-    }
-    size = models.CharField(max_length=3, choices=SIZE_CHOICES)
-    speed = models.PositiveSmallIntegerField(verbose_name='SPEED', validators=[
-        MinValueValidator(0)
-    ])
 
     # Aligment
     ALIGMENT_CHOICES = {
@@ -395,6 +404,16 @@ class AbstractEntity(models.Model):
             return first_throw_sum
         return second_throw_sum
 
+    def save(self, *args, **kwargs) -> None:
+        if self.race:
+            self.languages.add(*self.race.languages.all())
+            self.proficiencies.add(*self.race.proficiencies.all())
+            self.features.add(*self.race.features.all())
+            self.traits.add(*self.race.traits.all())
+        if self.entity_class:
+            self.proficiencies.add(*self.entity_class.all())            
+        super().save(*args, **kwargs)
+    
     def __str__(self) -> str:
         return self.name
 
