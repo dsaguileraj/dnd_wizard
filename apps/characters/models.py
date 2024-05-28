@@ -2,6 +2,7 @@ from random import randint
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from apps.equipment.models import Equipment
+from apps.matches.models import Player
 from apps.spells.models import Spell
 
 
@@ -140,41 +141,6 @@ class AbstractEntity(models.Model):
     entity_class = models.ForeignKey(
         EntityClass, blank=True, on_delete=models.SET_NULL)
 
-    LEVELS = {
-        1: 0,
-        2: 300,
-        3: 900,
-        4: 2700,
-        5: 6500,
-        6: 14000,
-        7: 23000,
-        8: 34000,
-        9: 48000,
-        10: 64000,
-        11: 85000,
-        12: 100000,
-        13: 120000,
-        14: 140000,
-        15: 165000,
-        16: 195000,
-        17: 225000,
-        18: 265000,
-        19: 305000,
-        20: 355000
-    }
-
-    def calculate_level(self) -> int:
-        level = 0
-        for points in self.LEVELS.values():
-            if self.experience >= points:
-                level += 1
-            else:
-                return level
-
-    experience = models.PositiveIntegerField(default=0)
-    level = models.PositiveSmallIntegerField(
-        editable=False, default=calculate_level)
-
     race = models.ForeignKey(Race, on_delete=models.SET_NULL)
 
     # Aligment
@@ -190,8 +156,6 @@ class AbstractEntity(models.Model):
         'CM': 'Caótico Malvado'
     }
     aligment = models.CharField(max_length=2, choices=ALIGMENT_CHOICES)
-    background = models.ForeignKey(
-        Background, blank=True, on_delete=models.SET_NULL)
 
     # Stats
 
@@ -314,8 +278,6 @@ class AbstractEntity(models.Model):
     charisma_modifier = models.PositiveSmallIntegerField(
         editable=False, default=calculate_charisma_modifier)
 
-    inspiration = models.BooleanField()
-
     # Saving Throws
     st_strength = models.BooleanField(verbose_name='STR Saving Throw')
     st_dexterity = models.BooleanField(verbose_name='DEX Saving Throw')
@@ -411,11 +373,111 @@ class AbstractEntity(models.Model):
             self.features.add(*self.race.features.all())
             self.traits.add(*self.race.traits.all())
         if self.entity_class:
-            self.proficiencies.add(*self.entity_class.all())            
+            self.proficiencies.add(*self.entity_class.all())
         super().save(*args, **kwargs)
-    
+
     def __str__(self) -> str:
         return self.name
 
     class Meta:
         abstract = True
+
+
+class Character(AbstractEntity):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    
+    inspiration = models.BooleanField()
+    
+    LEVELS = {
+        1: 0,
+        2: 300,
+        3: 900,
+        4: 2700,
+        5: 6500,
+        6: 14000,
+        7: 23000,
+        8: 34000,
+        9: 48000,
+        10: 64000,
+        11: 85000,
+        12: 100000,
+        13: 120000,
+        14: 140000,
+        15: 165000,
+        16: 195000,
+        17: 225000,
+        18: 265000,
+        19: 305000,
+        20: 355000
+    }
+
+    def calculate_level(self) -> int:
+        level = 0
+        for points in self.LEVELS.values():
+            if self.experience >= points:
+                level += 1
+            else:
+                return level
+
+    experience = models.PositiveIntegerField(default=0)
+    level = models.PositiveSmallIntegerField(editable=False, default=calculate_level)
+    
+    def calculate_proficiency_bonus(self) -> int:
+        if self.level % 4 == 0:
+            return self.level // 4 + 1
+        else:
+            return self.level // 4 + 2
+    
+    proficiency_bonus = models.PositiveSmallIntegerField(editable=False, default=calculate_proficiency_bonus)
+    background = models.ForeignKey(Background, on_delete=models.SET_NULL)
+
+
+class Monster(AbstractEntity):
+    CHALLENGE_CHOICES = {
+        0: '0',
+        1/8: '1/8',
+        1/4: '1/4',
+        1/2: '1/2',
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+        11: '11',
+        12: '12',
+        13: '13',
+        14: '14',
+        15: '15',
+        16: '16',
+        17: '17',
+        18: '18',
+        19: '19',
+        20: '20',
+        21: '21',
+        22: '22',
+        23: '23',
+        24: '24',
+        25: '25',
+        26: '26',
+        27: '27',
+        28: '28',
+        29: '29',
+        30: '30'
+    }
+    
+    challenge = models.DecimalField(choices=CHALLENGE_CHOICES)
+    
+    def calculate_proficiency_bonus(self) -> int:
+        if self.challenge < 1:
+            return 2        
+        if self.challenge % 4 == 0:
+            return self.challenge // 4 + 1
+        else:
+            return self.challenge // 4 + 2
+        
+    proficiency_bonus = models.PositiveSmallIntegerField(editable=False, default=calculate_proficiency_bonus)
