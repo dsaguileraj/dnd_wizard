@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 
-app_label = 'matches'
+app_label = 'actions'
 
 
-class MatchesConfig(AppConfig):
+class ActionsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.matches'
+    name = 'apps.actions'
