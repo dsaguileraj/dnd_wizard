@@ -18,8 +18,8 @@ class Proficiency(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
         name='name_proficiency',
-        primary_key=True,
-        max_length=50
+        max_length=50,
+        unique=True
     )
     description = models.CharField(
         verbose_name='Descripción',

@@ -1,6 +1,6 @@
 from random import randint
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator
 
 
 class Race(models.Model):
@@ -39,10 +39,7 @@ class Race(models.Model):
         choices=SIZE_CHOICES
     )
     speed = models.PositiveSmallIntegerField(
-        verbose_name='Velocidad',
-        validators=[
-            MinValueValidator(0)
-        ]
+        verbose_name='Velocidad'
     )
 
     # Inherited Stat Bonus
@@ -50,8 +47,7 @@ class Race(models.Model):
         verbose_name='FUE Heredada',
         name='strength_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -59,8 +55,7 @@ class Race(models.Model):
         verbose_name='DES Heredada',
         name='dexterity_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -68,8 +63,7 @@ class Race(models.Model):
         verbose_name='CON Heredada',
         name='constitution_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -77,8 +71,7 @@ class Race(models.Model):
         verbose_name='INT Heredada',
         name='intelligence_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -86,8 +79,7 @@ class Race(models.Model):
         verbose_name='SAB Heredada',
         name='wisdom_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -95,8 +87,7 @@ class Race(models.Model):
         verbose_name='CAR Heredada',
         name='charisma_race',
         default=0,
-        validators=[
-            MinValueValidator(0),
+        validators=[            
             MaxValueValidator(2)
         ]
     )
@@ -115,8 +106,7 @@ class EntityClass(models.Model):
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
         name='hit_dice_class',
-        validators=[
-            MinValueValidator(3),
+        validators=[            
             MaxValueValidator(20)
         ]
     )
@@ -183,8 +173,7 @@ class AbstractEntity(models.Model):
     strength = models.PositiveSmallIntegerField(
         verbose_name='FUE Base',
         name='strength_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
@@ -211,8 +200,7 @@ class AbstractEntity(models.Model):
     dexterity = models.PositiveSmallIntegerField(
         verbose_name='DES Base',
         name='dexterity_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
@@ -239,8 +227,7 @@ class AbstractEntity(models.Model):
     constitution = models.PositiveSmallIntegerField(
         verbose_name='CON Base',
         name='constitution_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
@@ -267,8 +254,7 @@ class AbstractEntity(models.Model):
     intelligence = models.PositiveSmallIntegerField(
         verbose_name='INT Base',
         name='intelligence_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
@@ -295,8 +281,7 @@ class AbstractEntity(models.Model):
     wisdom = models.PositiveSmallIntegerField(
         verbose_name='SAB Base',
         name='wisdom_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
@@ -323,8 +308,7 @@ class AbstractEntity(models.Model):
     charisma = models.PositiveSmallIntegerField(
         verbose_name='CAR Base',
         name='charisma_entity',
-        validators=[
-            MinValueValidator(1),
+        validators=[            
             MaxValueValidator(30)
         ]
     )
