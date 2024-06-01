@@ -12,8 +12,6 @@ class Language(models.Model):
         return self.name
 
 
-# Special Attributes
-
 class Proficiency(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
@@ -67,7 +65,6 @@ class Background(models.Model):
         return self.name
 
 
-# Background
 class Personality(models.Model):
     background = models.ForeignKey(
         Background,
@@ -83,7 +80,6 @@ class Personality(models.Model):
     )
 
 
-# Background
 class Ideal(models.Model):
     background = models.ForeignKey(
         Background,
@@ -99,7 +95,6 @@ class Ideal(models.Model):
     )
 
 
-# Background
 class Bond(models.Model):
     background = models.ForeignKey(
         Background,
@@ -115,7 +110,6 @@ class Bond(models.Model):
     )
 
 
-# Background
 class Flaw(models.Model):
     background = models.ForeignKey(
         Background,
