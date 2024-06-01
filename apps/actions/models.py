@@ -65,14 +65,14 @@ class Spell(models.Model):
             MinValueValidator(-1)
         ]
     )
-    
+
     TIME_MEASURE = {
         'Acción': 'Acción',
         'Minuto': 'Minuto',
         'Hora': 'Hora',
         'Día': 'Día',
     }
-    
+
     # Tiempo de Lanzamiento
     launch_time = models.PositiveSmallIntegerField(
         verbose_name='Tiempo de Lanzamiento',
@@ -141,11 +141,11 @@ class Equipment(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} - {self.category}'
-
+        return {self.name}
 
     class Meta:
         abstract = True
+
 
 class Armor(Equipment):
     armor_class = models.PositiveSmallIntegerField(
@@ -171,7 +171,8 @@ class Property(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
+
 class Weapon(Equipment):
     DAMAGE_TYPES = {
         'Cortante': 'Cortante',
@@ -198,17 +199,19 @@ class Weapon(Equipment):
         Property,
         verbose_name='Propiedad'
     )
-    
-    
+
+
 class AdventurerEquipment(Equipment):
     description = models.CharField(
         verbose_name='Descripción',
-        name ='description_adventure_equipment',
+        name='description_adventure_equipment',
         max_length=1250
     )
-    
-class Tool(AdventurerEquipment):
-    pass
 
-class Vehicle(Equipment):
-    pass
+
+class Tool(Equipment):
+    description = models.CharField(
+        verbose_name='Descripción',
+        name='description_tool',
+        max_length=1250
+    )

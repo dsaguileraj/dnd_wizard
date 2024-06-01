@@ -22,7 +22,7 @@ class Match(models.Model):
     description = models.CharField(
         verbose_name='Descripción',
         name='description_match',
-        max_length=250,
+        max_length=1250,
         blank=True
     )
     dungeon_master = models.ForeignKey(
@@ -44,3 +44,19 @@ class Match(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class MatchPlayer(models.Model):
+    campaign = models.ForeignKey(
+        Match
+    )
+    player = models.ForeignKey(
+        Player
+    )
+    character = models.ForeignKey(
+        'characters.Character',
+    )
+    
+    class Meta:
+        unique_together = ('campaign', 'player')
+        
