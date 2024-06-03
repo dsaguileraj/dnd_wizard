@@ -3,7 +3,7 @@ from .views import MatchViewSet, MatchPlayerViewSet
 
 router = DefaultRouter()
 
-router.register('match', MatchViewSet, 'match')
-router.register('match_player', MatchPlayerViewSet, 'match_player')
+router.register(r'match', MatchViewSet, 'match')
+router.register(r'match_player', MatchPlayerViewSet, 'match_player')
 
 urlpatterns = router.urls

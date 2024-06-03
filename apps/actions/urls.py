@@ -3,11 +3,11 @@ from .views import AdventurerEquipmentViewSet, ArmorViewSet, PropertyViewSet, Sp
 
 router = DefaultRouter()
 
-router.register('equipment', AdventurerEquipmentViewSet, 'equipment')
-router.register('armor', ArmorViewSet, 'armor')
-router.register('property', PropertyViewSet, 'property')
-router.register('spell', SpellViewSet, 'spell')
-router.register('tool', ToolViewSet, 'tool')
-router.register('weapon', WeaponViewSet, 'weapon')
+router.register(r'equipment', AdventurerEquipmentViewSet, 'equipment')
+router.register(r'armor', ArmorViewSet, 'armor')
+router.register(r'property', PropertyViewSet, 'property')
+router.register(r'spell', SpellViewSet, 'spell')
+router.register(r'tool', ToolViewSet, 'tool')
+router.register(r'weapon', WeaponViewSet, 'weapon')
 
 urlpatterns = router.urls

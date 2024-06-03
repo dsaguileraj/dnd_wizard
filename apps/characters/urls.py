@@ -3,9 +3,9 @@ from .views import CharacterViewSet, EntityClassViewSet, MonsterViewSet, RaceVie
 
 router = DefaultRouter()
 
-router.register('character', CharacterViewSet, 'character')
-router.register('class', EntityClassViewSet, 'class')
-router.register('monster', MonsterViewSet, 'monster')
-router.register('race', RaceViewSet, 'race')
+router.register(r'character', CharacterViewSet, 'character')
+router.register(r'class', EntityClassViewSet, 'class')
+router.register(r'monster', MonsterViewSet, 'monster')
+router.register(r'race', RaceViewSet, 'race')
 
 urlpatterns = router.urls
