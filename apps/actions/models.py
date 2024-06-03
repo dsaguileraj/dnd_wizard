@@ -23,7 +23,7 @@ class Spell(models.Model):
         'Nigromancia': 'Nigromancia',
         'Transmutación': 'Transmutación'
     }
-    magic_school = models.ForeignKey(
+    magic_school = models.CharField(
         verbose_name='Escuela de Magia',
         max_length=13,
         choices=SCHOOLS

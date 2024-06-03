@@ -67,7 +67,7 @@ class Background(models.Model):
 
 class Personality(models.Model):
     background = models.ForeignKey(
-        Background,
+        'traits.Background',
         on_delete=models.CASCADE,
         verbose_name='Trasfondo',
         name='background_personality'
@@ -82,7 +82,7 @@ class Personality(models.Model):
 
 class Ideal(models.Model):
     background = models.ForeignKey(
-        Background,
+        'traits.Background',
         on_delete=models.CASCADE,
         verbose_name='Trasfondo',
         name='background_ideal'
@@ -97,7 +97,7 @@ class Ideal(models.Model):
 
 class Bond(models.Model):
     background = models.ForeignKey(
-        Background,
+        'traits.Background',
         on_delete=models.CASCADE,
         verbose_name='Trasfondo',
         name='background_bond'
@@ -112,7 +112,7 @@ class Bond(models.Model):
 
 class Flaw(models.Model):
     background = models.ForeignKey(
-        Background,
+        'traits.Background',
         on_delete=models.CASCADE,
         verbose_name='Trasfondo',
         name='background_flaw'

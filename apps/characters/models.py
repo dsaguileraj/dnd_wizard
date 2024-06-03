@@ -1,6 +1,7 @@
 from random import randint
-from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
+from django.db import models
 
 
 class Race(models.Model):
@@ -47,7 +48,7 @@ class Race(models.Model):
         verbose_name='FUE Heredada',
         name='strength_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
@@ -55,7 +56,7 @@ class Race(models.Model):
         verbose_name='DES Heredada',
         name='dexterity_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
@@ -63,7 +64,7 @@ class Race(models.Model):
         verbose_name='CON Heredada',
         name='constitution_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
@@ -71,7 +72,7 @@ class Race(models.Model):
         verbose_name='INT Heredada',
         name='intelligence_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
@@ -79,7 +80,7 @@ class Race(models.Model):
         verbose_name='SAB Heredada',
         name='wisdom_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
@@ -87,11 +88,11 @@ class Race(models.Model):
         verbose_name='CAR Heredada',
         name='charisma_race',
         default=0,
-        validators=[            
+        validators=[
             MaxValueValidator(2)
         ]
     )
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -106,7 +107,7 @@ class EntityClass(models.Model):
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
         name='hit_dice_class',
-        validators=[            
+        validators=[
             MaxValueValidator(20)
         ]
     )
@@ -128,7 +129,7 @@ class AbstractEntity(models.Model):
         unique=True
     )
     race = models.ForeignKey(
-        Race,
+        'characters.Race',
         on_delete=models.SET_NULL,
         verbose_name='Raza',
         name='race_entity',
@@ -173,7 +174,7 @@ class AbstractEntity(models.Model):
     strength = models.PositiveSmallIntegerField(
         verbose_name='FUE Base',
         name='strength_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -200,7 +201,7 @@ class AbstractEntity(models.Model):
     dexterity = models.PositiveSmallIntegerField(
         verbose_name='DES Base',
         name='dexterity_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -223,11 +224,11 @@ class AbstractEntity(models.Model):
     # Constitution
     def calculate_constitution(self) -> int:
         return self.constitution + self.race.constitution
-    
+
     constitution = models.PositiveSmallIntegerField(
         verbose_name='CON Base',
         name='constitution_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -254,7 +255,7 @@ class AbstractEntity(models.Model):
     intelligence = models.PositiveSmallIntegerField(
         verbose_name='INT Base',
         name='intelligence_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -281,7 +282,7 @@ class AbstractEntity(models.Model):
     wisdom = models.PositiveSmallIntegerField(
         verbose_name='SAB Base',
         name='wisdom_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -308,7 +309,7 @@ class AbstractEntity(models.Model):
     charisma = models.PositiveSmallIntegerField(
         verbose_name='CAR Base',
         name='charisma_entity',
-        validators=[            
+        validators=[
             MaxValueValidator(30)
         ]
     )
@@ -405,7 +406,7 @@ class AbstractEntity(models.Model):
     )
 
     # Special Attributes
-    languages = models.ManyToManyField(        
+    languages = models.ManyToManyField(
         'traits.Language',
         verbose_name='Idiomas',
         name='languages_entity',
@@ -431,7 +432,7 @@ class AbstractEntity(models.Model):
     )
     # ... equipment
 
-    def roll_dice(self, dices: int, sides: int, bonus:int = 0, modifier: str = None) -> int:
+    def roll_dice(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
         throws = 0
         for throw in range(dices):
             match modifier:
@@ -451,7 +452,7 @@ class AbstractEntity(models.Model):
                     throws + randint(1, sides)
         return throws + bonus
 
-    def advantage_roll(self, dices: int, sides: int, bonus:int = 0, modifier: str = None) -> int:
+    def advantage_roll(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
         first_throw = self.roll_dice(dices, sides, bonus, modifier)
         first_throw_sum = 0
         for throw in first_throw:
@@ -466,7 +467,7 @@ class AbstractEntity(models.Model):
             return first_throw_sum
         return second_throw_sum
 
-    def disadvantage_roll(self, dices: int, sides: int, bonus:int = 0, modifier: str = None) -> int:
+    def disadvantage_roll(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
         first_throw = self.roll_dice(dices, sides, bonus, modifier)
         first_throw_sum = 0
         for throw in first_throw:
@@ -490,9 +491,9 @@ class AbstractEntity(models.Model):
 
 class Character(AbstractEntity):
     player = models.ForeignKey(
-        'matches.Player',
+        User,
         on_delete=models.CASCADE,
-        verbose_name='Jugador',        
+        verbose_name='Jugador',
     )
     background = models.ForeignKey(
         'traits.Background',
@@ -502,7 +503,7 @@ class Character(AbstractEntity):
         null=True
     )
     entity_class = models.ForeignKey(
-        EntityClass,
+        'characters.EntityClass',
         on_delete=models.SET_NULL,
         verbose_name='Clase',
         name='class_character',
