@@ -1,38 +1,38 @@
 from rest_framework import serializers
-from .models import AdventurerEquipment, Armor, Property, Spell, Tool, Weapon
+from . import models
 
 
 class AdventurerEquipmentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AdventurerEquipment
+        model = models.AdventurerEquipment
         fields = '__all__'
 
 
 class ArmorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Armor
+        model = models.Armor
         fields = '__all__'
 
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Property
+        model = models.Property
         fields = '__all__'
 
 
 class SpellSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Spell
+        model = models.Spell
         fields = '__all__'
 
 
 class ToolSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Tool
+        model = models.Tool
         fields = '__all__'
 
 
 class WeaponSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Weapon
+        model = models.Weapon
         fields = '__all__'

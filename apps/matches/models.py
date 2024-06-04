@@ -43,13 +43,15 @@ class MatchPlayer(models.Model):
     )
     player = models.ForeignKey(
         User,
-        on_delete=models.DO_NOTHING,
-        verbose_name='Jugador'
+        on_delete=models.SET_NULL,
+        verbose_name='Jugador',
+        null=True
     )
     character = models.ForeignKey(
         'characters.Character',
-        on_delete=models.DO_NOTHING,
-        verbose_name='Personaje'
+        on_delete=models.SET_NULL,
+        verbose_name='Personaje',
+        null=True
     )
 
     class Meta:

@@ -1,9 +1,12 @@
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import MatchViewSet, MatchPlayerViewSet
+from . import views
 
 router = DefaultRouter()
 
-router.register(r'match', MatchViewSet, 'match')
-router.register(r'match_player', MatchPlayerViewSet, 'match_player')
+router.register(r'match', views.MatchViewSet)
+router.register(r'match_player', views.MatchPlayerViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls))
+]

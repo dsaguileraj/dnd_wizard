@@ -1,15 +1,18 @@
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import BackgroundViewSet, BondViewSet, FeatureViewSet, FlawViewSet, IdealViewSet, LanguageViewSet, PersonalityViewSet, ProficiencyViewSet
+from . import views
 
 router = DefaultRouter()
 
-router.register(r'background', BackgroundViewSet, 'background')
-router.register(r'bond', BondViewSet, 'bond')
-router.register(r'feature', FeatureViewSet, 'feature')
-router.register(r'flaw', FlawViewSet, 'flaw')
-router.register(r'ideal', IdealViewSet, 'ideal')
-router.register(r'language', LanguageViewSet, 'language')
-router.register(r'personality', PersonalityViewSet, 'personality')
-router.register(r'proficiency', ProficiencyViewSet, 'proficiency')
+router.register(r'background', views.BackgroundViewSet)
+router.register(r'bond', views.BondViewSet)
+router.register(r'feature', views.FeatureViewSet)
+router.register(r'flaw', views.FlawViewSet)
+router.register(r'ideal', views.IdealViewSet)
+router.register(r'language', views.LanguageViewSet)
+router.register(r'personality', views.PersonalityViewSet)
+router.register(r'proficiency', views.ProficiencyViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls))
+]

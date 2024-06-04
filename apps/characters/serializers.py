@@ -1,26 +1,26 @@
 from rest_framework import serializers
-from .models import Character, EntityClass, Monster, Race
+from . import models
 
 
 class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Character
+        model = models.Character
         fields = '__all__'
 
 
 class EntityClassSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EntityClass
+        model = models.EntityClass
         fields = '__all__'
 
 
 class MonsterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Monster
+        model = models.Monster
         fields = '__all__'
 
 
 class RaceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Race
+        model = models.Race
         fields = '__all__'

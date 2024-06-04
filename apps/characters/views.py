@@ -1,27 +1,27 @@
 from rest_framework import permissions, viewsets
-from .models import Character, EntityClass, Monster, Race
-from .serializers import CharacterSerializer, EntityClassSerializer, MonsterSerializer, RaceSerializer
+from . import models
+from . import serializers
 
 
 class CharacterViewSet(viewsets.ModelViewSet):
-    queryset = Character.objects.all()
+    queryset = models.Character.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = CharacterSerializer
+    serializer_class = serializers.CharacterSerializer
 
 
 class EntityClassViewSet(viewsets.ModelViewSet):
-    queryset = EntityClass.objects.all()
+    queryset = models.EntityClass.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = EntityClassSerializer
+    serializer_class = serializers.EntityClassSerializer
 
 
 class MonsterViewSet(viewsets.ModelViewSet):
-    queryset = Monster.objects.all()
+    queryset = models.Monster.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = MonsterSerializer
+    serializer_class = serializers.MonsterSerializer
 
 
 class RaceViewSet(viewsets.ModelViewSet):
-    queryset = Race.objects.all()
+    queryset = models.Race.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = RaceSerializer
+    serializer_class = serializers.RaceSerializer

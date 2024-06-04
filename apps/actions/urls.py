@@ -1,13 +1,16 @@
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import AdventurerEquipmentViewSet, ArmorViewSet, PropertyViewSet, SpellViewSet, ToolViewSet, WeaponViewSet
+from . import views
 
 router = DefaultRouter()
 
-router.register(r'equipment', AdventurerEquipmentViewSet, 'equipment')
-router.register(r'armor', ArmorViewSet, 'armor')
-router.register(r'property', PropertyViewSet, 'property')
-router.register(r'spell', SpellViewSet, 'spell')
-router.register(r'tool', ToolViewSet, 'tool')
-router.register(r'weapon', WeaponViewSet, 'weapon')
+router.register(r'equipment', views.AdventurerEquipmentViewSet)
+router.register(r'armor', views.ArmorViewSet)
+router.register(r'property', views.PropertyViewSet)
+router.register(r'spell', views.SpellViewSet)
+router.register(r'tool', views.ToolViewSet)
+router.register(r'weapon', views.WeaponViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls))
+]

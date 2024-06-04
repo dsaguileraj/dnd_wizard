@@ -1,17 +1,51 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from apps.core.models import Equipment
+
+
+class AdventurerEquipment(Equipment):
+    description = models.CharField(
+        verbose_name='Descripción',
+        max_length=1250
+    )
+
+
+class Armor(Equipment):
+    armor_class = models.PositiveSmallIntegerField(
+        verbose_name='CA'
+    )
+    dexterity_bonus = models.BooleanField(
+        verbose_name='Bonificador de Destreza',
+        default=False
+    )
+    min_strength = models.PositiveSmallIntegerField(
+        verbose_name='FUE',
+        default=0
+    )
+    disadvantage_stealth = models.BooleanField(
+        verbose_name='Desventaja en Sigilo',
+        default=False
+    )
+
+
+class Property(models.Model):
+    name = models.CharField(
+        verbose_name='Nombre',
+        max_length=50
+    )
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Spell(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        name='name_spell',
         max_length=50
     )
     entity_class = models.ManyToManyField(
         'characters.EntityClass',
-        verbose_name='Clase',
-        name='class_spell'
+        verbose_name='Clase'
     )
     SCHOOLS = {
         'Abjuración': 'Abjuración',
@@ -30,26 +64,27 @@ class Spell(models.Model):
     )
     level = models.PositiveSmallIntegerField(
         verbose_name='Nivel',
-        name='level_spell',
         validators=[
             MaxValueValidator(9)
         ]
     )
     description = models.CharField(
         verbose_name='Descripción',
-        name='description_spell',
         max_length=1250
     )
 
     # Componentes
     verbal = models.BooleanField(
-        verbose_name='Verbal'
+        verbose_name='Verbal',
+        default=False
     )
     somatic = models.BooleanField(
-        verbose_name='Somático'
+        verbose_name='Somático',
+        default=False
     )
     material = models.BooleanField(
-        verbose_name='Material'
+        verbose_name='Material',
+        default=False
     )
     material_description = models.CharField(
         verbose_name='Materiales',
@@ -89,7 +124,8 @@ class Spell(models.Model):
 
     # Duración
     concentration = models.BooleanField(
-        verbose_name='Concentración'
+        verbose_name='Concentración',
+        default=False
     )
     duration = models.PositiveSmallIntegerField(
         verbose_name='Duración',
@@ -105,72 +141,11 @@ class Spell(models.Model):
         return f'{self.name} - {self.magic_school} [{self.level}]'
 
 
-class Equipment(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        name='name_equipment',
-        max_length=50,
-        unique=True
+class Tool(Equipment):
+    description = models.CharField(
+        verbose_name='Descripción',
+        max_length=1250
     )
-    category = models.CharField(
-        verbose_name='Categoría',
-        name='category_equipment',
-        max_length=50,
-        blank=True
-    )
-
-    # Price
-    COINS = {
-        'pc': 'Cobre',
-        'pp': 'Plata',
-        'pe': 'Electro',
-        'po': 'Oro',
-        'ppt': 'Platino'
-    }
-    price = models.PositiveBigIntegerField(
-        verbose_name='Precio'
-    )
-    coin = models.CharField(
-        verbose_name='Moneda',
-        max_length=3,
-        choices=COINS
-    )
-    weight = models.PositiveSmallIntegerField(
-        verbose_name='Peso (lb)',
-        name='weight_equipment'
-    )
-
-    def __str__(self) -> str:
-        return {self.name}
-
-    class Meta:
-        abstract = True
-
-
-class Armor(Equipment):
-    armor_class = models.PositiveSmallIntegerField(
-        verbose_name='CA'
-    )
-    dexterity_bonus = models.BooleanField(
-        verbose_name='Bonificador de Destreza'
-    )
-    min_strength = models.PositiveSmallIntegerField(
-        verbose_name='FUE'
-    )
-    disadvantage_stealth = models.BooleanField(
-        verbose_name='Desventaja en Sigilo'
-    )
-
-
-class Property(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        name='name_property',
-        max_length=50
-    )
-
-    def __str__(self) -> str:
-        return self.name
 
 
 class Weapon(Equipment):
@@ -181,7 +156,6 @@ class Weapon(Equipment):
     }
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
-        name='hit_dice_weapon',
         blank=True
     )
     multiplier = models.PositiveSmallIntegerField(
@@ -198,20 +172,4 @@ class Weapon(Equipment):
     property = models.ManyToManyField(
         Property,
         verbose_name='Propiedad'
-    )
-
-
-class AdventurerEquipment(Equipment):
-    description = models.CharField(
-        verbose_name='Descripción',
-        name='description_adventure_equipment',
-        max_length=1250
-    )
-
-
-class Tool(Equipment):
-    description = models.CharField(
-        verbose_name='Descripción',
-        name='description_tool',
-        max_length=1250
     )

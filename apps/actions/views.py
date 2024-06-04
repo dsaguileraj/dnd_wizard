@@ -1,39 +1,39 @@
 from rest_framework import permissions, viewsets
-from .models import AdventurerEquipment, Armor, Property, Spell, Tool, Weapon
-from .serializers import AdventurerEquipmentSerializer, ArmorSerializer, PropertySerializer, SpellSerializer, ToolSerializer, WeaponSerializer
+from . import models
+from . import serializers
 
 
 class AdventurerEquipmentViewSet(viewsets.ModelViewSet):
-    queryset = AdventurerEquipment.objects.all()
+    queryset = models.AdventurerEquipment.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = AdventurerEquipmentSerializer
+    serializer_class = serializers.AdventurerEquipmentSerializer
 
 
 class ArmorViewSet(viewsets.ModelViewSet):
-    queryset = Armor.objects.all()
+    queryset = models.Armor.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = ArmorSerializer
+    serializer_class = serializers.ArmorSerializer
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.all()
+    queryset = models.Property.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = PropertySerializer
+    serializer_class = serializers.PropertySerializer
 
 
 class SpellViewSet(viewsets.ModelViewSet):
-    queryset = Spell.objects.all()
+    queryset = models.Spell.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = SpellSerializer
+    serializer_class = serializers.SpellSerializer
 
 
 class ToolViewSet(viewsets.ModelViewSet):
-    queryset = Tool.objects.all()
+    queryset = models.Tool.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = ToolSerializer
+    serializer_class = serializers.ToolSerializer
 
 
 class WeaponViewSet(viewsets.ModelViewSet):
-    queryset = Weapon.objects.all()
+    queryset = models.Weapon.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = WeaponSerializer
+    serializer_class = serializers.WeaponSerializer

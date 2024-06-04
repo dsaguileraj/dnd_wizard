@@ -1,50 +1,50 @@
 from rest_framework import serializers
-from .models import Background, Bond, Feature, Flaw, Ideal, Language, Personality, Proficiency
+from . import models
 
 
 class BackgroundSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Background
+        model = models.Background
         fields = '__all__'
 
 
 class BondSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Bond
+        model = models.Bond
         fields = '__all__'
 
 
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Feature
+        model = models.Feature
         fields = '__all__'
 
 
 class FlawSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Flaw
+        model = models.Flaw
         fields = '__all__'
 
 
 class IdealSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ideal
+        model = models.Ideal
         fields = '__all__'
 
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Language
+        model = models.Language
         fields = '__all__'
 
 
 class PersonalitySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Personality
+        model = models.Personality
         fields = '__all__'
 
 
 class ProficiencySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Proficiency
+        model = models.Proficiency
         fields = '__all__'

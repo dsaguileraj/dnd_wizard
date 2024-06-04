@@ -1,15 +1,15 @@
 from rest_framework import viewsets, permissions
-from .models import Match, MatchPlayer
-from .serializers import MatchSerializer, MatchPlayerSerializer
+from . import models
+from . import serializers
 
 
 class MatchViewSet(viewsets.ModelViewSet):
-    queryset = Match.objects.all()
+    queryset = models.Match.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = MatchSerializer
+    serializer_class = serializers.MatchSerializer
 
 
 class MatchPlayerViewSet(viewsets.ModelViewSet):
-    queryset = MatchPlayer.objects.all()
+    queryset = models.MatchPlayer.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = MatchPlayerSerializer
+    serializer_class = serializers.MatchPlayerSerializer

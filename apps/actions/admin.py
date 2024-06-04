@@ -1,3 +1,9 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+admin.site.register(models.AdventurerEquipment)
+admin.site.register(models.Armor)
+admin.site.register(models.Property)
+admin.site.register(models.Spell)
+admin.site.register(models.Tool)
+admin.site.register(models.Weapon)

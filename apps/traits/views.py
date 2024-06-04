@@ -1,51 +1,51 @@
 from rest_framework import permissions, viewsets
-from .models import Background, Bond, Feature, Flaw, Ideal, Language, Personality, Proficiency
-from .serializers import BackgroundSerializer, BondSerializer, FeatureSerializer, FlawSerializer, IdealSerializer, LanguageSerializer, PersonalitySerializer, ProficiencySerializer
+from . import models
+from . import serializers
 
 
 class BackgroundViewSet(viewsets.ModelViewSet):
-    queryset = Background.objects.all()
+    queryset = models.Background.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = BackgroundSerializer
+    serializer_class = serializers.BackgroundSerializer
 
 
 class BondViewSet(viewsets.ModelViewSet):
-    queryset = Bond.objects.all()
+    queryset = models.Bond.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = BondSerializer
+    serializer_class = serializers.BondSerializer
 
 
 class FeatureViewSet(viewsets.ModelViewSet):
-    queryset = Feature.objects.all()
+    queryset = models.Feature.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = FeatureSerializer
+    serializer_class = serializers.FeatureSerializer
 
 
 class FlawViewSet(viewsets.ModelViewSet):
-    queryset = Flaw.objects.all()
+    queryset = models.Flaw.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = FlawSerializer
+    serializer_class = serializers.FlawSerializer
 
 
 class IdealViewSet(viewsets.ModelViewSet):
-    queryset = Ideal.objects.all()
+    queryset = models.Ideal.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = IdealSerializer
+    serializer_class = serializers.IdealSerializer
 
 
 class LanguageViewSet(viewsets.ModelViewSet):
-    queryset = Language.objects.all()
+    queryset = models.Language.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = LanguageSerializer
+    serializer_class = serializers.LanguageSerializer
 
 
 class PersonalityViewSet(viewsets.ModelViewSet):
-    queryset = Personality.objects.all()
+    queryset = models.Personality.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = PersonalitySerializer
+    serializer_class = serializers.PersonalitySerializer
 
 
 class ProficiencyViewSet(viewsets.ModelViewSet):
-    queryset = Proficiency.objects.all()
+    queryset = models.Proficiency.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = ProficiencySerializer
+    serializer_class = serializers.ProficiencySerializer
