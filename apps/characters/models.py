@@ -84,7 +84,7 @@ class Character(AbstractEntity):
             self.languages.add(*self.race.languages.all())
             self.features.add(*self.race.features.all())
         if self.entity_class:
-            self.proficiencies.add(*self.entity_class.all())
+            self.proficiencies.add(*self.entity_class.proficiencies.all())
         super().save(*args, **kwargs)
 
 

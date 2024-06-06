@@ -323,9 +323,31 @@ class AbstractEntity(models.Model):
     # Actions
     spells = models.ManyToManyField(
         'actions.Spell',
-        verbose_name='Conjuros'
+        verbose_name='Conjuros',
+        blank=True
     )
-    # ... equipment
+
+    # Equipment
+    equipment = models.ManyToManyField(
+        'actions.AdventurerEquipment',
+        verbose_name='Equipo de Aventurero',
+        blank=True
+    )
+    armor = models.ManyToManyField(
+        'actions.Armor',
+        verbose_name='Armadura',
+        blank=True
+    )
+    tools = models.ManyToManyField(
+        'actions.Tool',
+        verbose_name='Herramientas',
+        blank=True
+    )
+    weapons = models.ManyToManyField(
+        'actions.Weapon',
+        verbose_name='Armas',
+        blank=True
+    )
 
     def roll_dice(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
         throws = 0

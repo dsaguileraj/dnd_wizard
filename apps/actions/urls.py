@@ -4,8 +4,8 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'equipment', views.AdventurerEquipmentViewSet)
 router.register(r'armor', views.ArmorViewSet)
+router.register(r'equipment', views.AdventurerEquipmentViewSet)
 router.register(r'property', views.PropertyViewSet)
 router.register(r'spell', views.SpellViewSet)
 router.register(r'tool', views.ToolViewSet)

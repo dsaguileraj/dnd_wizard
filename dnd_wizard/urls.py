@@ -20,9 +20,9 @@ from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('docs/', include_docs_urls(title='D&D Wizard API')),
-    path('actions/', include('apps.actions.urls')),
-    path('characters/', include('apps.characters.urls')),
-    path('matches/', include('apps.matches.urls')),
-    path('traits/', include('apps.traits.urls'))
+    path('api/docs/', include_docs_urls(title='D&D Wizard API')),
+    path('api/actions/', include('apps.actions.urls')),
+    path('api/characters/', include('apps.characters.urls')),
+    path('api/matches/', include('apps.matches.urls')),
+    path('api/traits/', include('apps.traits.urls'))
 ]
