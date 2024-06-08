@@ -55,6 +55,9 @@ export function Navigation() {
                             <li>
                                 <Link to="/match">Match</Link>
                             </li>
+                            <li>
+                                <Link to="/match_player">Match - Player</Link>
+                            </li>
                         </ul>
                     )}
                 </li>
