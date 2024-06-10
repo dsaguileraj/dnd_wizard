@@ -409,6 +409,7 @@ class AbstractEntity(models.Model):
 class Equipment(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
+        primary_key=True,
         max_length=50,
         unique=True
     )
@@ -420,11 +421,11 @@ class Equipment(models.Model):
 
     # Price
     COINS = {
-        'pc': 'Cobre',
-        'pp': 'Plata',
-        'pe': 'Electro',
-        'po': 'Oro',
-        'ppt': 'Platino'
+        'pc': 'pc',
+        'pp': 'pp',
+        'pe': 'pe',
+        'po': 'po',
+        'ppt': 'ppt'
     }
     price = models.PositiveBigIntegerField(
         verbose_name='Precio'

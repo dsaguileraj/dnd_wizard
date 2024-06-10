@@ -31,6 +31,7 @@ class Armor(Equipment):
 class Property(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
+        primary_key=True,
         max_length=50
     )
 
@@ -158,11 +159,9 @@ class Weapon(Equipment):
         verbose_name='Dado de Golpe',
         blank=True
     )
-    multiplier = models.PositiveSmallIntegerField(
-        verbose_name='Multiplicador',
-        validators=[
-            MinValueValidator(1)
-        ]
+    modifier = models.PositiveSmallIntegerField(
+        verbose_name='Modificador',
+        default=0
     )
     damage_type = models.CharField(
         verbose_name='Tipo de Daño',
