@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Navigation } from "./components/Navigation.jsx";
-import { ArmorList, EquipmentList, PropertyList, SpellList, ToolList, WeaponList } from "./pages/list/actions.jsx";
+import { ArmorList, EquipmentList, PropertyList, SpellList, ToolList, TrinketList, WeaponList } from "./pages/list/actions.jsx";
 import { CharacterList, ClassList, MonsterList, RaceList } from "./pages/list/characters.jsx";
 import { MatchList, MatchPlayerList } from "./pages/list/matches.jsx";
 import { BackgroundList, BondList, FeatureList, FlawList, IdealList, LanguageList, PersonalityList, ProficiencyList } from "./pages/list/traits.jsx";
@@ -17,6 +17,7 @@ function App() {
                 <Route path="/property" element={<PropertyList />} />
                 <Route path="/spell" element={<SpellList />} />
                 <Route path="/tool" element={<ToolList />} />
+                <Route path="/trinket" element={<TrinketList />} />
                 <Route path="/weapon" element={<WeaponList />} />
                 {/* Characters */}
                 <Route path="/character" element={<CharacterList />} />

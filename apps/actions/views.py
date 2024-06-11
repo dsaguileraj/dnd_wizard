@@ -33,6 +33,12 @@ class ToolViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ToolSerializer
 
 
+class TrinketViewSet(viewsets.ModelViewSet):
+    queryset = models.Trinket.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.TrinketSerializer
+
+
 class WeaponViewSet(viewsets.ModelViewSet):
     queryset = models.Weapon.objects.all()
     permission_classes = [permissions.AllowAny]

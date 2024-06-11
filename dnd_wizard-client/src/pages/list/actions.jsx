@@ -45,6 +45,15 @@ export function ToolList() {
     );
 }
 
+export function TrinketList() {
+    return (
+        <>
+            <h1>TrinketList</h1>
+            <List app="actions" model="trinket" />
+        </>
+    );
+}
+
 export function WeaponList() {
     return (
         <>

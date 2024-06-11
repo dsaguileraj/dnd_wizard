@@ -91,8 +91,8 @@ class Character(AbstractEntity):
 class EntityClass(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
+        max_length=50,
+        unique=True
     )
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
@@ -171,8 +171,8 @@ class Monster(AbstractEntity):
 class Race(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
+        max_length=50,
+        unique=True
     )
     is_playable = models.BooleanField(
         verbose_name='¿Jugable?',

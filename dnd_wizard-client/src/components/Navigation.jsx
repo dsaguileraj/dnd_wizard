@@ -24,6 +24,12 @@ export function Navigation() {
                                 <Link to="/spell">Spell</Link>
                             </li>
                             <li>
+                                <Link to="/tool">Tool</Link>
+                            </li>
+                            <li>
+                                <Link to="/trinket">Trinket</Link>
+                            </li>
+                            <li>
                                 <Link to="/weapon">Weapon</Link>
                             </li>
                         </ul>

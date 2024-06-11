@@ -32,6 +32,12 @@ class ToolSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TrinketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Trinket
+        fields = '__all__'
+
+
 class WeaponSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Weapon

@@ -3,6 +3,56 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 
 
+MEASURING_UNITS = {
+    'Área': {
+        'c2': 'Casilla Cuadrada',
+        'cm2': 'Centímetro Cuadrado',
+        'km2': 'Kilómetro Cuadrado',
+        'mi2': 'Milla Cuadrada',
+        'm2': 'Metro Cuadrado',
+        'ft2': 'Pie Cuadrado',
+        'in2': 'Pulgada Cuadrada',
+        'yd2': 'Yarda Cuadrada'
+    },
+    'Longitud': {
+        'c': 'Casilla',
+        'cm': 'Centímetro',
+        'km': 'Kilómetro',
+        'mi': 'Milla',
+        'm': 'Metro',
+        'ft': 'Pie',
+        'in': 'Pulgada',
+        'yd': 'Yarda'
+    },
+    'Masa': {
+        'g': 'Gramo',
+        'kg': 'Kilogramo',
+        'lb': 'Libra',
+        'oz': 'Onza',
+    },
+    'Velocidad': {
+        'c/a': 'Casilla * Acción',
+        'ft/a': 'Pie * Acción',
+        'm/a': 'Metro * Acción',
+        'km/h': 'Kilómetro * Hora',
+        'mi/h': 'Milla * Hora',
+    },
+    'Tiempo': {
+        'a': 'Acción',
+        's': 'Segundo',
+        'min': 'Minuto',
+        'h': 'Hora',
+        'd': 'Día'        
+    },
+    'Volumen': {
+        'gal': 'Galón',
+        'lt': 'Litro',
+        'ml': 'Mililitro',
+        'pt': 'Pinta'
+    }
+}
+
+
 class AbstractEntity(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
@@ -13,7 +63,8 @@ class AbstractEntity(models.Model):
         'characters.Race',
         on_delete=models.SET_NULL,
         verbose_name='Raza',
-        null=True
+        null=True,
+        default=None
     )
 
     # Aligment
@@ -348,6 +399,11 @@ class AbstractEntity(models.Model):
         verbose_name='Armas',
         blank=True
     )
+    trinkts = models.ManyToManyField(
+        'actions.Trinket',
+        verbose_name='Baratijas',
+        blank=True
+    )
 
     def roll_dice(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
         throws = 0
@@ -409,17 +465,15 @@ class AbstractEntity(models.Model):
 class Equipment(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        primary_key=True,
         max_length=50,
         unique=True
     )
     category = models.CharField(
         verbose_name='Categoría',
         max_length=50,
-        blank=True
+        null=True,
+        default=None
     )
-
-    # Price
     COINS = {
         'pc': 'pc',
         'pp': 'pp',
@@ -428,21 +482,34 @@ class Equipment(models.Model):
         'ppt': 'ppt'
     }
     price = models.PositiveBigIntegerField(
-        verbose_name='Precio'
+        verbose_name='Precio',
+        default=0
     )
     coin = models.CharField(
         verbose_name='Moneda',
         max_length=3,
+        default='pc',
         choices=COINS
     )
     weight = models.DecimalField(
-        verbose_name='Peso (lb)',
+        verbose_name='Peso',
         max_digits=6,
-        decimal_places=2
+        decimal_places=2,
+        default=0
+    )
+    weight_measure = models.CharField(
+        verbose_name='Magnitud (Peso)',
+        max_length=2,
+        null=True,
+        default='lb',
+        choices=MEASURING_UNITS['Masa']
     )
 
     def __str__(self) -> str:
-        return self.name
+        if self.category is not None:
+            return f'{self.name} - {self.category}'
+        else:
+            return {self.name}
 
     class Meta:
         abstract = True

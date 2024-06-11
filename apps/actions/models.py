@@ -1,16 +1,49 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from apps.core.models import Equipment
+from apps.core.models import Equipment, MEASURING_UNITS
 
 
 class AdventurerEquipment(Equipment):
+    CATEGORIES = {
+        'Canalizadores Arcanos': 'Canalizadores Arcanos',
+        'Canalizadores Druídicos': 'Canalizadores Druídicos',
+        'Mercancías': 'Mercancías',
+        'Munición': 'Munición',
+        'Símbolos Sagrados': 'Símbolos Sagrados',
+    }
+    category = models.CharField(
+        verbose_name='Categoría',
+        max_length=23,
+        null=True,
+        default=None,
+        choices=CATEGORIES
+    )
+    measuring_unit = models.CharField(
+        verbose_name='Magnitud (Medida)',
+        max_length=4,
+        null=True,
+        default=None,
+        choices=MEASURING_UNITS
+    )
     description = models.CharField(
         verbose_name='Descripción',
-        max_length=1250
+        max_length=1250,
+        blank=True
     )
 
 
 class Armor(Equipment):
+    CATEGORIES = {
+        'Armaduras Ligeras': 'Armaduras Ligeras',
+        'Armaduras Medianas': 'Armaduras Medianas',
+        'Armaduras Pesadas': 'Armaduras Pesadas',
+        'Escudos': 'Escudos'
+    }
+    category = models.CharField(
+        verbose_name='Categoría',
+        max_length=18,
+        choices=CATEGORIES
+    )
     armor_class = models.PositiveSmallIntegerField(
         verbose_name='CA'
     )
@@ -31,8 +64,8 @@ class Armor(Equipment):
 class Property(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
+        max_length=50,
+        unique=True
     )
 
     def __str__(self) -> str:
@@ -42,7 +75,8 @@ class Property(models.Model):
 class Spell(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        max_length=50
+        max_length=50,
+        unique=True
     )
     entity_class = models.ManyToManyField(
         'characters.EntityClass',
@@ -95,32 +129,21 @@ class Spell(models.Model):
 
     # Alcance
     spell_range = models.SmallIntegerField(
-        verbose_name='Alcance',
+        verbose_name='Alcance (Casillas)',
         help_text='[-1]: Lanzador; [0]: Toque',
         validators=[
             MinValueValidator(-1)
         ]
     )
-
-    TIME_MEASURE = {
-        'Acción': 'Acción',
-        'Minuto': 'Minuto',
-        'Hora': 'Hora',
-        'Día': 'Día',
-    }
-
     # Tiempo de Lanzamiento
     launch_time = models.PositiveSmallIntegerField(
         verbose_name='Tiempo de Lanzamiento',
-        help_text='[0]: Instantáneo',
-        validators=[
-            MinValueValidator(1)
-        ]
+        default=0
     )
     launch_measure = models.CharField(
         verbose_name='Unidad de Tiempo (Tiempo de Lanzamiento)',
         max_length=6,
-        choices=TIME_MEASURE
+        choices=MEASURING_UNITS['Tiempo']
     )
 
     # Duración
@@ -130,12 +153,12 @@ class Spell(models.Model):
     )
     duration = models.PositiveSmallIntegerField(
         verbose_name='Duración',
-        help_text='[0]: Instantáneo'
+        default=0
     )
     duration_measure = models.CharField(
         verbose_name='Unidad de Tiempo (Duración)',
-        max_length=6,
-        choices=TIME_MEASURE
+        max_length=3,
+        choices=MEASURING_UNITS['Tiempo']
     )
 
     def __str__(self) -> str:
@@ -143,18 +166,43 @@ class Spell(models.Model):
 
 
 class Tool(Equipment):
+    CATEGORIES = {
+        'Herramientas de Artesano': 'Herramienta de Artesano',
+        'Instrumentos Musicales': 'Instrumentos Musicales',
+        'Juegos': 'Juegos'
+    }
+    category = models.CharField(
+        verbose_name='Categoría',
+        max_length=24,
+        null=True,
+        default=None,
+        choices=CATEGORIES
+    )
     description = models.CharField(
         verbose_name='Descripción',
         max_length=1250
     )
 
 
+class Trinket(models.Model):
+    description = models.CharField(
+        verbose_name='Descripción',
+        max_length=250
+    )
+
+
 class Weapon(Equipment):
-    DAMAGE_TYPES = {
-        'Cortante': 'Cortante',
-        'Contundente': ' Contundente',
-        'Perforante': 'Perforante'
+    CATEGORIES = {
+        'Armas cuerpo a cuerpo sencillas': 'Armas cuerpo a cuerpo sencillas',
+        'Armas a distancia sencillas': 'Armas a distancia sencillas',
+        'Armas cuerpo a cuerpo marciales': 'Armas cuerpo a cuerpo marciales',
+        'Armas a distancia marciales': 'Armas a distancia marciales'
     }
+    category = models.CharField(
+        verbose_name='Categoría',
+        max_length=31,
+        choices=CATEGORIES
+    )
     hit_dices = models.PositiveSmallIntegerField(
         verbose_name='Nº dados',
         default=1
@@ -167,6 +215,11 @@ class Weapon(Equipment):
         verbose_name='Modificador',
         default=0
     )
+    DAMAGE_TYPES = {
+        'Contundente': ' Contundente',
+        'Cortante': 'Cortante',
+        'Perforante': 'Perforante'
+    }
     damage_type = models.CharField(
         verbose_name='Tipo de Daño',
         max_length=11,

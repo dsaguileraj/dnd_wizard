@@ -4,8 +4,8 @@ from django.db import models
 class Background(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
+        max_length=50,
+        unique=True
     )
     proficiencies = models.ManyToManyField(
         'traits.Proficiency',
@@ -27,6 +27,9 @@ class Bond(models.Model):
         max_length=250,
         unique=True
     )
+    
+    def __str__(self) -> str:
+        return f'{self.background}: Bond ({self.pk})'
 
 
 class Ideal(models.Model):
@@ -40,6 +43,9 @@ class Ideal(models.Model):
         max_length=250,
         unique=True
     )
+    
+    def __str__(self) -> str:
+        return f'{self.background}: Ideal ({self.pk})'
 
 
 class Language(models.Model):
@@ -64,6 +70,9 @@ class Personality(models.Model):
         max_length=250,
         unique=True
     )
+    
+    def __str__(self) -> str:
+        return f'{self.background}: Personality ({self.pk})'
 
 
 class Proficiency(models.Model):
@@ -109,3 +118,6 @@ class Flaw(models.Model):
         max_length=250,
         unique=True
     )
+    
+    def __str__(self) -> str:
+        return f'{self.background}: Flaw ({self.pk})'
