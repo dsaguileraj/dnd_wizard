@@ -435,8 +435,10 @@ class Equipment(models.Model):
         max_length=3,
         choices=COINS
     )
-    weight = models.PositiveSmallIntegerField(
+    weight = models.DecimalField(
         verbose_name='Peso (lb)',
+        max_digits=6,
+        decimal_places=2
     )
 
     def __str__(self) -> str:

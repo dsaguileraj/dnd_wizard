@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getQueryList } from "../api";
 
-export function List(app, model) {
+export function List({app, model}) {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
         async function loadObjects() {
@@ -9,6 +9,8 @@ export function List(app, model) {
             setObjects(request.data);
         }
         loadObjects();
+        console.log(app)
+        console.log(model)
     }, []);
     return (
         <div>

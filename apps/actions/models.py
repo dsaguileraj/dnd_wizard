@@ -155,9 +155,13 @@ class Weapon(Equipment):
         'Contundente': ' Contundente',
         'Perforante': 'Perforante'
     }
-    hit_dice = models.PositiveSmallIntegerField(
-        verbose_name='Dado de Golpe',
-        blank=True
+    hit_dices = models.PositiveSmallIntegerField(
+        verbose_name='Nº dados',
+        default=1
+    )
+    dice_sides = models.PositiveSmallIntegerField(
+        verbose_name='Nº caras',
+        default=4
     )
     modifier = models.PositiveSmallIntegerField(
         verbose_name='Modificador',
@@ -170,5 +174,6 @@ class Weapon(Equipment):
     )
     property = models.ManyToManyField(
         Property,
-        verbose_name='Propiedad'
+        verbose_name='Propiedad',
+        blank=True
     )
