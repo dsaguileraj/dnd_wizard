@@ -1,9 +1,11 @@
 import axios from "axios";
 
-export const getQueryList = (app, model) => {
-    return axios.get(`http://localhost:8000/api/${app}/${model}/`);
-};
+export async function getQueryList(f, app, model) {
+    const request = await axios.get(`http://localhost:8000/api/${app}/${model}/`);
+    f(request.data);
+}
 
-export const getQueryDetail = (app, model, id) => {
-    return axios.get(`http://localhost:8000/api/${app}/${model}/${id}/`);
-};
+export async function getQueryDetail(f, app, model, id) {
+    const request = await axios.get(`http://localhost:8000/api/${app}/${model}/${id}/`);
+    f(request.data);
+}
