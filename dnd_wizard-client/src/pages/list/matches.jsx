@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getQueryList } from "../../api";
+import { getAllQuery } from "../../api.js";
 
 export function MatchList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "matches", "match");
+        getAllQuery(setObjects, "matches", "match");
     }, []);
     return (
         <div>
@@ -21,7 +21,7 @@ export function MatchList() {
 export function MatchPlayerList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "matches", "match_player");
+        getAllQuery(setObjects, "matches", "match_player");
     }, []);
     return (
         <div>

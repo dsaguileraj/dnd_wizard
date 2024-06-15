@@ -4,6 +4,7 @@ import { ArmorList, EquipmentList, PropertyList, SpellList, ToolList, TrinketLis
 import { CharacterList, ClassList, MonsterList, RaceList } from "./pages/list/characters.jsx";
 import { MatchList, MatchPlayerList } from "./pages/list/matches.jsx";
 import { BackgroundList, BondList, FeatureList, FlawList, IdealList, LanguageList, PersonalityList, ProficiencyList } from "./pages/list/traits.jsx";
+import { PropertyPostForm } from "./pages/create/actions.jsx";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/armor" element={<ArmorList />} />
                 <Route path="/equipment" element={<EquipmentList />} />
                 <Route path="/property" element={<PropertyList />} />
+                <Route path="/property/create" element={<PropertyPostForm />} />
                 <Route path="/spell" element={<SpellList />} />
                 <Route path="/tool" element={<ToolList />} />
                 <Route path="/trinket" element={<TrinketList />} />

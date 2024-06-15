@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getQueryList } from "../../api";
+import { getAllQuery } from "../../api.js";
 
-export function ArmorList() {
+export const ArmorList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "armor");
+        getAllQuery(setObjects, "actions", "armor");
     }, []);
     return (
         <div>
@@ -16,12 +16,12 @@ export function ArmorList() {
             </ol>
         </div>
     );
-}
+};
 
-export function EquipmentList() {
+export const EquipmentList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "equipment");
+        getAllQuery(setObjects, "actions", "equipment");
     }, []);
     return (
         <div>
@@ -33,12 +33,12 @@ export function EquipmentList() {
             </ol>
         </div>
     );
-}
+};
 
-export function PropertyList() {
+export const PropertyList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "property");
+        getAllQuery(setObjects, "actions", "property");
     }, []);
     return (
         <div>
@@ -50,12 +50,12 @@ export function PropertyList() {
             </ol>
         </div>
     );
-}
+};
 
-export function SpellList() {
+export const SpellList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "spell");
+        getAllQuery(setObjects, "actions", "spell");
     }, []);
     return (
         <div>
@@ -67,12 +67,12 @@ export function SpellList() {
             </ol>
         </div>
     );
-}
+};
 
-export function ToolList() {
+export const ToolList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "tool");
+        getAllQuery(setObjects, "actions", "tool");
     }, []);
     return (
         <div>
@@ -84,12 +84,12 @@ export function ToolList() {
             </ol>
         </div>
     );
-}
+};
 
-export function TrinketList() {
+export const TrinketList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "trinket");
+        getAllQuery(setObjects, "actions", "trinket");
     }, []);
     return (
         <div>
@@ -101,12 +101,12 @@ export function TrinketList() {
             </ol>
         </div>
     );
-}
+};
 
-export function WeaponList() {
+export const WeaponList = () => {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "actions", "weapon");
+        getAllQuery(setObjects, "actions", "weapon");
     }, []);
     return (
         <div>
@@ -118,4 +118,4 @@ export function WeaponList() {
             </ol>
         </div>
     );
-}
+};

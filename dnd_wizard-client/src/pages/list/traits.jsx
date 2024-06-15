@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getQueryList } from "../../api";
+import { getAllQuery } from "../../api.js";
 
 export function BackgroundList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "background");
+        getAllQuery(setObjects, "traits", "background");
     }, []);
     return (
         <div>
@@ -21,7 +21,7 @@ export function BackgroundList() {
 export function BondList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "bond");
+        getAllQuery(setObjects, "traits", "bond");
     }, []);
     return (
         <div>
@@ -38,7 +38,7 @@ export function BondList() {
 export function FeatureList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "feature");
+        getAllQuery(setObjects, "traits", "feature");
     }, []);
     return (
         <div>
@@ -55,7 +55,7 @@ export function FeatureList() {
 export function FlawList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "flaw");
+        getAllQuery(setObjects, "traits", "flaw");
     }, []);
     return (
         <div>
@@ -72,7 +72,7 @@ export function FlawList() {
 export function IdealList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "ideal");
+        getAllQuery(setObjects, "traits", "ideal");
     }, []);
     return (
         <div>
@@ -89,7 +89,7 @@ export function IdealList() {
 export function LanguageList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "language");
+        getAllQuery(setObjects, "traits", "language");
     }, []);
     return (
         <div>
@@ -106,7 +106,7 @@ export function LanguageList() {
 export function PersonalityList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "personality");
+        getAllQuery(setObjects, "traits", "personality");
     }, []);
     return (
         <div>
@@ -123,7 +123,7 @@ export function PersonalityList() {
 export function ProficiencyList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "traits", "proficiency");
+        getAllQuery(setObjects, "traits", "proficiency");
     }, []);
     return (
         <div>

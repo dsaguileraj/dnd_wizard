@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getQueryList } from "../../api";
+import { getAllQuery } from "../../api.js";
 
 export function CharacterList() {
     const [objects, setObjects] = useState([]);
     useEffect(() => {
-        getQueryList(setObjects, "characters", "character");
+        getAllQuery(setObjects, "characters", "character");
     }, []);
     return (
         <div>

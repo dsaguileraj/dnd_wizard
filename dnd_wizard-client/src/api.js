@@ -1,11 +1,15 @@
 import axios from "axios";
 
-export async function getQueryList(f, app, model) {
-    const request = await axios.get(`http://localhost:8000/api/${app}/${model}/`);
-    f(request.data);
-}
+export const axiosInstance = axios.create({
+    baseURL: "http://localhost:8000/api/"
+});
 
-export async function getQueryDetail(f, app, model, id) {
-    const request = await axios.get(`http://localhost:8000/api/${app}/${model}/${id}/`);
-    f(request.data);
-}
+export const getAllQuery = async (fn, app, model) => {
+    const request = await axiosInstance.get(`/${app}/${model}/`);
+    fn(request.data);
+};
+
+export const getQueryDetail = async (fn, app, model, id) => {
+    const request = await axiosInstance.get(`/${app}/${model}/${id}/`);
+    fn(request.data);
+};
