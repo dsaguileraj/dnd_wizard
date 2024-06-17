@@ -1,47 +1,46 @@
 import { useState } from "react";
-import { axiosInstance } from "../../api";
+import { axiosInstance } from "../../api.js";
+import { Form, InputCheck, InputNumber, InputSelect, InputText, InputTextArea } from "../../components/forms.jsx";
 
 export const ArmorPostForm = () => {
+    const [errorMessage, setErrorMessage] = useState("");
     const [name, setName] = useState("");
-    const [coin, setCoin] = useState("");
+    const [category, setCategory] = useState("Armaduras Ligeras");
     const [price, setPrice] = useState(0);
-    const [weigth, setWeigth] = useState(0.0);
-    const [weigthMeasure, setWeigthMeasure] = useState("");
-    const [category, setCategory] = useState("");
+    const [coin, setCoin] = useState("pc");
+    const [weight, setWeight] = useState(0);
+    const [weightMeasure, setWeightMeasure] = useState("g");
     const [armorClass, setArmorClass] = useState(0);
     const [dexterityBonus, setDexterityBonus] = useState(false);
     const [minStrength, setMinStrength] = useState(0);
     const [disadvantageStealth, setDisadvantageStealth] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-
     const handleSubmit = (event) => {
         event.preventDefault();
         axiosInstance
             .post("/actions/armor/", {
                 name: name,
-                coin: coin,
-                price: price,
-                weigth: weigth,
-                weigth_measure: weigthMeasure,
                 category: category,
+                price: price,
+                coin: coin,
+                weight: weight,
+                weight_measure: weightMeasure,
                 armor_class: armorClass,
                 dexterity_bonus: dexterityBonus,
                 min_strength: minStrength,
                 disadvantage_stealth: disadvantageStealth,
             })
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
                 setName("");
-                setCoin("");
+                setCategory("Armaduras Ligeras");
                 setPrice(0);
-                setWeigth(0.0);
-                setWeigthMeasure("");
-                setCategory("");
+                setCoin("pc");
+                setWeight(0);
+                setWeightMeasure("g");
                 setArmorClass(0);
                 setDexterityBonus(false);
                 setMinStrength(0);
                 setDisadvantageStealth(false);
-                setErrorMessage("");
             })
             .catch((error) => {
                 console.log(error);
@@ -49,82 +48,82 @@ export const ArmorPostForm = () => {
             });
     };
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Nombre</label>
-            <input type="text" name="name" title="name" value={name} onChange={(event) => setName(event.target.value)} required />
-            <label>Moneda</label>
-            <select name="" title="coin" value={coin} onChange={(event) => setCoin(event.target.value)}>
-                <option value="pc">Cobre</option>
-                <option value="pp">Plata</option>
-                <option value="pe">Electro</option>
-                <option value="po">Oro</option>
-                <option value="ppt">Platino</option>
-            </select>
-            <label>Precio</label>
-            <input type="number" name="price" title="price" value={price} onChange={(event) => setPrice(event.target.value)} required />
-            <label>Peso</label>
-            <input type="number" name="weight" title="weight" value={weigth} onChange={(event) => setWeigth(event.target.value)} required />
-            <label>Magnitud</label>
-            <select name="weigthMeasure" title="weigthMeasure" value={weigthMeasure} onChange={(event) => setWeigthMeasure(event.target.value)}>
-                <option value="g">Gramo</option>
-                <option value="kg">Kilogramo</option>
-                <option value="lb">Libra</option>
-                <option value="oz">Onza</option>
-            </select>
-            <label>Categoria</label>
-            <select name="category" title="category" value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value="Armaduras Ligeras">Armaduras Ligeras</option>
-                <option value="Armaduras Medianas">Armaduras Medianas</option>
-                <option value="Armaduras Pesadas">Armaduras Pesadas</option>
-                <option value="Escudos">Escudos</option>
-            </select>
-            <label>CA</label>
-            <input type="number" name="armorClass" title="armorClass" value={armorClass} onChange={(event) => setArmorClass(event.target.value)} required />
-            <label>Bonificador de Destreza</label>
-            <input type="checkbox" name="dexterityBonus" title="dexterityBonus" value={dexterityBonus} onChange={(event) => setDexterityBonus(event.target.checked)} />
-            <label>Min. FUE</label>
-            <input type="number" name="minStrength" title="minStrength" value={minStrength} onChange={(event) => setMinStrength(event.target.value)} required />
-            <label>Desventajas en Sigilo</label>
-            <input type="checkbox" name="disadvantageStealth" title="disadvantageStealth" value={disadvantageStealth} onChange={(event) => setDisadvantageStealth(event.target.checked)} />
-            <button type="submit">Crear</button>
+        <Form handleSubmit={handleSubmit}>
+            <InputText field={name} handleChange={setName} label="Nombre" maxLength={50} />
+            <InputSelect
+                field={category}
+                handleChange={setCategory}
+                label="Categoria"
+                options={[
+                    { value: "Armaduras Ligeras", label: "Armaduras Ligeras" },
+                    { value: "Armaduras Medianas", label: "Armaduras Medianas" },
+                    { value: "Armaduras Pesadas", label: "Armaduras Pesadas" },
+                    { value: "Escudos", label: "Escudos" },
+                ]}
+            />
+            <InputNumber field={price} handleChange={setPrice} label="Precio" />
+            <InputSelect
+                field={coin}
+                handleChange={setCoin}
+                label="Moneda"
+                options={[
+                    { value: "pc", label: "pc" },
+                    { value: "pp", label: "pp" },
+                    { value: "pe", label: "pe" },
+                    { value: "po", label: "po" },
+                    { value: "ppt", label: "ppt" },
+                ]}
+            />
+            <InputNumber field={weight} handleChange={setWeight} label="Peso" />
+            <InputSelect
+                field={weightMeasure}
+                handleChange={setWeightMeasure}
+                label="Magnitud"
+                options={[
+                    { value: "g", label: "Gramo" },
+                    { value: "kg", label: "Kilogramo" },
+                    { value: "lb", label: "Libra" },
+                    { value: "oz", label: "Onza" },
+                ]}
+            />
+            <InputNumber field={armorClass} handleChange={setArmorClass} label="CA" />
+            <InputCheck handleChange={setDexterityBonus} label="Bonificador de Destreza" />
+            <InputNumber field={minStrength} handleChange={setMinStrength} label="FUE" />
+            <InputCheck handleChange={setDisadvantageStealth} label="Desventaja en Sigilo" />
             {errorMessage && <span>{errorMessage}</span>}
-        </form>
+        </Form>
     );
 };
 
 export const EquipmentPostForm = () => {
-    const [name, setName] = useState("");
-    const [coin, setCoin] = useState("");
-    const [price, setPrice] = useState(0);
-    const [weigth, setWeigth] = useState(0.0);
-    const [weigthMeasure, setWeigthMeasure] = useState("");
-    const [category, setCategory] = useState("");
-    const [measureUnit, setMeasureUnit] = useState("");
-    const [description, setDescription] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
+    const [name, setName] = useState("");
+    const [category, setCategory] = useState(undefined);
+    const [price, setPrice] = useState(0);
+    const [coin, setCoin] = useState("pc");
+    const [weight, setWeight] = useState(0);
+    const [weightMeasure, setWeightMeasure] = useState("g");
+    const [description, setDescription] = useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
         axiosInstance
             .post("/actions/equipment/", {
                 name: name,
-                coin: coin,
-                price: price,
-                weigth: weigth,
-                weigth_measure: weigthMeasure,
                 category: category,
-                measure_unit: measureUnit,
+                price: price,
+                coin: coin,
+                weight: weight,
+                weight_measure: weightMeasure,
                 description: description,
             })
             .then((response) => {
-                console.log(response);
+                console.log(response.data);
                 setName("");
-                setCoin("");
+                setCategory(undefined);
                 setPrice(0);
-                setWeigth(0.0);
-                setWeigthMeasure("");
-                setCategory("");
-                setMeasureUnit("");
+                setCoin("pc");
+                setWeight(0);
+                setWeightMeasure("g");
                 setDescription("");
             })
             .catch((error) => {
@@ -133,53 +132,55 @@ export const EquipmentPostForm = () => {
             });
     };
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Nombre</label>
-            <input type="text" name="name" title="name" value={name} onChange={(event) => setName(event.target.value)} required />
-            <label>Moneda</label>
-            <select name="" title="coin" value={coin} onChange={(event) => setCoin(event.target.value)}>
-                <option value="pc">Cobre</option>
-                <option value="pp">Plata</option>
-                <option value="pe">Electro</option>
-                <option value="po">Oro</option>
-                <option value="ppt">Platino</option>
-            </select>
-            <label>Precio</label>
-            <input type="number" name="price" title="price" value={price} onChange={(event) => setPrice(event.target.value)} required />
-            <label>Peso</label>
-            <input type="number" name="weight" title="weight" value={weigth} onChange={(event) => setWeigth(event.target.value)} required />
-            <label>Magnitud</label>
-            <select name="weigthMeasure" title="weigthMeasure" value={weigthMeasure} onChange={(event) => setWeigthMeasure(event.target.value)}>
-                <option value="g">Gramo</option>
-                <option value="kg">Kilogramo</option>
-                <option value="lb">Libra</option>
-                <option value="oz">Onza</option>
-            </select>
-            <label>Categoria</label>
-            <select name="category" title="category" value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value={null}>---</option>
-                <option value="Canalizadores Arcanos">Canalizadores Arcanos</option>
-                <option value="Canalizadores Druídicos">Canalizadores Druídicos</option>
-                <option value="Mercancías">Mercancías</option>
-                <option value="Munición">Munición</option>
-                <option value="Símbolos Sagrados">Símbolos Sagrados</option>
-            </select>
-            <select name="measureUnit" title="measureUnit" value={measureUnit} onChange={(event) => setMeasureUnit(event.target.value)}>
-                <option value={null}>---</option>
-                <option value="g">Gramo</option>
-                <option value="kg">Kilogramo</option>
-                <option value="lb">Libra</option>
-                <option value="oz">Onza</option>
-            </select>
-            <textarea name="descripttion" value={description} onChange={(event) => setDescription(event.target.value)}></textarea>
+        <Form handleSubmit={handleSubmit}>
+            <InputText field={name} handleChange={setName} label="Nombre" maxLength={50} />
+            <InputSelect
+                field={category}
+                handleChange={setCategory}
+                label="Categoria"
+                options={[
+                    { value: undefined, label: "---" },
+                    { value: "Canalizadores Arcanos", label: "Canalizadores Arcanos" },
+                    { value: "Canalizadores Druídicos", label: "Canalizadores Druídicos" },
+                    { value: "Mercancías", label: "Mercancías" },
+                    { value: "Munición", label: "Munición" },
+                    { value: "Símbolos Sagrados", label: "Símbolos Sagrados" },
+                ]}
+            />
+            <InputNumber field={price} handleChange={setPrice} label="Precio" />
+            <InputSelect
+                field={coin}
+                handleChange={setCoin}
+                label="Moneda"
+                options={[
+                    { value: "pc", label: "pc" },
+                    { value: "pp", label: "pp" },
+                    { value: "pe", label: "pe" },
+                    { value: "po", label: "po" },
+                    { value: "ppt", label: "ppt" },
+                ]}
+            />
+            <InputNumber field={weight} handleChange={setWeight} label="Peso" />
+            <InputSelect
+                field={weightMeasure}
+                handleChange={setWeightMeasure}
+                label="Magnitud"
+                options={[
+                    { value: "g", label: "Gramo" },
+                    { value: "kg", label: "Kilogramo" },
+                    { value: "lb", label: "Libra" },
+                    { value: "oz", label: "Onza" },
+                ]}
+            />
+            <InputTextArea field={description} handleChange={setDescription} label="Descripción" maxLength={1250} />
             {errorMessage && <span>{errorMessage}</span>}
-        </form>
+        </Form>
     );
 };
 
 export const PropertyPostForm = () => {
-    const [name, setName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [name, setName] = useState("");
     const handleSubmit = (event) => {
         event.preventDefault();
         axiosInstance
@@ -196,11 +197,90 @@ export const PropertyPostForm = () => {
             });
     };
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Nombre</label>
-            <input type="text" title="name" name="name" value={name} onChange={(event) => setName(event.target.value)} required />
-            <button type="submit">Crear</button>
+        <Form handleSubmit={handleSubmit}>
+            <InputText field={name} handleChange={setName} label="Nombre" maxLength={50} />
             {errorMessage && <span>{errorMessage}</span>}
-        </form>
+        </Form>
+    );
+};
+
+export const ToolPostForm = () => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const [name, setName] = useState("");
+    const [category, setCategory] = useState(undefined);
+    const [price, setPrice] = useState(0);
+    const [coin, setCoin] = useState("pc");
+    const [weight, setWeight] = useState(0);
+    const [weightMeasure, setWeightMeasure] = useState("g");
+    const [description, setDescription] = useState("");
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axiosInstance
+            .post("/actions/tool/", {
+                name: name,
+                category: category,
+                price: price,
+                coin: coin,
+                weight: weight,
+                weight_measure: weightMeasure,
+                description: description,
+            })
+            .then((response) => {
+                console.log(response.data);
+                setName("");
+                setCategory(undefined);
+                setPrice(0);
+                setCoin("pc");
+                setWeight(0);
+                setWeightMeasure("g");
+                setDescription("");
+            })
+            .catch((error) => {
+                console.log(error);
+                setErrorMessage("An error occurred. Please try again later.");
+            });
+    };
+    return (
+        <Form handleSubmit={handleSubmit}>
+            <InputText field={name} handleChange={setName} label="Nombre" maxLength={50} />
+            <InputSelect
+                field={category}
+                handleChange={setCategory}
+                label="Categoria"
+                options={[
+                    { value: undefined, label: "---" },
+                    { value: "Herramientas de Artesano", label: "Herramientas de Artesano" },
+                    { value: "Instrumentos Musicales", label: "Instrumentos Musicales" },
+                    { value: "Juegos", label: "Juegos" },                    
+                ]}
+            />
+            <InputNumber field={price} handleChange={setPrice} label="Precio" />
+            <InputSelect
+                field={coin}
+                handleChange={setCoin}
+                label="Moneda"
+                options={[
+                    { value: "pc", label: "pc" },
+                    { value: "pp", label: "pp" },
+                    { value: "pe", label: "pe" },
+                    { value: "po", label: "po" },
+                    { value: "ppt", label: "ppt" },
+                ]}
+            />
+            <InputNumber field={weight} handleChange={setWeight} label="Peso" />
+            <InputSelect
+                field={weightMeasure}
+                handleChange={setWeightMeasure}
+                label="Magnitud"
+                options={[
+                    { value: "g", label: "Gramo" },
+                    { value: "kg", label: "Kilogramo" },
+                    { value: "lb", label: "Libra" },
+                    { value: "oz", label: "Onza" },
+                ]}
+            />
+            <InputTextArea field={description} handleChange={setDescription} label="Descripción" maxLength={1250} />
+            {errorMessage && <span>{errorMessage}</span>}
+        </Form>
     );
 };

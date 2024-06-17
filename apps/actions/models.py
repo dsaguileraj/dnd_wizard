@@ -18,13 +18,6 @@ class AdventurerEquipment(Equipment):
         default=None,
         choices=CATEGORIES
     )
-    measuring_unit = models.CharField(
-        verbose_name='Magnitud (Medida)',
-        max_length=4,
-        null=True,
-        default=None,
-        choices=MEASURING_UNITS
-    )
     description = models.CharField(
         verbose_name='Descripción',
         max_length=1250,
@@ -180,7 +173,8 @@ class Tool(Equipment):
     )
     description = models.CharField(
         verbose_name='Descripción',
-        max_length=1250
+        max_length=1250,
+        blank=True
     )
 
 
