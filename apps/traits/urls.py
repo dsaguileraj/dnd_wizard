@@ -11,7 +11,8 @@ router.register(r'flaw', views.FlawViewSet)
 router.register(r'ideal', views.IdealViewSet)
 router.register(r'language', views.LanguageViewSet)
 router.register(r'personality', views.PersonalityViewSet)
-router.register(r'proficiency', views.ProficiencyViewSet)
+router.register(r'saving_throw', views.SavingThrowViewSet)
+router.register(r'skill', views.SkillViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

@@ -45,7 +45,13 @@ class PersonalityViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PersonalitySerializer
 
 
-class ProficiencyViewSet(viewsets.ModelViewSet):
-    queryset = models.Proficiency.objects.all()
+class SavingThrowViewSet(viewsets.ModelViewSet):
+    queryset = models.SavingThrow.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.ProficiencySerializer
+    serializer_class = serializers.SavingThrowSerializer
+
+
+class SkillViewSet(viewsets.ModelViewSet):
+    queryset = models.Skill.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.SkillSerializer

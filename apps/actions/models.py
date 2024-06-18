@@ -1,22 +1,16 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from apps.core.models import Equipment, MEASURING_UNITS
+from apps.core.models import Equipment
+from apps.core import choices
 
 
 class AdventurerEquipment(Equipment):
-    CATEGORIES = {
-        'Canalizadores Arcanos': 'Canalizadores Arcanos',
-        'Canalizadores Druídicos': 'Canalizadores Druídicos',
-        'Mercancías': 'Mercancías',
-        'Munición': 'Munición',
-        'Símbolos Sagrados': 'Símbolos Sagrados',
-    }
     category = models.CharField(
         verbose_name='Categoría',
-        max_length=23,
+        max_length=20,
         null=True,
         default=None,
-        choices=CATEGORIES
+        choices=choices.CategoryEquipment
     )
     description = models.CharField(
         verbose_name='Descripción',
@@ -26,16 +20,10 @@ class AdventurerEquipment(Equipment):
 
 
 class Armor(Equipment):
-    CATEGORIES = {
-        'Armaduras Ligeras': 'Armaduras Ligeras',
-        'Armaduras Medianas': 'Armaduras Medianas',
-        'Armaduras Pesadas': 'Armaduras Pesadas',
-        'Escudos': 'Escudos'
-    }
     category = models.CharField(
         verbose_name='Categoría',
-        max_length=18,
-        choices=CATEGORIES
+        max_length=7,
+        choices=choices.CategoryArmor
     )
     armor_class = models.PositiveSmallIntegerField(
         verbose_name='CA'
@@ -75,20 +63,10 @@ class Spell(models.Model):
         'characters.EntityClass',
         verbose_name='Clase'
     )
-    SCHOOLS = {
-        'Abjuración': 'Abjuración',
-        'Adivinación': 'Adivinación',
-        'Conjuración': 'Conjuración',
-        'Encantamiento': 'Encantamiento',
-        'Evocación': 'Evocación',
-        'Ilusión': 'Ilusión',
-        'Nigromancia': 'Nigromancia',
-        'Transmutación': 'Transmutación'
-    }
     magic_school = models.CharField(
         verbose_name='Escuela de Magia',
         max_length=13,
-        choices=SCHOOLS
+        choices=choices.MagicSchools
     )
     level = models.PositiveSmallIntegerField(
         verbose_name='Nivel',
@@ -100,7 +78,6 @@ class Spell(models.Model):
         verbose_name='Descripción',
         max_length=1250
     )
-
     # Componentes
     verbal = models.BooleanField(
         verbose_name='Verbal',
@@ -119,7 +96,6 @@ class Spell(models.Model):
         max_length=250,
         blank=True
     )
-
     # Alcance
     spell_range = models.SmallIntegerField(
         verbose_name='Alcance (Casillas)',
@@ -129,16 +105,18 @@ class Spell(models.Model):
         ]
     )
     # Tiempo de Lanzamiento
-    launch_time = models.PositiveSmallIntegerField(
+    launch_time = models.SmallIntegerField(
         verbose_name='Tiempo de Lanzamiento',
-        default=0
+        help_text='[-1]: Reacción',
+        validators=[
+            MinValueValidator(-1)
+        ]
     )
     launch_measure = models.CharField(
         verbose_name='Unidad de Tiempo (Tiempo de Lanzamiento)',
         max_length=6,
-        choices=MEASURING_UNITS['Tiempo']
+        choices=choices.MeasureTime
     )
-
     # Duración
     concentration = models.BooleanField(
         verbose_name='Concentración',
@@ -151,7 +129,7 @@ class Spell(models.Model):
     duration_measure = models.CharField(
         verbose_name='Unidad de Tiempo (Duración)',
         max_length=3,
-        choices=MEASURING_UNITS['Tiempo']
+        choices=choices.MeasureTime
     )
 
     def __str__(self) -> str:
@@ -159,17 +137,12 @@ class Spell(models.Model):
 
 
 class Tool(Equipment):
-    CATEGORIES = {
-        'Herramientas de Artesano': 'Herramienta de Artesano',
-        'Instrumentos Musicales': 'Instrumentos Musicales',
-        'Juegos': 'Juegos'
-    }
     category = models.CharField(
         verbose_name='Categoría',
-        max_length=24,
+        max_length=23,
         null=True,
         default=None,
-        choices=CATEGORIES
+        choices=choices.CategoryTool
     )
     description = models.CharField(
         verbose_name='Descripción',
@@ -186,16 +159,10 @@ class Trinket(models.Model):
 
 
 class Weapon(Equipment):
-    CATEGORIES = {
-        'Armas cuerpo a cuerpo sencillas': 'Armas cuerpo a cuerpo sencillas',
-        'Armas a distancia sencillas': 'Armas a distancia sencillas',
-        'Armas cuerpo a cuerpo marciales': 'Armas cuerpo a cuerpo marciales',
-        'Armas a distancia marciales': 'Armas a distancia marciales'
-    }
     category = models.CharField(
         verbose_name='Categoría',
-        max_length=31,
-        choices=CATEGORIES
+        max_length=24,
+        choices=choices.CategoryWeapon
     )
     hit_dices = models.PositiveSmallIntegerField(
         verbose_name='Nº dados',
@@ -209,15 +176,10 @@ class Weapon(Equipment):
         verbose_name='Modificador',
         default=0
     )
-    DAMAGE_TYPES = {
-        'Contundente': ' Contundente',
-        'Cortante': 'Cortante',
-        'Perforante': 'Perforante'
-    }
     damage_type = models.CharField(
         verbose_name='Tipo de Daño',
         max_length=11,
-        choices=DAMAGE_TYPES
+        choices=choices.DamageTypes
     )
     property = models.ManyToManyField(
         Property,

@@ -24,7 +24,7 @@ class Match(models.Model):
     )
     created_at = models.DateField(
         verbose_name='Fecha de Creación',
-        auto_now=True,
+        auto_now_add=True,
         editable=False
     )
 

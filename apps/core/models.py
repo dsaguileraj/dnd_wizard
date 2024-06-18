@@ -1,56 +1,7 @@
 from random import randint
 from django.core.validators import MaxValueValidator
 from django.db import models
-
-
-MEASURING_UNITS = {
-    'Área': {
-        'c2': 'Casilla Cuadrada',
-        'cm2': 'Centímetro Cuadrado',
-        'km2': 'Kilómetro Cuadrado',
-        'mi2': 'Milla Cuadrada',
-        'm2': 'Metro Cuadrado',
-        'ft2': 'Pie Cuadrado',
-        'in2': 'Pulgada Cuadrada',
-        'yd2': 'Yarda Cuadrada'
-    },
-    'Longitud': {
-        'c': 'Casilla',
-        'cm': 'Centímetro',
-        'km': 'Kilómetro',
-        'mi': 'Milla',
-        'm': 'Metro',
-        'ft': 'Pie',
-        'in': 'Pulgada',
-        'yd': 'Yarda'
-    },
-    'Masa': {
-        'g': 'Gramo',
-        'kg': 'Kilogramo',
-        'lb': 'Libra',
-        'oz': 'Onza',
-    },
-    'Velocidad': {
-        'c/a': 'Casilla * Acción',
-        'ft/a': 'Pie * Acción',
-        'm/a': 'Metro * Acción',
-        'km/h': 'Kilómetro * Hora',
-        'mi/h': 'Milla * Hora',
-    },
-    'Tiempo': {
-        'a': 'Acción',
-        's': 'Segundo',
-        'min': 'Minuto',
-        'h': 'Hora',
-        'd': 'Día'        
-    },
-    'Volumen': {
-        'gal': 'Galón',
-        'lt': 'Litro',
-        'ml': 'Mililitro',
-        'pt': 'Pinta'
-    }
-}
+from . import choices
 
 
 class AbstractEntity(models.Model):
@@ -66,23 +17,10 @@ class AbstractEntity(models.Model):
         null=True,
         default=None
     )
-
-    # Aligment
-    ALIGMENT_CHOICES = {
-        'LB': 'Legal Bueno',
-        'LN': 'Legal Neutro',
-        'LM': 'Legal Malvado',
-        'NB': 'Neutral Bueno',
-        'NN': 'Neutral',
-        'NM': 'Neutral Malvado',
-        'CB': 'Caótico Bueno',
-        'CN': 'Caótico Neutro',
-        'CM': 'Caótico Malvado'
-    }
     aligment = models.CharField(
         verbose_name='Alineamiento',
         max_length=2,
-        choices=ALIGMENT_CHOICES
+        choices=choices.Aligments
     )
 
     # Stats
@@ -254,115 +192,21 @@ class AbstractEntity(models.Model):
         editable=False
     )
 
-    # Saving Throws
-    st_strength = models.BooleanField(
-        verbose_name='Tirada de Salvación [FUE]',
-        default=False
+    saving_throws = models.ManyToManyField(
+        'traits.SavingThrow',
+        name='Tiradas de Salvación',
+        blank=True
     )
-    st_dexterity = models.BooleanField(
-        verbose_name='Tirada de Salvación [DES]',
-        default=False
-    )
-    st_constitution = models.BooleanField(
-        verbose_name='Tirada de Salvación [CON]',
-        default=False
-    )
-    st_intelligence = models.BooleanField(
-        verbose_name='Tirada de Salvación [INT]',
-        default=False
-    )
-    st_wisdom = models.BooleanField(
-        verbose_name='WIS Tirada de Salvación [SAB]',
-        default=False
-    )
-    st_charisma = models.BooleanField(
-        verbose_name='Tirada de Salvación [CAR]',
-        default=False
-    )
-
-    # Skills
-    acrobatics = models.BooleanField(
-        verbose_name='Acrobacias',
-        default=False
-    )
-    animal_handling = models.BooleanField(
-        verbose_name='Trato con Animales',
-        default=False
-    )
-    arcana = models.BooleanField(
-        verbose_name='Conocimiento Arcano',
-        default=False
-    )
-    athletics = models.BooleanField(
-        verbose_name='Atletismo',
-        default=False
-    )
-    deception = models.BooleanField(
-        verbose_name='Engaño',
-        default=False
-    )
-    history = models.BooleanField(
-        verbose_name='Historia',
-        default=False
-    )
-    insight = models.BooleanField(
-        verbose_name='Perspicacia',
-        default=False
-    )
-    intimidation = models.BooleanField(
-        verbose_name='Intimidación',
-        default=False
-    )
-    investigation = models.BooleanField(
-        verbose_name='Investigación',
-        default=False
-    )
-    medicine = models.BooleanField(
-        verbose_name='Medicina',
-        default=False
-    )
-    nature = models.BooleanField(
-        verbose_name='Naturaleza',
-        default=False
-    )
-    perception = models.BooleanField(
-        verbose_name='Percepción',
-        default=False
-    )
-    performance = models.BooleanField(
-        verbose_name='Interpretación',
-        default=False
-    )
-    persuasion = models.BooleanField(
-        verbose_name='Persuasión',
-        default=False
-    )
-    religion = models.BooleanField(
-        verbose_name='Religión',
-        default=False
-    )
-    sleigth_of_hand = models.BooleanField(
-        verbose_name='Juego de Manos',
-        default=False
-    )
-    stealth = models.BooleanField(
-        verbose_name='Sigilo',
-        default=False
-    )
-    survival = models.BooleanField(
-        verbose_name='Supervivencia',
-        default=False
+    skills = models.ManyToManyField(
+        'traits.Skill',
+        verbose_name='Habilidades',
+        blank=True
     )
 
     # Special Attributes
     languages = models.ManyToManyField(
         'traits.Language',
         verbose_name='Idiomas',
-        blank=True
-    )
-    proficiencies = models.ManyToManyField(
-        'traits.Proficiency',
-        verbose_name='Competencias',
         blank=True
     )
     features = models.ManyToManyField(
@@ -399,7 +243,7 @@ class AbstractEntity(models.Model):
         verbose_name='Armas',
         blank=True
     )
-    trinkts = models.ManyToManyField(
+    trinkets = models.ManyToManyField(
         'actions.Trinket',
         verbose_name='Baratijas',
         blank=True
@@ -474,13 +318,6 @@ class Equipment(models.Model):
         null=True,
         default=None
     )
-    COINS = {
-        'pc': 'pc',
-        'pp': 'pp',
-        'pe': 'pe',
-        'po': 'po',
-        'ppt': 'ppt'
-    }
     price = models.PositiveBigIntegerField(
         verbose_name='Precio',
         default=0
@@ -489,7 +326,7 @@ class Equipment(models.Model):
         verbose_name='Moneda',
         max_length=3,
         default='pc',
-        choices=COINS
+        choices=choices.Coins
     )
     weight = models.DecimalField(
         verbose_name='Peso',
@@ -498,11 +335,11 @@ class Equipment(models.Model):
         default=0
     )
     weight_measure = models.CharField(
-        verbose_name='Magnitud (Peso)',
+        verbose_name='Magnitud',
         max_length=2,
         null=True,
         default='lb',
-        choices=MEASURING_UNITS['Masa']
+        choices=choices.MeasureMass
     )
 
     def __str__(self) -> str:

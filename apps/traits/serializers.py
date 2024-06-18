@@ -44,7 +44,13 @@ class PersonalitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProficiencySerializer(serializers.ModelSerializer):
+class SavingThrowSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Proficiency
+        model = models.SavingThrow
+        fields = '__all__'
+
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Skill
         fields = '__all__'

@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from apps.core.models import AbstractEntity
+from apps.core import choices
 
 
 class Character(AbstractEntity):
@@ -78,6 +79,24 @@ class Character(AbstractEntity):
         default=calculate_proficiency_bonus,
         editable=False
     )
+    armor_proficiencies = models.ManyToManyField(
+        'actions.Armor',
+        related_name='proficient_characters',
+        verbose_name='Competencias con Armaduras',
+        blank=True
+    )
+    weapon_proficiencies = models.ManyToManyField(
+        'actions.Weapon',
+        related_name='proficient_characters',
+        verbose_name='Competencias con Armas',
+        blank=True
+    )
+    tool_proficiencies = models.ManyToManyField(
+        'actions.Tool',
+        related_name='proficient_characters',
+        verbose_name='Competencias con Herramientas',
+        blank=True
+    )
 
     def save(self, *args, **kwargs) -> None:
         if self.race:
@@ -97,12 +116,44 @@ class EntityClass(models.Model):
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
         validators=[
-            MaxValueValidator(20)
+            MaxValueValidator(20),
+            MinValueValidator(4)
         ]
     )
-    proficiencies = models.ManyToManyField(
-        'traits.Proficiency',
-        verbose_name='Competencias'
+    armor_proficiencies = models.ManyToManyField(
+        'actions.Armor',
+        verbose_name='Competencias con Armaduras',
+    )
+    weapon_proficiencies = models.ManyToManyField(
+        'actions.Weapon',
+        verbose_name='Competencias con Armas',
+    )
+    max_tool_proficiencies_choices = models.PositiveSmallIntegerField(
+        verbose_name='Competencia con Herramientas Disponibles',
+        validators=[
+            MaxValueValidator(3)
+        ]
+    )
+    tool_proficiencies_choices = models.ManyToManyField(
+        'actions.Tool',
+        verbose_name='Lista de Competencias con Herramientas Disponibles',
+        blank=True
+    )
+    saving_throws = models.ManyToManyField(
+        'traits.SavingThrow',
+        verbose_name='Tiradas de Salvación',
+        max_length=2
+    )
+    max_skill_choices = models.PositiveSmallIntegerField(
+        verbose_name='Habilidades Disponibles',
+        validators=[
+            MaxValueValidator(3),
+            MinValueValidator(1)
+        ]
+    )
+    skill_choices = models.ManyToManyField(
+        'traits.SKill',
+        verbose_name='Lista de Habilidades Disponibles',
     )
 
     def __str__(self) -> str:
@@ -110,59 +161,24 @@ class EntityClass(models.Model):
 
 
 class Monster(AbstractEntity):
-    CHALLENGE_CHOICES = {
-        0: '0',
-        1/8: '1/8',
-        1/4: '1/4',
-        1/2: '1/2',
-        1: '1',
-        2: '2',
-        3: '3',
-        4: '4',
-        5: '5',
-        6: '6',
-        7: '7',
-        8: '8',
-        9: '9',
-        10: '10',
-        11: '11',
-        12: '12',
-        13: '13',
-        14: '14',
-        15: '15',
-        16: '16',
-        17: '17',
-        18: '18',
-        19: '19',
-        20: '20',
-        21: '21',
-        22: '22',
-        23: '23',
-        24: '24',
-        25: '25',
-        26: '26',
-        27: '27',
-        28: '28',
-        29: '29',
-        30: '30'
-    }
-    challenge = models.DecimalField(
-        max_digits=5,
-        decimal_places=3,
-        verbose_name='Desafío',
-        choices=CHALLENGE_CHOICES
+    challenge = models.PositiveSmallIntegerField(
+        verbose_name='Nivel de Desafío',
+        validators=[
+            MaxValueValidator(34),
+            MinValueValidator(1)
+        ]
     )
 
     def calculate_proficiency_bonus(self) -> int:
-        if self.challenge < 1:
+        if self.challenge <= 8:
             return 2
         if self.challenge % 4 == 0:
-            return self.challenge // 4 + 1
+            return self.challenge // 4
         else:
-            return self.challenge // 4 + 2
+            return self.challenge // 4 + 1
 
     proficiency_bonus = models.PositiveSmallIntegerField(
-        verbose_name='Bonificador por Competencia',
+        verbose_name='Bonificador de Competencia',
         default=calculate_proficiency_bonus,
         editable=False
     )
@@ -181,6 +197,7 @@ class Race(models.Model):
     languages = models.ManyToManyField(
         'traits.Language',
         verbose_name='Idiomas',
+        max_length=2,
         blank=True
     )
     features = models.ManyToManyField(
@@ -188,23 +205,14 @@ class Race(models.Model):
         verbose_name='Rasgos',
         blank=True
     )
-    SIZE_CHOICES = {
-        'XS': 'Diminuto',
-        'S': 'Pequeño',
-        'M': 'Mediano',
-        'L': 'Grande',
-        'XL': 'Enorme',
-        'XXL': 'Gigante'
-    }
     size = models.CharField(
         verbose_name='Tamaño',
         max_length=3,
-        choices=SIZE_CHOICES
+        choices=choices.Sizes
     )
     speed = models.PositiveSmallIntegerField(
         verbose_name='Velocidad'
     )
-
     # Inherited Stat Bonus
     strength = models.PositiveSmallIntegerField(
         verbose_name='FUE Heredada',
