@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from apps.core.models import AbstractEntity
+from apps.core.models import BaseModel, Entity
 from apps.core import choices
 
 
-class Character(AbstractEntity):
+class Character(Entity):
     player = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -27,37 +27,36 @@ class Character(AbstractEntity):
         verbose_name='Inspiración',
         default=False
     )
-    LEVELS = {
-        1: 0,
-        2: 300,
-        3: 900,
-        4: 2700,
-        5: 6500,
-        6: 14000,
-        7: 23000,
-        8: 34000,
-        9: 48000,
-        10: 64000,
-        11: 85000,
-        12: 100000,
-        13: 120000,
-        14: 140000,
-        15: 165000,
-        16: 195000,
-        17: 225000,
-        18: 265000,
-        19: 305000,
-        20: 355000
-    }
 
     def calculate_level(self) -> int:
+        LEVELS = {
+            1: 0,
+            2: 300,
+            3: 900,
+            4: 2700,
+            5: 6500,
+            6: 14000,
+            7: 23000,
+            8: 34000,
+            9: 48000,
+            10: 64000,
+            11: 85000,
+            12: 100000,
+            13: 120000,
+            14: 140000,
+            15: 165000,
+            16: 195000,
+            17: 225000,
+            18: 265000,
+            19: 305000,
+            20: 355000
+        }
         level = 0
-        for points in self.LEVELS.values():
+        for points in LEVELS.values():
             if self.experience >= points:
                 level += 1
             else:
                 return level
-
     experience = models.PositiveIntegerField(
         verbose_name='Experiencia',
         default=0
@@ -73,46 +72,57 @@ class Character(AbstractEntity):
             return self.level // 4 + 1
         else:
             return self.level // 4 + 2
-
     proficiency_bonus = models.PositiveSmallIntegerField(
         verbose_name='Bonificador por Competencia',
         default=calculate_proficiency_bonus,
         editable=False
     )
+    languages = models.ManyToManyField(
+        'traits.Language',
+        verbose_name='Idiomas',
+    )
+    skills = models.ManyToManyField(
+        'traits.Skill',
+        verbose_name='Habilidades',
+    )
+    saving_throws = models.ManyToManyField(
+        'traits.SavingThrow',
+        name='Tiradas de Salvación',
+    )
     armor_proficiencies = models.ManyToManyField(
         'actions.Armor',
         related_name='proficient_characters',
         verbose_name='Competencias con Armaduras',
-        blank=True
     )
     weapon_proficiencies = models.ManyToManyField(
         'actions.Weapon',
         related_name='proficient_characters',
         verbose_name='Competencias con Armas',
-        blank=True
     )
     tool_proficiencies = models.ManyToManyField(
         'actions.Tool',
         related_name='proficient_characters',
         verbose_name='Competencias con Herramientas',
-        blank=True
     )
 
     def save(self, *args, **kwargs) -> None:
+        if self.background:
+            self.skills.add(*self.background.skills.all())
         if self.race:
             self.languages.add(*self.race.languages.all())
-            self.features.add(*self.race.features.all())
         if self.entity_class:
-            self.proficiencies.add(*self.entity_class.proficiencies.all())
+            self.armor_proficiencies.add(
+                *self.entity_class.armor_proficiencies.all())
+            self.weapon_proficiencies.add(
+                *self.entity_class.weapon_proficiencies.all())
+            self.saving_throws.add(*self.entity_class.saving_throws.all())
         super().save(*args, **kwargs)
 
+    class Meta:
+        ordering = ["name"]
 
-class EntityClass(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+
+class EntityClass(BaseModel):
     hit_dice = models.PositiveSmallIntegerField(
         verbose_name='Dado de Golpe',
         validators=[
@@ -156,19 +166,11 @@ class EntityClass(models.Model):
         verbose_name='Lista de Habilidades Disponibles',
     )
 
-    def __str__(self) -> str:
-        return self.name
+    class Meta:
+        ordering = ["name"]
 
 
-class Monster(AbstractEntity):
-    challenge = models.PositiveSmallIntegerField(
-        verbose_name='Nivel de Desafío',
-        validators=[
-            MaxValueValidator(34),
-            MinValueValidator(1)
-        ]
-    )
-
+class Monster(Entity):
     def calculate_proficiency_bonus(self) -> int:
         if self.challenge <= 8:
             return 2
@@ -176,20 +178,28 @@ class Monster(AbstractEntity):
             return self.challenge // 4
         else:
             return self.challenge // 4 + 1
-
+    challenge = models.PositiveSmallIntegerField(
+        verbose_name='Nivel de Desafío',
+        validators=[
+            MaxValueValidator(34),
+            MinValueValidator(1)
+        ]
+    )
     proficiency_bonus = models.PositiveSmallIntegerField(
         verbose_name='Bonificador de Competencia',
         default=calculate_proficiency_bonus,
         editable=False
     )
+    # damage_vulnerabilities
+    # damage_resistances
+    # damage_immunities
+    # state_immunities
+
+    class Meta:
+        ordering = ["name"]
 
 
-class Race(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+class Race(BaseModel):
     is_playable = models.BooleanField(
         verbose_name='¿Jugable?',
         default=False
@@ -197,8 +207,13 @@ class Race(models.Model):
     languages = models.ManyToManyField(
         'traits.Language',
         verbose_name='Idiomas',
-        max_length=2,
         blank=True
+    )
+    language_choices = models.SmallIntegerField(
+        verbose_name='Idiomas a elección',
+        validators=[
+            MaxValueValidator(2)
+        ]
     )
     features = models.ManyToManyField(
         'traits.Feature',
@@ -215,47 +230,57 @@ class Race(models.Model):
     )
     # Inherited Stat Bonus
     strength = models.PositiveSmallIntegerField(
-        verbose_name='FUE Heredada',
+        verbose_name=choices.Stats.STR,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
     dexterity = models.PositiveSmallIntegerField(
-        verbose_name='DES Heredada',
+        verbose_name=choices.Stats.DEX,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
     constitution = models.PositiveSmallIntegerField(
-        verbose_name='CON Heredada',
+        verbose_name=choices.Stats.CON,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
     intelligence = models.PositiveSmallIntegerField(
-        verbose_name='INT Heredada',
+        verbose_name=choices.Stats.INT,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
     wisdom = models.PositiveSmallIntegerField(
-        verbose_name='SAB Heredada',
+        verbose_name=choices.Stats.WIS,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
     charisma = models.PositiveSmallIntegerField(
-        verbose_name='CAR Heredada',
+        verbose_name=choices.Stats.CHA,
         default=0,
         validators=[
             MaxValueValidator(2)
         ]
     )
 
-    def __str__(self) -> str:
-        return self.name
+    def save(self) -> None:
+        if not self.is_playable:
+            self.strength = 0
+            self.dexterity = 0
+            self.constitution = 0
+            self.intelligence = 0
+            self.wisdom = 0
+            self.charisma = 0
+        super().save()
+
+    class Meta:
+        ordering = ["name"]

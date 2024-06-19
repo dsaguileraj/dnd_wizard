@@ -1,14 +1,10 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from apps.core.choices import Stats
+from apps.core.models import BaseModel, PersonalCharacteristic
 
 
-class Background(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+class Background(BaseModel):
     language_choices = models.SmallIntegerField(
         verbose_name='Idiomas a elección',
         validators=[
@@ -32,99 +28,39 @@ class Background(models.Model):
         max_length=2
     )
 
-    def __str__(self) -> str:
-        return self.name
+    class Meta:
+        ordering = ["name"]
 
 
-class Bond(models.Model):
-    background = models.ForeignKey(
-        'traits.Background',
-        on_delete=models.CASCADE,
-        verbose_name='Trasfondo',
-    )
+class Bond(PersonalCharacteristic):
+    ...
+
+
+class Feature(BaseModel):
     description = models.CharField(
         verbose_name='Descripción',
         max_length=250,
         unique=True
     )
 
-    def __str__(self) -> str:
-        return f'{self.background}: Bond ({self.pk})'
+
+class Flaw(PersonalCharacteristic):
+    ...
 
 
-class Feature(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=250,
-        unique=True
-    )
-
-    def __str__(self) -> str:
-        return self.name
+class Ideal(PersonalCharacteristic):
+    ...
 
 
-class Flaw(models.Model):
-    background = models.ForeignKey(
-        'traits.Background',
-        on_delete=models.CASCADE,
-        verbose_name='Trasfondo',
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=250,
-        unique=True
-    )
+class Language(BaseModel):
+    ...
 
-    def __str__(self) -> str:
-        return f'{self.background}: Flaw ({self.pk})'
+    class Meta:
+        ordering = ["name"]
 
 
-class Ideal(models.Model):
-    background = models.ForeignKey(
-        'traits.Background',
-        on_delete=models.CASCADE,
-        verbose_name='Trasfondo',
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=250,
-        unique=True
-    )
-
-    def __str__(self) -> str:
-        return f'{self.background}: Ideal ({self.pk})'
-
-
-class Language(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        primary_key=True,
-        max_length=50
-    )
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class Personality(models.Model):
-    background = models.ForeignKey(
-        'traits.Background',
-        on_delete=models.CASCADE,
-        verbose_name='Trasfondo',
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=250,
-        unique=True
-    )
-
-    def __str__(self) -> str:
-        return f'{self.background}: Personality ({self.pk})'
+class Personality(PersonalCharacteristic):
+    ...
 
 
 class SavingThrow(models.Model):
@@ -139,17 +75,12 @@ class SavingThrow(models.Model):
         return self.stat
 
 
-class Skill(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+class Skill(BaseModel):
     modifier = models.CharField(
         verbose_name='Estadística',
         max_length=3,
         choices=Stats
     )
 
-    def __str__(self) -> str:
-        return self.name
+    class Meta:
+        ordering = ["name"]

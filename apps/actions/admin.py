@@ -1,7 +1,7 @@
 from django.contrib import admin
 from . import models
 
-admin.site.register(models.AdventurerEquipment)
+admin.site.register(models.AdventureGear)
 admin.site.register(models.Armor)
 admin.site.register(models.Property)
 admin.site.register(models.Spell)

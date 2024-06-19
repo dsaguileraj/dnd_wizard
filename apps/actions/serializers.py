@@ -2,9 +2,9 @@ from rest_framework import serializers
 from . import models
 
 
-class AdventurerEquipmentSerializer(serializers.ModelSerializer):
+class AdventureGearSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.AdventurerEquipment
+        model = models.AdventureGear
         fields = '__all__'
 
 

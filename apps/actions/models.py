@@ -1,10 +1,10 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from apps.core.models import Equipment
 from apps.core import choices
+from apps.core.models import BaseModel, Item
 
 
-class AdventurerEquipment(Equipment):
+class AdventureGear(Item):
     category = models.CharField(
         verbose_name='Categoría',
         max_length=20,
@@ -18,8 +18,10 @@ class AdventurerEquipment(Equipment):
         blank=True
     )
 
+    class Meta:
+        ordering = ["category", "name"]
 
-class Armor(Equipment):
+class Armor(Item):
     category = models.CharField(
         verbose_name='Categoría',
         max_length=7,
@@ -41,24 +43,16 @@ class Armor(Equipment):
         default=False
     )
 
+    class Meta:
+        ordering = ["category", "name"]
 
-class Property(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+class Property(BaseModel):
+    ...
 
-    def __str__(self) -> str:
-        return self.name
+    class Meta:
+        ordering = ["name"]
 
-
-class Spell(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
+class Spell(BaseModel):
     entity_class = models.ManyToManyField(
         'characters.EntityClass',
         verbose_name='Clase'
@@ -134,9 +128,11 @@ class Spell(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} - {self.magic_school} [{self.level}]'
+    
+    class Meta:
+        ordering = ["name"]
 
-
-class Tool(Equipment):
+class Tool(Item):
     category = models.CharField(
         verbose_name='Categoría',
         max_length=23,
@@ -149,6 +145,9 @@ class Tool(Equipment):
         max_length=1250,
         blank=True
     )
+    
+    class Meta:
+        ordering = ["category", "name"]
 
 
 class Trinket(models.Model):
@@ -158,7 +157,7 @@ class Trinket(models.Model):
     )
 
 
-class Weapon(Equipment):
+class Weapon(Item):
     category = models.CharField(
         verbose_name='Categoría',
         max_length=24,
@@ -186,3 +185,6 @@ class Weapon(Equipment):
         verbose_name='Propiedad',
         blank=True
     )
+    
+    class Meta:
+        ordering = ["category", "name"]

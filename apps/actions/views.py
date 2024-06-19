@@ -3,10 +3,10 @@ from . import models
 from . import serializers
 
 
-class AdventurerEquipmentViewSet(viewsets.ModelViewSet):
-    queryset = models.AdventurerEquipment.objects.all()
+class AdventureGearViewSet(viewsets.ModelViewSet):
+    queryset = models.AdventureGear.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.AdventurerEquipmentSerializer
+    serializer_class = serializers.AdventureGearSerializer
 
 
 class ArmorViewSet(viewsets.ModelViewSet):

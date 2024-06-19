@@ -4,12 +4,21 @@ from django.db import models
 from . import choices
 
 
-class AbstractEntity(models.Model):
+class BaseModel(models.Model):
     name = models.CharField(
         verbose_name='Nombre',
-        max_length=30,
+        max_length=50,
         unique=True
     )
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        abstract = True
+
+
+class Entity(BaseModel):
     race = models.ForeignKey(
         'characters.Race',
         on_delete=models.SET_NULL,
@@ -24,7 +33,6 @@ class AbstractEntity(models.Model):
     )
 
     # Stats
-
     def calculate_modifier(stat: int) -> int:
         base_bonus = -5
         if stat < 30:
@@ -35,133 +43,123 @@ class AbstractEntity(models.Model):
                     return base_bonus
                 base_bonus += 1
         return 10
-
+    
     # Strength
     def calculate_strength(self) -> int:
         return self.strength + self.race.strength
 
+    def calculate_strength_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.strength)
+        return modifier
     strength = models.PositiveSmallIntegerField(
-        verbose_name='FUE Base',
+        verbose_name=f'{choices.Stats.STR} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_strength = models.PositiveSmallIntegerField(
-        verbose_name='FUE Total',
+        verbose_name=f'{choices.Stats.STR} Total',
         default=calculate_strength,
         editable=False
     )
-
-    def calculate_strength_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.strength)
-        return modifier
-
     strength_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [FUE]',
+        verbose_name=f'{choices.Stats.STR} Modificador',
         default=calculate_strength_modifier,
         editable=False
     )
-
+    
     # Dexterity
     def calculate_dexterity(self) -> int:
         return self.dexterity + self.race.dexterity
 
+    def calculate_dexterity_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.dexterity)
+        return modifier
     dexterity = models.PositiveSmallIntegerField(
-        verbose_name='DES Base',
+        verbose_name=f'{choices.Stats.DEX} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_dexterity = models.PositiveSmallIntegerField(
-        verbose_name='DES Total',
+        verbose_name=f'{choices.Stats.DEX} Total',
         default=calculate_dexterity,
         editable=False
     )
-
-    def calculate_dexterity_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.dexterity)
-        return modifier
-
     dexterity_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [DES]',
+        verbose_name=f'{choices.Stats.DEX} Modificador',
         default=calculate_dexterity_modifier,
         editable=False
     )
-
+    
     # Constitution
     def calculate_constitution(self) -> int:
         return self.constitution + self.race.constitution
 
+    def calculate_constitution_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.constitution)
+        return modifier
     constitution = models.PositiveSmallIntegerField(
-        verbose_name='CON Base',
+        verbose_name=f'{choices.Stats.CON} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_constitution = models.PositiveSmallIntegerField(
-        verbose_name='CON Total',
+        verbose_name=f'{choices.Stats.CON} Total',
         default=calculate_constitution,
         editable=False
     )
-
-    def calculate_constitution_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.constitution)
-        return modifier
-
     constitution_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [CON]',
+        verbose_name=f'{choices.Stats.CON} Modificador',
         default=calculate_constitution_modifier,
         editable=False
     )
-
+    
     # Intelligence
     def calculate_intelligence(self) -> int:
         return self.intelligence + self.race.intelligence
 
+    def calculate_intelligence_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.intelligence)
+        return modifier
     intelligence = models.PositiveSmallIntegerField(
-        verbose_name='INT Base',
+        verbose_name=f'{choices.Stats.INT} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_intelligence = models.PositiveSmallIntegerField(
-        verbose_name='INT Total',
+        verbose_name=f'{choices.Stats.INT} Total',
         default=calculate_intelligence,
         editable=False
     )
-
-    def calculate_intelligence_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.intelligence)
-        return modifier
-
     intelligence_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [INT]',
+        verbose_name=f'{choices.Stats.INT} Modificador',
         default=calculate_intelligence_modifier,
         editable=False
     )
-
+    
     # Wisdom
     def calculate_wisdom(self) -> int:
         return self.wisdom + self.race.wisdom
 
+    def calculate_wisdom_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.wisdom)
+        return modifier
     wisdom = models.PositiveSmallIntegerField(
-        verbose_name='SAB Base',
+        verbose_name=f'{choices.Stats.WIS} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_wisdom = models.PositiveSmallIntegerField(
-        verbose_name='SAB Total',
+        verbose_name=f'{choices.Stats.WIS} Total',
         default=calculate_wisdom,
         editable=False
     )
-
-    def calculate_wisdom_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.wisdom)
-        return modifier
-
     wisdom_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [SAB]',
+        verbose_name=f'{choices.Stats.WIS}Modificador',
         default=calculate_wisdom_modifier,
         editable=False
     )
@@ -170,28 +168,26 @@ class AbstractEntity(models.Model):
     def calculate_charisma(self):
         return self.charisma + self.race.charisma
 
+    def calculate_charisma_modifier(self) -> int:
+        modifier = self.calculate_modifier(self.charisma)
+        return modifier
     charisma = models.PositiveSmallIntegerField(
-        verbose_name='CAR Base',
+        verbose_name=f'{choices.Stats.CHA} Base',
         validators=[
             MaxValueValidator(30)
         ]
     )
     calculated_charisma = models.PositiveSmallIntegerField(
-        verbose_name='CAR Total',
+        verbose_name=f'{choices.Stats.CHA} Total',
         default=calculate_charisma,
         editable=False
     )
-
-    def calculate_charisma_modifier(self) -> int:
-        modifier = self.calculate_modifier(self.charisma)
-        return modifier
-
     charisma_modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador [CAR]',
+        verbose_name=f'{choices.Stats.CHA} Modificador',
         default=calculate_charisma_modifier,
         editable=False
     )
-
+    # Traits
     saving_throws = models.ManyToManyField(
         'traits.SavingThrow',
         name='Tiradas de Salvación',
@@ -202,29 +198,14 @@ class AbstractEntity(models.Model):
         verbose_name='Habilidades',
         blank=True
     )
-
-    # Special Attributes
-    languages = models.ManyToManyField(
-        'traits.Language',
-        verbose_name='Idiomas',
-        blank=True
-    )
-    features = models.ManyToManyField(
-        'traits.Feature',
-        verbose_name='Rasgos',
-        blank=True
-    )
-
     # Actions
     spells = models.ManyToManyField(
         'actions.Spell',
         verbose_name='Conjuros',
         blank=True
     )
-
-    # Equipment
     equipment = models.ManyToManyField(
-        'actions.AdventurerEquipment',
+        'actions.AdventureGear',
         verbose_name='Equipo de Aventurero',
         blank=True
     )
@@ -249,27 +230,27 @@ class AbstractEntity(models.Model):
         blank=True
     )
 
-    def roll_dice(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
+    def roll_dice(self, dices: int = 1, sides: int = 4, bonus: int = 0, modifier: str | None = None) -> int:
         throws = 0
         for throw in range(dices):
             match modifier:
-                case 'STR':
+                case choices.Stats.STR:
                     throws + randint(1, sides) + self.strength_modifier
-                case 'DEX':
+                case choices.Stats.DEX:
                     throws + randint(1, sides) + self.dexterity_modifier
-                case 'CON':
+                case choices.Stats.CON:
                     throws + randint(1, sides) + self.constitution_modifier
-                case 'INT':
+                case choices.Stats.INT:
                     throws + randint(1, sides) + self.intelligence_modifier
-                case 'WIS':
+                case choices.Stats.WIS:
                     throws + randint(1, sides) + self.wisdom_modifier
-                case 'CHA':
+                case choices.Stats.CHA:
                     throws + randint(1, sides) + self.charisma_modifier
                 case _:
                     throws + randint(1, sides)
-        return throws + bonus
+            return throws + bonus
 
-    def advantage_roll(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
+    def advantage_roll(self, dices: int = 1, sides: int = 4, bonus: int = 0, modifier: str | None = None) -> int:
         first_throw = self.roll_dice(dices, sides, bonus, modifier)
         first_throw_sum = 0
         for throw in first_throw:
@@ -284,7 +265,7 @@ class AbstractEntity(models.Model):
             return first_throw_sum
         return second_throw_sum
 
-    def disadvantage_roll(self, dices: int, sides: int, bonus: int = 0, modifier: str = None) -> int:
+    def disadvantage_roll(self, dices: int = 1, sides: int = 4, bonus: int = 0, modifier: str | None = None) -> int:
         first_throw = self.roll_dice(dices, sides, bonus, modifier)
         first_throw_sum = 0
         for throw in first_throw:
@@ -299,26 +280,12 @@ class AbstractEntity(models.Model):
             return first_throw_sum
         return second_throw_sum
 
-    def __str__(self) -> str:
-        return self.name
-
     class Meta:
         abstract = True
 
 
-class Equipment(models.Model):
-    name = models.CharField(
-        verbose_name='Nombre',
-        max_length=50,
-        unique=True
-    )
-    category = models.CharField(
-        verbose_name='Categoría',
-        max_length=50,
-        null=True,
-        default=None
-    )
-    price = models.PositiveBigIntegerField(
+class Item(BaseModel):
+    cost = models.PositiveBigIntegerField(
         verbose_name='Precio',
         default=0
     )
@@ -342,11 +309,24 @@ class Equipment(models.Model):
         choices=choices.MeasureMass
     )
 
+    class Meta:
+        abstract = True
+
+
+class PersonalCharacteristic(models.Model):
+    background = models.ForeignKey(
+        'traits.Background',
+        on_delete=models.CASCADE,
+        verbose_name='Trasfondo',
+    )
+    description = models.CharField(
+        verbose_name='Descripción',
+        max_length=250,
+        unique=True
+    )
+
     def __str__(self) -> str:
-        if self.category is not None:
-            return f'{self.name} - {self.category}'
-        else:
-            return {self.name}
+        return f'{self.background}: {__name__} ({self.pk})'
 
     class Meta:
         abstract = True
