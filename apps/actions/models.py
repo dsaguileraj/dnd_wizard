@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
 from apps.core import choices
 from apps.core.models import BaseModel, Item
 
@@ -47,15 +47,14 @@ class Armor(Item):
         ordering = ["category", "name"]
 
 class Property(BaseModel):
-    ...
-
     class Meta:
         ordering = ["name"]
 
 class Spell(BaseModel):
     entity_class = models.ManyToManyField(
         'characters.EntityClass',
-        verbose_name='Clase'
+        verbose_name='Clase',
+        blank=True
     )
     magic_school = models.CharField(
         verbose_name='Escuela de Magia',
@@ -68,11 +67,17 @@ class Spell(BaseModel):
             MaxValueValidator(9)
         ]
     )
+    is_ritual = models.BooleanField(
+        verbose_name='Ritual',
+        default=False
+    )
     description = models.CharField(
         verbose_name='Descripción',
-        max_length=1250
+        max_length=1250,
+        unique=True
     )
-    # Componentes
+    
+    # Components
     verbal = models.BooleanField(
         verbose_name='Verbal',
         default=False
@@ -90,7 +95,8 @@ class Spell(BaseModel):
         max_length=250,
         blank=True
     )
-    # Alcance
+    
+    # Range
     spell_range = models.SmallIntegerField(
         verbose_name='Alcance (Casillas)',
         help_text='[-1]: Lanzador; [0]: Toque',
@@ -98,21 +104,23 @@ class Spell(BaseModel):
             MinValueValidator(-1)
         ]
     )
-    # Tiempo de Lanzamiento
-    launch_time = models.SmallIntegerField(
+    
+    # Casting Time
+    casting_time = models.SmallIntegerField(
         verbose_name='Tiempo de Lanzamiento',
         help_text='[-1]: Reacción',
         validators=[
             MinValueValidator(-1)
         ]
     )
-    launch_measure = models.CharField(
+    casting_measure = models.CharField(
         verbose_name='Unidad de Tiempo (Tiempo de Lanzamiento)',
         max_length=6,
         choices=choices.MeasureTime
     )
-    # Duración
-    concentration = models.BooleanField(
+    
+    # Duration
+    need_concentration = models.BooleanField(
         verbose_name='Concentración',
         default=False
     )
@@ -155,6 +163,9 @@ class Trinket(models.Model):
         verbose_name='Descripción',
         max_length=250
     )
+
+    class Meta:
+        ordering = ["description"]
 
 
 class Weapon(Item):

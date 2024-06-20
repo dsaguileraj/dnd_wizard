@@ -15,6 +15,24 @@ class BondViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BondSerializer
 
 
+class DamageImmunityViewSet(viewsets.ModelViewSet):
+    queryset = models.DamageImmunity.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.DamageImmunitySerializer
+
+
+class DamageResistenceViewSet(viewsets.ModelViewSet):
+    queryset = models.DamageResistence.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.DamageResistenceSerializer
+
+
+class DamageVulnerabilityViewSet(viewsets.ModelViewSet):
+    queryset = models.DamageVulnerability.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.DamageVulnerabilitySerializer
+
+
 class FeatureViewSet(viewsets.ModelViewSet):
     queryset = models.Feature.objects.all()
     permission_classes = [permissions.AllowAny]
@@ -55,3 +73,9 @@ class SkillViewSet(viewsets.ModelViewSet):
     queryset = models.Skill.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = serializers.SkillSerializer
+
+
+class StateImmunityViewSet(viewsets.ModelViewSet):
+    queryset = models.StateImmunity.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.StateImmunitySerializer

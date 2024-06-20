@@ -14,6 +14,24 @@ class BondSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class DamageImmunitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DamageImmunity
+        fields = '__all__'
+
+
+class DamageResistenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DamageResistence
+        fields = '__all__'
+
+
+class DamageVulnerabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DamageVulnerability
+        fields = '__all__'
+
+
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Feature
@@ -53,4 +71,10 @@ class SavingThrowSerializer(serializers.ModelSerializer):
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Skill
+        fields = '__all__'
+
+
+class StateImmunitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.StateImmunity
         fields = '__all__'

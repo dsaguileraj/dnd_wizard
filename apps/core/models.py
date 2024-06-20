@@ -18,6 +18,17 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class DescriptionModel(BaseModel):
+    description = models.CharField(
+        verbose_name='Descripción',
+        max_length=1250,
+        unique=True
+    )
+    
+    class Meta:
+        abstract = True
+
+
 class Entity(BaseModel):
     race = models.ForeignKey(
         'characters.Race',
@@ -187,6 +198,7 @@ class Entity(BaseModel):
         default=calculate_charisma_modifier,
         editable=False
     )
+    
     # Traits
     saving_throws = models.ManyToManyField(
         'traits.SavingThrow',
@@ -198,10 +210,11 @@ class Entity(BaseModel):
         verbose_name='Habilidades',
         blank=True
     )
+    
     # Actions
-    spells = models.ManyToManyField(
-        'actions.Spell',
-        verbose_name='Conjuros',
+    armor = models.ManyToManyField(
+        'actions.Armor',
+        verbose_name='Armadura',
         blank=True
     )
     equipment = models.ManyToManyField(
@@ -209,14 +222,9 @@ class Entity(BaseModel):
         verbose_name='Equipo de Aventurero',
         blank=True
     )
-    armor = models.ManyToManyField(
-        'actions.Armor',
-        verbose_name='Armadura',
-        blank=True
-    )
-    tools = models.ManyToManyField(
-        'actions.Tool',
-        verbose_name='Herramientas',
+    spells = models.ManyToManyField(
+        'actions.Spell',
+        verbose_name='Conjuros',
         blank=True
     )
     weapons = models.ManyToManyField(
@@ -224,10 +232,37 @@ class Entity(BaseModel):
         verbose_name='Armas',
         blank=True
     )
+    
+    # Inventory
+    tools = models.ManyToManyField(
+        'actions.Tool',
+        verbose_name='Herramientas',
+        blank=True
+    )
     trinkets = models.ManyToManyField(
         'actions.Trinket',
         verbose_name='Baratijas',
         blank=True
+    )
+    copper_pieces = models.PositiveSmallIntegerField(
+        verbose_name='Piezas de Cobre',
+        default=0
+    )
+    silver_pieces = models.PositiveSmallIntegerField(
+        verbose_name='Piezas de Plata',
+        default=0
+    )
+    electrum_pieces = models.PositiveSmallIntegerField(
+        verbose_name='Piezas de Electro',
+        default=0
+    )
+    gold_pieces = models.PositiveSmallIntegerField(
+        verbose_name='Piezas de Oro',
+        default=0
+    )
+    platinum_pieces = models.PositiveSmallIntegerField(
+        verbose_name='Piezas de Platino',
+        default=0
     )
 
     def roll_dice(self, dices: int = 1, sides: int = 4, bonus: int = 0, modifier: str | None = None) -> int:
