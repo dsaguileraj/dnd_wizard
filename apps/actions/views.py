@@ -15,12 +15,6 @@ class ArmorViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ArmorSerializer
 
 
-class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = models.Property.objects.all()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.PropertySerializer
-
-
 class SpellViewSet(viewsets.ModelViewSet):
     queryset = models.Spell.objects.all()
     permission_classes = [permissions.AllowAny]

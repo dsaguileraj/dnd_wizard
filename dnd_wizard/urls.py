@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/actions/', include('apps.actions.urls')),
     path('api/characters/', include('apps.characters.urls')),
     path('api/matches/', include('apps.matches.urls')),
-    path('api/traits/', include('apps.traits.urls'))
+    path('api/traits/', include('apps.traits.urls')),
+    path('api/rules/', include('apps.rules.urls')),
 ]

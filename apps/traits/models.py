@@ -1,25 +1,188 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from apps.core import choices
-from apps.core.models import BaseModel, DescriptionModel, PersonalCharacteristic
+from apps.core.choices import Sizes
+from apps.core.models import BaseModel, PersonalCharacteristic
+
+
+class EntityClass(BaseModel):
+    hit_dice = models.IntegerField(
+        validators=[
+            MaxValueValidator(20),
+            MinValueValidator(4)
+        ]
+    )
+
+    # Saving Throws
+    st_str = models.BooleanField(
+        default=False
+    )
+    st_dex = models.BooleanField(
+        default=False
+    )
+    st_con = models.BooleanField(
+        default=False
+    )
+    st_int = models.BooleanField(
+        default=False
+    )
+    st_wis = models.BooleanField(
+        default=False
+    )
+    st_cha = models.BooleanField(
+        default=False
+    )
+
+    # Traits
+    armor_proficiencies = models.ManyToManyField(
+        'actions.Armor',
+    )
+    weapon_proficiencies = models.ManyToManyField(
+        'actions.Weapon',
+    )
+    can_spellcasting = models.BooleanField(
+        default=False
+    )
+
+    # Traits Choices
+    max_tool_proficiencies_choices = models.IntegerField(
+        validators=[
+            MaxValueValidator(3),
+            MinValueValidator(0)
+        ]
+    )
+    tool_proficiencies_choices = models.ManyToManyField(
+        'actions.Tool',
+        blank=True
+    )
+    max_skill_choices = models.IntegerField(
+        validators=[
+            MaxValueValidator(3),
+            MinValueValidator(1)
+        ]
+    )
+    skill_choices = models.ManyToManyField(
+        'rules.SKill',
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+
+class Race(BaseModel):
+    is_playable = models.BooleanField(
+        default=False
+    )
+
+    # Inherited Stat Bonus
+    inh_str = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    inh_dex = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    inh_con = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    inh_int = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    inh_wis = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    inh_cha = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+
+    # Racial Traits
+    size = models.CharField(
+        max_length=3,
+        default=Sizes.M,
+        choices=Sizes
+    )
+    speed = models.IntegerField(
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    damage_immunities = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='race_immunities',
+        blank=True
+    )
+    damage_resistances = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='race_resistances',
+        blank=True
+    )
+    damage_vulnerabilities = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='race_vulnerabilities',
+        blank=True
+    )
+    condition_immunities = models.ManyToManyField(
+        'rules.Condition',
+        blank=True
+    )
+
+    # Traits
+    language_choices = models.IntegerField(
+        validators=[
+            MaxValueValidator(2),
+            MinValueValidator(0)
+        ]
+    )
+    languages = models.ManyToManyField(
+        'rules.Language',
+        blank=True
+    )
+    features = models.ManyToManyField(
+        'rules.Feature',
+        blank=True
+    )
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Background(BaseModel):
+    # Traits
     skills = models.ManyToManyField(
-        'traits.Skill',
-        verbose_name='Habilidades',
+        'rules.Skill',
         max_length=2
     )
-    
+
     # Traits Choices
-    language_choices = models.SmallIntegerField(
-        verbose_name='Idiomas a elección',
+    language_choices = models.IntegerField(
         validators=[
-            MaxValueValidator(2)
+            MaxValueValidator(2),
+            MinValueValidator(0)
         ]
     )
-    max_tool_proficiencies_choices = models.SmallIntegerField(
-        verbose_name='Competencia con Herramientas Disponibles',
+    max_tool_proficiencies_choices = models.IntegerField(
         validators=[
             MaxValueValidator(2),
             MinValueValidator(1)
@@ -27,7 +190,6 @@ class Background(BaseModel):
     )
     tool_proficiencies_choices = models.ManyToManyField(
         'actions.Tool',
-        verbose_name='Lista de Competencia con Herramientas Disponibles',
     )
 
     class Meta:
@@ -37,26 +199,6 @@ class Background(BaseModel):
 class Bond(PersonalCharacteristic):
     class Meta:
         order_with_respect_to = "background"
-
-
-class Feature(DescriptionModel):
-    class Meta:
-        ordering = ["name"]
-
-
-class DamageImmunity(DescriptionModel):
-    class Meta:
-        ordering = ["name"]
-
-
-class DamageResistence(DescriptionModel):
-    class Meta:
-        ordering = ["name"]
-
-
-class DamageVulnerability(DescriptionModel):
-    class Meta:
-        ordering = ["name"]
 
 
 class Flaw(PersonalCharacteristic):
@@ -69,42 +211,6 @@ class Ideal(PersonalCharacteristic):
         order_with_respect_to = "background"
 
 
-class Language(BaseModel):
-    class Meta:
-        ordering = ["name"]
-
-
 class Personality(PersonalCharacteristic):
     class Meta:
         order_with_respect_to = "background"
-
-
-class SavingThrow(models.Model):
-    stat = models.CharField(
-        verbose_name='Estadística',
-        max_length=3,
-        unique=True,
-        choices=choices.Stats
-    )
-
-    def __str__(self) -> str:
-        return self.stat
-
-    class Meta:
-        ordering = ["stat"]
-
-
-class Skill(BaseModel):
-    modifier = models.CharField(
-        verbose_name='Estadística',
-        max_length=3,
-        choices=choices.Stats
-    )
-
-    class Meta:
-        ordering = ["name"]
-
-
-class StateImmunity(DescriptionModel):
-    class Meta:
-        ordering = ["name"]

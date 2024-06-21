@@ -1,4 +1,4 @@
-from rest_framework import permissions, serializers, viewsets
+from rest_framework import serializers
 from . import models
 
 

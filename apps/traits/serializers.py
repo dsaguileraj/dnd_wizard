@@ -2,6 +2,18 @@ from rest_framework import serializers
 from . import models
 
 
+class EntityClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.EntityClass
+        fields = '__all__'
+
+
+class RaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Race
+        fields = '__all__'
+
+
 class BackgroundSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Background
@@ -11,30 +23,6 @@ class BackgroundSerializer(serializers.ModelSerializer):
 class BondSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Bond
-        fields = '__all__'
-
-
-class DamageImmunitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.DamageImmunity
-        fields = '__all__'
-
-
-class DamageResistenceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.DamageResistence
-        fields = '__all__'
-
-
-class DamageVulnerabilitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.DamageVulnerability
-        fields = '__all__'
-
-
-class FeatureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Feature
         fields = '__all__'
 
 
@@ -50,31 +38,7 @@ class IdealSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class LanguageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Language
-        fields = '__all__'
-
-
 class PersonalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Personality
-        fields = '__all__'
-
-
-class SavingThrowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.SavingThrow
-        fields = '__all__'
-
-
-class SkillSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Skill
-        fields = '__all__'
-
-
-class StateImmunitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.StateImmunity
         fields = '__all__'

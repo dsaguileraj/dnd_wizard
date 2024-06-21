@@ -14,12 +14,6 @@ class ArmorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PropertySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Property
-        fields = '__all__'
-
-
 class SpellSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Spell

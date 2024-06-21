@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.characters',
     'apps.core',
     'apps.matches',
+    'apps.rules',
     'apps.traits'
 ]
 

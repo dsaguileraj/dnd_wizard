@@ -4,10 +4,8 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'character', views.CharacterViewSet)
-router.register(r'class', views.EntityClassViewSet)
-router.register(r'monster', views.MonsterViewSet)
-router.register(r'race', views.RaceViewSet)
+router.register(r'playable', views.PlayableCharacterViewSet)
+router.register(r'non-playable', views.NonPlayableCharacterViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

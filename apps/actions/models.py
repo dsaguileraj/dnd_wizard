@@ -1,167 +1,130 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from apps.core import choices
-from apps.core.models import BaseModel, Item
+from apps.core.models import DescriptionModel, Item
 
 
 class AdventureGear(Item):
-    category = models.CharField(
-        verbose_name='Categoría',
-        max_length=20,
-        null=True,
-        default=None,
-        choices=choices.CategoryEquipment
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=1250,
+    description = models.TextField(
         blank=True
     )
 
     class Meta:
         ordering = ["category", "name"]
+
 
 class Armor(Item):
-    category = models.CharField(
-        verbose_name='Categoría',
-        max_length=7,
-        choices=choices.CategoryArmor
-    )
-    armor_class = models.PositiveSmallIntegerField(
-        verbose_name='CA'
+    armor_class = models.IntegerField(
+        validators=[
+            MinValueValidator(0)
+        ]
     )
     dexterity_bonus = models.BooleanField(
-        verbose_name='Bonificador de Destreza',
         default=False
     )
-    min_strength = models.PositiveSmallIntegerField(
-        verbose_name='FUE',
-        default=0
+    min_strength = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
     )
     disadvantage_stealth = models.BooleanField(
-        verbose_name='Desventaja en Sigilo',
         default=False
     )
 
     class Meta:
         ordering = ["category", "name"]
 
-class Property(BaseModel):
-    class Meta:
-        ordering = ["name"]
 
-class Spell(BaseModel):
+class Spell(DescriptionModel):
     entity_class = models.ManyToManyField(
-        'characters.EntityClass',
-        verbose_name='Clase',
+        'traits.EntityClass',
         blank=True
     )
-    magic_school = models.CharField(
-        verbose_name='Escuela de Magia',
-        max_length=13,
-        choices=choices.MagicSchools
+    magic_school = models.ForeignKey(
+        'rules.MagicSchool',
+        on_delete=models.CASCADE
     )
-    level = models.PositiveSmallIntegerField(
-        verbose_name='Nivel',
+    damage_type = models.ForeignKey(
+        'rules.DamageType',
+        on_delete=models.CASCADE
+    )
+    level = models.IntegerField(
         validators=[
-            MaxValueValidator(9)
+            MaxValueValidator(9),
+            MinValueValidator(0)
         ]
     )
     is_ritual = models.BooleanField(
-        verbose_name='Ritual',
         default=False
     )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=1250,
-        unique=True
-    )
-    
+
     # Components
     verbal = models.BooleanField(
-        verbose_name='Verbal',
         default=False
     )
     somatic = models.BooleanField(
-        verbose_name='Somático',
         default=False
     )
     material = models.BooleanField(
-        verbose_name='Material',
         default=False
     )
-    material_description = models.CharField(
-        verbose_name='Materiales',
-        max_length=250,
+    materials = models.TextField(
         blank=True
     )
-    
+
     # Range
-    spell_range = models.SmallIntegerField(
-        verbose_name='Alcance (Casillas)',
-        help_text='[-1]: Lanzador; [0]: Toque',
+    spell_range = models.IntegerField(
         validators=[
             MinValueValidator(-1)
         ]
     )
-    
+
     # Casting Time
-    casting_time = models.SmallIntegerField(
-        verbose_name='Tiempo de Lanzamiento',
-        help_text='[-1]: Reacción',
+    casting_time = models.IntegerField(
         validators=[
             MinValueValidator(-1)
         ]
     )
     casting_measure = models.CharField(
-        verbose_name='Unidad de Tiempo (Tiempo de Lanzamiento)',
-        max_length=6,
+        max_length=3,
         choices=choices.MeasureTime
     )
-    
+
     # Duration
     need_concentration = models.BooleanField(
-        verbose_name='Concentración',
         default=False
     )
-    duration = models.PositiveSmallIntegerField(
-        verbose_name='Duración',
-        default=0
+    duration = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
     )
     duration_measure = models.CharField(
-        verbose_name='Unidad de Tiempo (Duración)',
         max_length=3,
         choices=choices.MeasureTime
     )
 
     def __str__(self) -> str:
         return f'{self.name} - {self.magic_school} [{self.level}]'
-    
+
     class Meta:
         ordering = ["name"]
 
+
 class Tool(Item):
-    category = models.CharField(
-        verbose_name='Categoría',
-        max_length=23,
-        null=True,
-        default=None,
-        choices=choices.CategoryTool
-    )
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=1250,
+    description = models.TextField(
         blank=True
     )
-    
+
     class Meta:
         ordering = ["category", "name"]
 
 
 class Trinket(models.Model):
-    description = models.CharField(
-        verbose_name='Descripción',
-        max_length=250
+    description = models.TextField(
+        blank=True
     )
 
     class Meta:
@@ -169,33 +132,32 @@ class Trinket(models.Model):
 
 
 class Weapon(Item):
-    category = models.CharField(
-        verbose_name='Categoría',
-        max_length=24,
-        choices=choices.CategoryWeapon
+    hit_dices = models.IntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1)
+        ]
     )
-    hit_dices = models.PositiveSmallIntegerField(
-        verbose_name='Nº dados',
-        default=1
+    dice_sides = models.IntegerField(
+        default=4,
+        validators=[
+            MinValueValidator(4)
+        ]
     )
-    dice_sides = models.PositiveSmallIntegerField(
-        verbose_name='Nº caras',
-        default=4
+    modifier = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
     )
-    modifier = models.PositiveSmallIntegerField(
-        verbose_name='Modificador',
-        default=0
-    )
-    damage_type = models.CharField(
-        verbose_name='Tipo de Daño',
-        max_length=11,
-        choices=choices.DamageTypes
+    damage_type = models.ForeignKey(
+        'rules.DamageType',
+        on_delete=models.CASCADE
     )
     property = models.ManyToManyField(
-        Property,
-        verbose_name='Propiedad',
+        'rules.WeaponProperty',
         blank=True
     )
-    
+
     class Meta:
         ordering = ["category", "name"]

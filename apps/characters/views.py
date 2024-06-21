@@ -3,25 +3,13 @@ from . import models
 from . import serializers
 
 
-class CharacterViewSet(viewsets.ModelViewSet):
-    queryset = models.Character.objects.all()
+class PlayableCharacterViewSet(viewsets.ModelViewSet):
+    queryset = models.PlayableCharacter.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.CharacterSerializer
+    serializer_class = serializers.PlayableCharacterSerializer
 
 
-class EntityClassViewSet(viewsets.ModelViewSet):
-    queryset = models.EntityClass.objects.all()
+class NonPlayableCharacterViewSet(viewsets.ModelViewSet):
+    queryset = models.NonPlayableCharacter.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.EntityClassSerializer
-
-
-class MonsterViewSet(viewsets.ModelViewSet):
-    queryset = models.Monster.objects.all()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.MonsterSerializer
-
-
-class RaceViewSet(viewsets.ModelViewSet):
-    queryset = models.Race.objects.all()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.RaceSerializer
+    serializer_class = serializers.NonPlayableCharacterSerializer

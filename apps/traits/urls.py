@@ -6,13 +6,11 @@ router = DefaultRouter()
 
 router.register(r'background', views.BackgroundViewSet)
 router.register(r'bond', views.BondViewSet)
-router.register(r'feature', views.FeatureViewSet)
+router.register(r'class', views.EntityClassViewSet)
 router.register(r'flaw', views.FlawViewSet)
 router.register(r'ideal', views.IdealViewSet)
-router.register(r'language', views.LanguageViewSet)
 router.register(r'personality', views.PersonalityViewSet)
-router.register(r'saving_throw', views.SavingThrowViewSet)
-router.register(r'skill', views.SkillViewSet)
+router.register(r'race', views.RaceViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

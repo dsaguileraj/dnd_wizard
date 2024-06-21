@@ -6,7 +6,6 @@ router = DefaultRouter()
 
 router.register(r'armor', views.ArmorViewSet)
 router.register(r'equipment', views.AdventureGearViewSet)
-router.register(r'property', views.PropertyViewSet)
 router.register(r'spell', views.SpellViewSet)
 router.register(r'tool', views.ToolViewSet)
 router.register(r'trinket', views.TrinketViewSet)
