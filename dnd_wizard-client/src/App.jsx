@@ -17,30 +17,35 @@ function App() {
                 <Route path="/armor/create" element={<ArmorPostForm />} />
                 <Route path="/equipment" element={<EquipmentList />} />
                 <Route path="/equipment/create" element={<EquipmentPostForm />} />
-                <Route path="/property" element={<PropertyList />} />
-                <Route path="/property/create" element={<PropertyPostForm />} />
                 <Route path="/spell" element={<SpellList />} />
                 <Route path="/tool" element={<ToolList />} />
                 <Route path="/tool/create" element={<ToolPostForm />} />
                 <Route path="/trinket" element={<TrinketList />} />
                 <Route path="/weapon" element={<WeaponList />} />
                 {/* Characters */}
-                <Route path="/character" element={<CharacterList />} />
-                <Route path="/class" element={<ClassList />} />
-                <Route path="/monster" element={<MonsterList />} />
-                <Route path="/race" element={<RaceList />} />
+                <Route path="/playable" element={<CharacterList />} />
+                <Route path="/non-playable" element={<MonsterList />} />
                 {/* Matchs */}
                 <Route path="/match" element={<MatchList />} />
                 <Route path="/match_player" element={<MatchPlayerList />} />
+                {/* Rules */}
+                <Route path="/category" element={<PropertyList />} />
+                <Route path="/condition" element={<PropertyList />} />
+                <Route path="/damage_type" element={<PropertyList />} />
+                <Route path="/feature" element={<FeatureList />} />
+                <Route path="/language" element={<LanguageList />} />
+                <Route path="/magic_school" element={<PropertyList />} />
+                <Route path="/skill" element={<PropertyList />} />
+                <Route path="/property" element={<PropertyList />} />
+                <Route path="/property/create" element={<PropertyPostForm />} />
                 {/* Traits */}
                 <Route path="/background" element={<BackgroundList />} />
                 <Route path="/bond" element={<BondList />} />
-                <Route path="/feature" element={<FeatureList />} />
+                <Route path="/class" element={<ClassList />} />
                 <Route path="/flaw" element={<FlawList />} />
                 <Route path="/ideal" element={<IdealList />} />
-                <Route path="/language" element={<LanguageList />} />
                 <Route path="/personality" element={<PersonalityList />} />
-                <Route path="/proficiency" element={<ProficiencyList />} />
+                <Route path="/race" element={<RaceList />} />
             </Routes>
         </BrowserRouter>
     );

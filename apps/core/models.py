@@ -333,7 +333,7 @@ class PersonalCharacteristic(models.Model):
         'traits.Background',
         on_delete=models.CASCADE,
     )
-    description = models.TextField(
+    name = models.TextField(
         unique=True
     )
 

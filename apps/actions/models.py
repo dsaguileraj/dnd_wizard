@@ -123,8 +123,8 @@ class Tool(Item):
 
 
 class Trinket(models.Model):
-    description = models.TextField(
-        blank=True
+    name = models.TextField(
+        unique=True
     )
 
     class Meta:
