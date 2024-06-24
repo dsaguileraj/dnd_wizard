@@ -98,6 +98,37 @@ export function Navigation() {
                         </ul>
                     )}
                 </li>
+                <li>
+                    <button onClick={() => toggleDropdown(5)}>Rules</button>
+                    {dropdownOpen === 5 && (
+                        <ul>
+                            <li>
+                                <Link to="/background">Background</Link>
+                            </li>
+                            <li>
+                                <Link to="/bond">Bond</Link>
+                            </li>
+                            <li>
+                                <Link to="/feature">Feature</Link>
+                            </li>
+                            <li>
+                                <Link to="/flaw">Flaw</Link>
+                            </li>
+                            <li>
+                                <Link to="/ideal">Ideal</Link>
+                            </li>
+                            <li>
+                                <Link to="/language">Language</Link>
+                            </li>
+                            <li>
+                                <Link to="/personality">Personality</Link>
+                            </li>
+                            <li>
+                                <Link to="/proficiency">Proficienct</Link>
+                            </li>
+                        </ul>
+                    )}
+                </li>
             </ul>
         </nav>
     );
