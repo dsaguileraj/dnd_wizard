@@ -18,9 +18,6 @@ export function Navigation() {
                                 <Link to="/equipment">Equipment</Link>
                             </li>
                             <li>
-                                <Link to="/property">Property</Link>
-                            </li>
-                            <li>
                                 <Link to="/spell">Spell</Link>
                             </li>
                             <li>
@@ -40,16 +37,10 @@ export function Navigation() {
                     {dropdownOpen === 2 && (
                         <ul>
                             <li>
-                                <Link to="/character">Character</Link>
+                                <Link to="/playable">Playable</Link>
                             </li>
                             <li>
-                                <Link to="/class">Class</Link>
-                            </li>
-                            <li>
-                                <Link to="/monster">Monster</Link>
-                            </li>
-                            <li>
-                                <Link to="/race">Race</Link>
+                                <Link to="/non-playable">Non-Playable</Link>
                             </li>
                         </ul>
                     )}
@@ -68,63 +59,49 @@ export function Navigation() {
                     )}
                 </li>
                 <li>
-                    <button onClick={() => toggleDropdown(4)}>Traits</button>
+                    <button onClick={() => toggleDropdown(4)}>Rules</button>
                     {dropdownOpen === 4 && (
                         <ul>
                             <li>
-                                <Link to="/background">Background</Link>
+                                <Link to="/category">Category</Link>
                             </li>
                             <li>
-                                <Link to="/bond">Bond</Link>
+                                <Link to="/condition">Condition</Link>
                             </li>
+                            <li>
+                                <Link to="/damage_type">Damage Type</Link>
+                            </li>
+
                             <li>
                                 <Link to="/feature">Feature</Link>
-                            </li>
-                            <li>
-                                <Link to="/flaw">Flaw</Link>
-                            </li>
-                            <li>
-                                <Link to="/ideal">Ideal</Link>
                             </li>
                             <li>
                                 <Link to="/language">Language</Link>
                             </li>
                             <li>
-                                <Link to="/personality">Personality</Link>
+                                <Link to="/magic_school">Magic School</Link>
                             </li>
                             <li>
-                                <Link to="/proficiency">Proficienct</Link>
+                                <Link to="/skill">Skill</Link>
+                            </li>
+                            <li>
+                                <Link to="/property">Property</Link>
                             </li>
                         </ul>
                     )}
                 </li>
                 <li>
-                    <button onClick={() => toggleDropdown(5)}>Rules</button>
+                    <button onClick={() => toggleDropdown(5)}>Traits</button>
                     {dropdownOpen === 5 && (
                         <ul>
                             <li>
                                 <Link to="/background">Background</Link>
                             </li>
                             <li>
-                                <Link to="/bond">Bond</Link>
+                                <Link to="/class">Class</Link>
                             </li>
                             <li>
-                                <Link to="/feature">Feature</Link>
-                            </li>
-                            <li>
-                                <Link to="/flaw">Flaw</Link>
-                            </li>
-                            <li>
-                                <Link to="/ideal">Ideal</Link>
-                            </li>
-                            <li>
-                                <Link to="/language">Language</Link>
-                            </li>
-                            <li>
-                                <Link to="/personality">Personality</Link>
-                            </li>
-                            <li>
-                                <Link to="/proficiency">Proficienct</Link>
+                                <Link to="/race">Race</Link>
                             </li>
                         </ul>
                     )}

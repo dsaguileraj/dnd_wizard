@@ -20,40 +20,41 @@ export const InputButton = ({ label }) => {
     return <button type="submit">{label}</button>;
 };
 
-export const InputText = ({ field, handleChange, label, maxLength }) => {
+export const InputText = ({ field, handleChange, label, maxLength = 50 }) => {
     return (
         <div>
             <label htmlFor={field}>{label}</label>
-            <input type="text" name={field} id={field} maxLength={maxLength || undefined} onChange={(event) => handleChange(event.target.value)} required />
+            <input type="text" name={field} id={field} maxLength={maxLength} onChange={(event) => handleChange(event.target.value)} required />
         </div>
     );
 };
 
-export const InputTextArea = ({ field, handleChange, label, maxLength }) => {
+export const InputTextArea = ({ field, handleChange, label }) => {
     return (
         <div>
             <label htmlFor={field}>{label}</label>
-            <textarea name={field} id={field} maxLength={maxLength || undefined} onChange={(event) => handleChange(event.target.value)}></textarea>
+            <textarea name={field} id={field} onChange={(event) => handleChange(event.target.value)}></textarea>
         </div>
     );
 };
 
-export const InputNumber = ({ field, handleChange, label, max, min }) => {
+export const InputNumber = ({ field, handleChange, label, max = 9223372036854775807, min = 0 }) => {
     return (
         <div>
             <label htmlFor={field}>{label}</label>
-            <input type="number" name={field} id={field} max={max || undefined} min={min || 0} onChange={(event) => handleChange(event.target.value)} required />
+            <input type="number" name={field} id={field} max={max} min={min} onChange={(event) => handleChange(event.target.value)} required />
         </div>
     );
 };
 
 export const InputSelect = ({ field, handleChange, label, options }) => {
+    let count = 1;
     return (
         <div>
             <label htmlFor={field}>{label}</label>
             <select name={field} id={field} onChange={(event) => handleChange(event.target.value)}>
                 {options.map((option) => (
-                    <option key={option.value || 'undefined'} value={option.value}>
+                    <option key={count++} value={option.value}>
                         {option.label}
                     </option>
                 ))}

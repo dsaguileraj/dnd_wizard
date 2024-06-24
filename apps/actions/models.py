@@ -128,7 +128,7 @@ class Trinket(models.Model):
     )
 
     class Meta:
-        ordering = ["description"]
+        ordering = ["name"]
 
 
 class Weapon(Item):
