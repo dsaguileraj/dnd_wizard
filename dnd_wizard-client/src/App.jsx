@@ -3,6 +3,7 @@ import { Navigation } from "./components/Navigation.jsx";
 import { List } from "./components/List.jsx";
 import { ArmorPostForm } from "./pages/create/actions.jsx";
 import { CategoryPostForm, ConditionPostForm, DamageTypePostForm, FeaturePostForm, LanguagePostForm, MagicSchoolPostForm, PropertyPostForm, SkillPostForm } from "./pages/create/rules.jsx";
+import { ArmorList } from "./pages/list/actions.jsx";
 
 function App() {
     return (
@@ -12,7 +13,7 @@ function App() {
                 {/* <Route path="/" element={<Navigate to="/armor" />} /> */}
                 {/* ACTIONS */}
                 {/* Armor */}
-                <Route path="/armor" element={<List app="actions" model="armor" />} />
+                <Route path="/armor" element={<ArmorList />} />
                 <Route path="/armor/create" element={<ArmorPostForm/>} />
                 {/* Equipment */}
                 <Route path="/equipment" element={<List app="actions" model="equipment" />} />
@@ -27,28 +28,28 @@ function App() {
                 <Route path="/match" element={<List app="matches" model="match" />} />
                 <Route path="/match_player" element={<List app="matches" model="match_player" />} />
                 {/* RULES */}
-                {/* Category */}
+                {/* RULES - Category */}
                 <Route path="/category" element={<List app="rules" model="category" />} />
                 <Route path="/category/create" element={<CategoryPostForm/>} />
-                {/* Condition */}
+                {/* RULES - Condition */}
                 <Route path="/condition" element={<List app="rules" model="condition" />} />
                 <Route path="/condition/create" element={<ConditionPostForm/>} />
-                {/* Damage Type */}
+                {/* RULES - Damage Type */}
                 <Route path="/damage_type" element={<List app="rules" model="damage_type" />} />
                 <Route path="/damage_type/create" element={<DamageTypePostForm />} />
-                {/* Feature */}
+                {/* RULES - Feature */}
                 <Route path="/feature" element={<List app="rules" model="feature" />} />
                 <Route path="/feature/create" element={<FeaturePostForm />} />
-                {/* Language */}
+                {/* RULES - Language */}
                 <Route path="/language" element={<List app="rules" model="language" />} />
                 <Route path="/language/create" element={<LanguagePostForm />} />
-                {/* Magic School */}
+                {/* RULES - Magic School */}
                 <Route path="/magic_school" element={<List app="rules" model="magic_school" />} />
                 <Route path="/magic_school/create" element={<MagicSchoolPostForm />} />
-                {/* Skill */}
+                {/* RULES - Skill */}
                 <Route path="/skill" element={<List app="rules" model="skill" />} />
                 <Route path="/skill/create" element={<SkillPostForm />} />
-                {/* Property */}
+                {/* RULES - Property */}
                 <Route path="/property" element={<List app="rules" model="property" />} />
                 <Route path="/property/create" element={<PropertyPostForm />} />
                 {/* TRAITS */}
