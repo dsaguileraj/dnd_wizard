@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { getAllQuery } from "../../api.js";
 
 export const ArmorList = () => {
-    const [objects, setObjects] = useState([]);
+    const [armors, setArmors] = useState([]);
+    const [categories, SetCategories] = useState([]);
+
     useEffect(() => {
-        getAllQuery(setObjects, "actions", "armor");
+        getAllQuery(setArmors, "actions", "armor");
+        getAllQuery(SetCategories, "rules", "category");
     }, []);
     return (
         <div>
@@ -18,19 +21,21 @@ export const ArmorList = () => {
                         <th colSpan={2}>Options</th>
                     </tr>
                 </thead>
-                {objects.map((object) => (
-                    <tr key={object.id}>
-                        <th>{object.id}</th>
-                        <th>{object.name}</th>
-                        <th>{object.category}</th>
-                        <th>
-                            <button>View</button>
-                        </th>
-                        <th>
-                            <button>Delete</button>
-                        </th>
-                    </tr>
-                ))}
+                <tbody>
+                    {armors.map((armor) => (
+                        <tr key={armor.id}>
+                            <th>{armor.id}</th>
+                            <th>{armor.name}</th>
+                            <th>{categories[armor.category-1].name}</th>
+                            <th>
+                                <button>View</button>
+                            </th>
+                            <th>
+                                <button>Delete</button>
+                            </th>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
     );
