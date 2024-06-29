@@ -2,12 +2,57 @@ import { useEffect, useState } from "react";
 import { getAllQuery } from "../../api.js";
 import { findFieldName } from "../../core/utils.js";
 
+export const AdventureGear = () => {
+  const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    getAllQuery(setItems, "actions", "equipment");
+    getAllQuery(setCategories, "rules", "category");
+  }, []);
+  return (
+    <div>
+      <h1>Adventure Gear</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Cost</th>
+            <th>Weight</th>
+            <th colSpan={2}>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <tr key={item.id}>
+              <th>{item.name}</th>
+              <th>{findFieldName(categories, item.category)}</th>
+              <th>
+                {item.cost} {item.coin}
+              </th>
+              <th>
+                {item.weight} {item.weight_measure}
+              </th>
+              <th>
+                <button>Update</button>
+              </th>
+              <th>
+                <button>Delete</button>
+              </th>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 export const ArmorList = () => {
   const [armors, setArmors] = useState([]);
-  const [categories, SetCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     getAllQuery(setArmors, "actions", "armor");
-    getAllQuery(SetCategories, "rules", "category");
+    getAllQuery(setCategories, "rules", "category");
   }, []);
   return (
     <div>
@@ -38,7 +83,9 @@ export const ArmorList = () => {
               </th>
               <th>{armor.min_strength}</th>
               <th>{armor.disadvantage_stealth ? "Disadvantage" : "---"}</th>
-              <th>{armor.weight} {armor.weight_measure}</th>
+              <th>
+                {armor.weight} {armor.weight_measure}
+              </th>
               <th>
                 <button>Update</button>
               </th>
@@ -53,26 +100,47 @@ export const ArmorList = () => {
   );
 };
 
-export const AdventureGear = () => {
-  const [gears, setGears] = useState([]);
-  const [categories, SetCategories] = useState([]);
+export const WeaponList = () => {
+  const [weapons, setWeapons] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [damageTypes, setDamageTypes] = useState([]);
+  const [properties, setProperties] = useState([]);
   useEffect(() => {
-    getAllQuery(setGears, "actions", "equipment");
-    getAllQuery(SetCategories, "rules", "category");
+    getAllQuery(setWeapons, "actions", "weapon");
+    getAllQuery(setCategories, "rules", "category");
+    getAllQuery(setDamageTypes, "rules", "damage_type");
+    getAllQuery(setProperties, "rules", "property");
   }, []);
+  console.log(properties);
   return (
     <div>
-      <h1>Adventure Gear</h1>
+      <h1>Weapons</h1>
       <table>
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th colSpan={2}>Options</th>
-          </tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Cost</th>
+          <th>Damage</th>
+          <th>Properties</th>
+          <th colSpan={2}>Options</th>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          {weapons.map((weapon) => (
+            <tr key={weapon.id}>
+              <th>{weapon.name}</th>
+              <th>{findFieldName(categories, weapon.category)}</th>
+              <th>{weapon.cost} {weapon.coin}</th>
+              <th>{weapon.hit_dices}{weapon.dice_sides} {findFieldName(damageTypes, weapon.damage_type)}</th>
+              <th>{weapon.weight} {weapon.weight_measure}</th>
+              <th>
+                <button>Update</button>
+              </th>
+              <th>
+                <button>Delete</button>
+              </th>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
