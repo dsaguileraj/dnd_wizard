@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance, getAllQuery } from "../../api.js";
 import { Form, InputCheck, InputNumber, InputSelect, InputText, InputTextArea } from "../../components/forms.jsx";
+import { COINS, MEASURE_MASS } from "../../core/choices.js";
 
 export const ArmorPostForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -65,25 +66,14 @@ export const ArmorPostForm = () => {
         field={coin}
         handleChange={setCoin}
         label="Coin"
-        options={[
-          { value: "cp", label: "Copper" },
-          { value: "sp", label: "Silver" },
-          { value: "ep", label: "Electrum" },
-          { value: "gp", label: "Gold" },
-          { value: "pp", label: "Platinum" },
-        ]}
+        options={COINS}
       />
       <InputNumber field={weight} handleChange={setWeight} label="Weight" />
       <InputSelect
         field={weightMeasure}
         handleChange={setWeightMeasure}
         label="Weight Measure"
-        options={[
-          { value: "g", label: "Gram" },
-          { value: "kg", label: "Kilogram" },
-          { value: "lb", label: "Pound" },
-          { value: "oz", label: "Ounce" },
-        ]}
+        options={MEASURE_MASS}
       />
       <InputNumber field={armorClass} handleChange={setArmorClass} label="Armor Class" />
       <InputCheck handleChange={setDexterityBonus} label="Dexterity Bonus" />

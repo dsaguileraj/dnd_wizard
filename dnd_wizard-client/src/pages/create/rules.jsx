@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { axiosInstance } from "../../api.js";
 import { Form, InputSelect, InputText, InputTextArea } from "../../components/forms.jsx";
+import { EQUIPMENT_TYPES, STATS } from "../../core/choices.js";
 
 export const CategoryPostForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -34,13 +35,7 @@ export const CategoryPostForm = () => {
           field={type}
           handleChange={setType}
           label="Equipment Type"
-          options={[
-            { value: undefined, label: "---" },
-            { value: "A", label: "Armor" },
-            { value: "G", label: "Gear" },
-            { value: "T", label: "Tool" },
-            { value: "W", label: "Weapon" },
-          ]}
+          options={EQUIPMENT_TYPES}
         />
         {errorMessage && <span>{errorMessage}</span>}
       </Form>
@@ -247,14 +242,7 @@ export const SkillPostForm = () => {
           field={modifier}
           handleChange={setModifier}
           label="Modifier"
-          options={[
-            { value: "STR", label: "Strength" },
-            { value: "DEX", label: "Dexterity" },
-            { value: "CON", label: "Constitution" },
-            { value: "INT", label: "Intelligence" },
-            { value: "WIS", label: "Wisdom" },
-            { value: "CHA", label: "Charisma" },
-          ]}
+          options={STATS}
         />
         {errorMessage && <span>{errorMessage}</span>}
       </Form>

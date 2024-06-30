@@ -110,8 +110,8 @@ export const WeaponList = () => {
     getAllQuery(setCategories, "rules", "category");
     getAllQuery(setDamageTypes, "rules", "damage_type");
     getAllQuery(setProperties, "rules", "property");
+    console.log(properties);
   }, []);
-  console.log(properties);
   return (
     <div>
       <h1>Weapons</h1>
@@ -129,9 +129,16 @@ export const WeaponList = () => {
             <tr key={weapon.id}>
               <th>{weapon.name}</th>
               <th>{findFieldName(categories, weapon.category)}</th>
-              <th>{weapon.cost} {weapon.coin}</th>
-              <th>{weapon.hit_dices}{weapon.dice_sides} {findFieldName(damageTypes, weapon.damage_type)}</th>
-              <th>{weapon.weight} {weapon.weight_measure}</th>
+              <th>
+                {weapon.cost} {weapon.coin}
+              </th>
+              <th>
+                {weapon.hit_dices}
+                {weapon.dice_sides} {findFieldName(damageTypes, weapon.damage_type)}
+              </th>
+              <th>
+                {weapon.weight} {weapon.weight_measure}
+              </th>
               <th>
                 <button>Update</button>
               </th>
