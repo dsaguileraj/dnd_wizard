@@ -19,10 +19,16 @@ class Armor(Item):
             MinValueValidator(0)
         ]
     )
-    dexterity_bonus = models.BooleanField(
+    dex_bonus = models.BooleanField(
         default=False
     )
-    min_strength = models.IntegerField(
+    max_dex_bonus = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    min_str = models.IntegerField(
         default=0,
         validators=[
             MinValueValidator(0)
@@ -39,7 +45,6 @@ class Armor(Item):
 class Spell(DescriptionModel):
     entity_class = models.ManyToManyField(
         'traits.EntityClass',
-        blank=True
     )
     magic_school = models.ForeignKey(
         'rules.MagicSchool',
@@ -47,7 +52,9 @@ class Spell(DescriptionModel):
     )
     damage_type = models.ForeignKey(
         'rules.DamageType',
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None
     )
     level = models.IntegerField(
         validators=[
@@ -55,8 +62,10 @@ class Spell(DescriptionModel):
             MinValueValidator(0)
         ]
     )
-    is_ritual = models.BooleanField(
-        default=False
+    spell_range = models.IntegerField(
+        validators=[
+            MinValueValidator(-1)
+        ]
     )
 
     # Components
@@ -73,14 +82,10 @@ class Spell(DescriptionModel):
         blank=True
     )
 
-    # Range
-    spell_range = models.IntegerField(
-        validators=[
-            MinValueValidator(-1)
-        ]
-    )
-
     # Casting Time
+    is_ritual = models.BooleanField(
+        default=False
+    )
     casting_time = models.IntegerField(
         validators=[
             MinValueValidator(-1)
@@ -135,13 +140,13 @@ class Weapon(Item):
     hit_dices = models.IntegerField(
         default=1,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
     dice_sides = models.IntegerField(
         default=4,
         validators=[
-            MinValueValidator(4)
+            MinValueValidator(0)
         ]
     )
     modifier = models.IntegerField(
@@ -152,11 +157,28 @@ class Weapon(Item):
     )
     damage_type = models.ForeignKey(
         'rules.DamageType',
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None
     )
     property = models.ManyToManyField(
         'rules.WeaponProperty',
         blank=True
+    )
+    ranged_weapon = models.BooleanField(
+        default=False
+    )
+    normal_range = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    max_range = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
     )
 
     class Meta:

@@ -27,19 +27,10 @@ export const CategoryPostForm = () => {
       });
   };
   return (
-    <>
-      <h1>CategoryPostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        <InputSelect
-          field={type}
-          handleChange={setType}
-          label="Equipment Type"
-          options={EQUIPMENT_TYPES}
-        />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Category">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputSelect field={type} handleChange={setType} label="Equipment Type" options={EQUIPMENT_TYPES} />
+    </Form>
   );
 };
 
@@ -67,20 +58,17 @@ export const ConditionPostForm = () => {
       });
   };
   return (
-    <>
-      <h1>ConditionPostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        <InputTextArea field={description} handleChange={setDescription} label="Equipment Type" />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Condition">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputTextArea field={description} handleChange={setDescription} label="Description" />
+    </Form>
   );
 };
 
 export const DamageTypePostForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -99,13 +87,10 @@ export const DamageTypePostForm = () => {
       });
   };
   return (
-    <>
-      <h1>DamageTypePostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        {errorMessage && <span>{errorMessage}</span>}
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Damage Type">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputTextArea field={description} handleChange={setDescription} label="Description" />
       </Form>
-    </>
   );
 };
 
@@ -133,14 +118,10 @@ export const FeaturePostForm = () => {
       });
   };
   return (
-    <>
-      <h1>FeaturePostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        <InputTextArea field={description} handleChange={setDescription} label="Equipment Type" />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Feature">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputTextArea field={description} handleChange={setDescription} label="Description" />
+    </Form>
   );
 };
 
@@ -165,13 +146,9 @@ export const LanguagePostForm = () => {
       });
   };
   return (
-    <>
-      <h1>LanguagePostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Language">
+      <InputText field={name} handleChange={setName} label="Name" />
+    </Form>
   );
 };
 
@@ -199,14 +176,10 @@ export const MagicSchoolPostForm = () => {
       });
   };
   return (
-    <>
-      <h1>MagicSchoolPostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        <InputTextArea field={description} handleChange={setDescription} label="Equipment Type" />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Magic School">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputTextArea field={description} handleChange={setDescription} label="Description" />
+    </Form>
   );
 };
 
@@ -234,36 +207,30 @@ export const SkillPostForm = () => {
       });
   };
   return (
-    <>
-      <h1>SkillPostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        <InputSelect
-          field={modifier}
-          handleChange={setModifier}
-          label="Modifier"
-          options={STATS}
-        />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Skill">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputSelect field={modifier} handleChange={setModifier} label="Modifier" options={STATS} />
+    </Form>
   );
 };
 
 export const PropertyPostForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     axiosInstance
       .post("/rules/property/", {
         name: name,
+        description: description,
       })
       .then((response) => {
         console.log(response.data);
         setErrorMessage("");
         setName("");
+        setDescription("");
       })
       .catch((error) => {
         console.log(error);
@@ -271,12 +238,9 @@ export const PropertyPostForm = () => {
       });
   };
   return (
-    <>
-      <h1>PropertyPostForm</h1>
-      <Form handleSubmit={handleSubmit}>
-        <InputText field={name} handleChange={setName} label="Name" />
-        {errorMessage && <span>{errorMessage}</span>}
-      </Form>
-    </>
+    <Form errorMessage={errorMessage} handleSubmit={handleSubmit} header="Create Property">
+      <InputText field={name} handleChange={setName} label="Name" />
+      <InputTextArea field={description} handleChange={setDescription} label="Description" />
+    </Form>
   );
 };

@@ -1,8 +1,10 @@
-export const Form = ({ children, handleSubmit }) => {
+export const Form = ({ children, errorMessage, handleSubmit, header }) => {
   return (
     <form onSubmit={handleSubmit}>
+      <h1>{header}</h1>
       {children}
-      <Button label="Crear" />
+      <Button label="Submit" />
+      {errorMessage && <span>{errorMessage}</span>}
     </form>
   );
 };
@@ -48,12 +50,12 @@ export const InputNumber = ({ field, handleChange, label, max = 9223372036854775
   );
 };
 
-export const InputSelect = ({ field, handleChange, label, options }) => {
+export const InputSelect = ({ field, handleChange, label, multiple = false, options }) => {
   let count = 0;
   return (
     <div>
       <label htmlFor={field}>{label}</label>
-      <select name={field} id={field} value={field} onChange={(event) => handleChange(event.target.value)}>
+      <select name={field} id={field} value={field} multiple={multiple} onChange={(event) => handleChange(event.target.value)}>
         {options.map((option) => (
           <option key={count++} value={option.value}>
             {option.label}

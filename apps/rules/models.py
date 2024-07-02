@@ -20,7 +20,7 @@ class Condition(DescriptionModel):
         ordering = ["name"]
 
 
-class DamageType(BaseModel):
+class DamageType(DescriptionModel):
     class Meta:
         ordering = ["name"]
 
@@ -50,6 +50,6 @@ class Skill(BaseModel):
         ordering = ["name"]
 
 
-class WeaponProperty(BaseModel):
+class WeaponProperty(DescriptionModel):
     class Meta:
         ordering = ["name"]

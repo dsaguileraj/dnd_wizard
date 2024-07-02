@@ -79,9 +79,9 @@ export const ArmorList = () => {
                 {armor.cost} {armor.coin}
               </th>
               <th>
-                {armor.armor_class} {armor.dexterity_bonus && "+ DEX modifier"}
+                {armor.armor_class} {armor.dexterity_bonus && "+ DEX modifier"} {armor.max_dexterity_bonus ? ` (max ${armor.max_dexterity_bonus})` : ""}
               </th>
-              <th>{armor.min_strength}</th>
+              <th>STR {armor.min_strength}</th>
               <th>{armor.disadvantage_stealth ? "Disadvantage" : "---"}</th>
               <th>
                 {armor.weight} {armor.weight_measure}
