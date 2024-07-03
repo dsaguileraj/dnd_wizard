@@ -171,8 +171,7 @@ class Race(BaseModel):
 class Background(BaseModel):
     # Traits
     skills = models.ManyToManyField(
-        'rules.Skill',
-        max_length=2
+        'rules.Skill'
     )
 
     # Traits Choices

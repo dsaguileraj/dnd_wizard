@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getAllQuery } from "../api.js";
+import { useEffect, useState } from 'react';
+import { getAllQuery } from '../api.js';
 
 export const List = ({ app, model }) => {
   const [objects, setObjects] = useState([]);
@@ -10,7 +10,7 @@ export const List = ({ app, model }) => {
     <div>
       <h1>{model.toUpperCase()}</h1>
       <ol>
-        {objects.map((object) => (
+        {objects.map(object => (
           <li key={object.id}>{object.name}</li>
         ))}
       </ol>

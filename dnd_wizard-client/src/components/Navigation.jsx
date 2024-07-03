@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export function Navigation() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
-  const toggleDropdown = (id) => (dropdownOpen === id ? setDropdownOpen(null) : setDropdownOpen(id));
+  const toggleDropdown = id => (dropdownOpen === id ? setDropdownOpen(null) : setDropdownOpen(id));
   return (
     <nav>
       <ul>
@@ -12,22 +12,22 @@ export function Navigation() {
           {dropdownOpen === 1 && (
             <ul>
               <li>
-                <Link to="/armor">Armor</Link>
+                <Link to='/armor'>Armor</Link>
               </li>
               <li>
-                <Link to="/equipment">Equipment</Link>
+                <Link to='/equipment'>Equipment</Link>
               </li>
               <li>
-                <Link to="/spell">Spell</Link>
+                <Link to='/spell'>Spell</Link>
               </li>
               <li>
-                <Link to="/tool">Tool</Link>
+                <Link to='/tool'>Tool</Link>
               </li>
               <li>
-                <Link to="/trinket">Trinket</Link>
+                <Link to='/trinket'>Trinket</Link>
               </li>
               <li>
-                <Link to="/weapon">Weapon</Link>
+                <Link to='/weapon'>Weapon</Link>
               </li>
             </ul>
           )}
@@ -37,10 +37,10 @@ export function Navigation() {
           {dropdownOpen === 2 && (
             <ul>
               <li>
-                <Link to="/playable">Playable</Link>
+                <Link to='/playable'>Playable</Link>
               </li>
               <li>
-                <Link to="/non-playable">Non-Playable</Link>
+                <Link to='/non-playable'>Non-Playable</Link>
               </li>
             </ul>
           )}
@@ -50,10 +50,10 @@ export function Navigation() {
           {dropdownOpen === 3 && (
             <ul>
               <li>
-                <Link to="/match">Match</Link>
+                <Link to='/match'>Match</Link>
               </li>
               <li>
-                <Link to="/match_player">Match - Player</Link>
+                <Link to='/match_player'>Match - Player</Link>
               </li>
             </ul>
           )}
@@ -63,29 +63,29 @@ export function Navigation() {
           {dropdownOpen === 4 && (
             <ul>
               <li>
-                <Link to="/category">Category</Link>
+                <Link to='/category'>Category</Link>
               </li>
               <li>
-                <Link to="/condition">Condition</Link>
+                <Link to='/condition'>Condition</Link>
               </li>
               <li>
-                <Link to="/damage_type">Damage Type</Link>
+                <Link to='/damage_type'>Damage Type</Link>
               </li>
 
               <li>
-                <Link to="/feature">Feature</Link>
+                <Link to='/feature'>Feature</Link>
               </li>
               <li>
-                <Link to="/language">Language</Link>
+                <Link to='/language'>Language</Link>
               </li>
               <li>
-                <Link to="/magic_school">Magic School</Link>
+                <Link to='/magic_school'>Magic School</Link>
               </li>
               <li>
-                <Link to="/skill">Skill</Link>
+                <Link to='/skill'>Skill</Link>
               </li>
               <li>
-                <Link to="/property">Property</Link>
+                <Link to='/property'>Property</Link>
               </li>
             </ul>
           )}
@@ -95,13 +95,13 @@ export function Navigation() {
           {dropdownOpen === 5 && (
             <ul>
               <li>
-                <Link to="/background">Background</Link>
+                <Link to='/background'>Background</Link>
               </li>
               <li>
-                <Link to="/class">Class</Link>
+                <Link to='/class'>Class</Link>
               </li>
               <li>
-                <Link to="/race">Race</Link>
+                <Link to='/race'>Race</Link>
               </li>
             </ul>
           )}

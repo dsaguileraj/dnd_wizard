@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { getAllQuery } from "../../api.js";
-import { findFieldName } from "../../core/utils.js";
+import { useEffect, useState } from 'react';
+import { getAllQuery } from '../../api.js';
+import { findFieldName } from '../../core/utils.js';
 
 export const AdventureGear = () => {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    getAllQuery(setItems, "actions", "equipment");
-    getAllQuery(setCategories, "rules", "category");
+    getAllQuery(setItems, 'actions', 'equipment');
+    getAllQuery(setCategories, 'rules', 'category');
   }, []);
   return (
     <div>
@@ -23,7 +23,7 @@ export const AdventureGear = () => {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
+          {items.map(item => (
             <tr key={item.id}>
               <th>{item.name}</th>
               <th>{findFieldName(categories, item.category)}</th>
@@ -51,8 +51,8 @@ export const ArmorList = () => {
   const [armors, setArmors] = useState([]);
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    getAllQuery(setArmors, "actions", "armor");
-    getAllQuery(setCategories, "rules", "category");
+    getAllQuery(setArmors, 'actions', 'armor');
+    getAllQuery(setCategories, 'rules', 'category');
   }, []);
   return (
     <div>
@@ -71,7 +71,7 @@ export const ArmorList = () => {
           </tr>
         </thead>
         <tbody>
-          {armors.map((armor) => (
+          {armors.map(armor => (
             <tr key={armor.id}>
               <th>{armor.name}</th>
               <th>{findFieldName(categories, armor.category)}</th>
@@ -79,10 +79,10 @@ export const ArmorList = () => {
                 {armor.cost} {armor.coin}
               </th>
               <th>
-                {armor.armor_class} {armor.dexterity_bonus && "+ DEX modifier"} {armor.max_dexterity_bonus ? ` (max ${armor.max_dexterity_bonus})` : ""}
+                {armor.armor_class} {armor.dexterity_bonus && '+ DEX modifier'} {armor.max_dexterity_bonus ? ` (max ${armor.max_dexterity_bonus})` : ''}
               </th>
               <th>STR {armor.min_strength}</th>
-              <th>{armor.disadvantage_stealth ? "Disadvantage" : "---"}</th>
+              <th>{armor.disadvantage_stealth ? 'Disadvantage' : '---'}</th>
               <th>
                 {armor.weight} {armor.weight_measure}
               </th>
@@ -106,10 +106,10 @@ export const WeaponList = () => {
   const [damageTypes, setDamageTypes] = useState([]);
   const [properties, setProperties] = useState([]);
   useEffect(() => {
-    getAllQuery(setWeapons, "actions", "weapon");
-    getAllQuery(setCategories, "rules", "category");
-    getAllQuery(setDamageTypes, "rules", "damage_type");
-    getAllQuery(setProperties, "rules", "property");
+    getAllQuery(setWeapons, 'actions', 'weapon');
+    getAllQuery(setCategories, 'rules', 'category');
+    getAllQuery(setDamageTypes, 'rules', 'damage_type');
+    getAllQuery(setProperties, 'rules', 'property');
     console.log(properties);
   }, []);
   return (
@@ -125,7 +125,7 @@ export const WeaponList = () => {
           <th colSpan={2}>Options</th>
         </thead>
         <tbody>
-          {weapons.map((weapon) => (
+          {weapons.map(weapon => (
             <tr key={weapon.id}>
               <th>{weapon.name}</th>
               <th>{findFieldName(categories, weapon.category)}</th>
