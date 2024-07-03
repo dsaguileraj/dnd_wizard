@@ -1,4 +1,4 @@
-from django.db.models import TextChoices
+from django.db.models import TextChoices, IntegerChoices
 from django.utils.translation import gettext_lazy as _
 
 
@@ -13,6 +13,13 @@ class Aligments(TextChoices):
     CHOATIC_NEUTRAL = 'CN'
     CHOATIC_EVIL = 'CE'
 
+class Dices(IntegerChoices):
+    D4 = 4
+    D6 = 6
+    D8 = 8
+    D10 = 10
+    D12 = 12
+    D20 = 20
 
 class EquipmentTypes(TextChoices):
     ARMOR = 'A'
@@ -49,13 +56,6 @@ class MeasureLength(TextChoices):
     FOOT = 'ft'
     INCH = 'in'
     YAR = 'yd'
-
-
-class MeasureMass(TextChoices):
-    GRAM = 'g'
-    KILOGRAM = 'kg'
-    POUND = 'lb'
-    OUNCE = 'oz'
 
 
 class MeasureSpeed(TextChoices):

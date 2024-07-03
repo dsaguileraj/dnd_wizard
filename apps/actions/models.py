@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from apps.core import choices
+from apps.core.choices import Dices, MeasureTime
 from apps.core.models import DescriptionModel, Item
 
 
@@ -43,12 +43,11 @@ class Armor(Item):
 
 
 class Spell(DescriptionModel):
-    entity_class = models.ManyToManyField(
-        'traits.EntityClass',
-    )
     magic_school = models.ForeignKey(
         'rules.MagicSchool',
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None
     )
     damage_type = models.ForeignKey(
         'rules.DamageType',
@@ -93,7 +92,7 @@ class Spell(DescriptionModel):
     )
     casting_measure = models.CharField(
         max_length=3,
-        choices=choices.MeasureTime
+        choices=MeasureTime
     )
 
     # Duration
@@ -108,7 +107,7 @@ class Spell(DescriptionModel):
     )
     duration_measure = models.CharField(
         max_length=3,
-        choices=choices.MeasureTime
+        choices=MeasureTime
     )
 
     def __str__(self) -> str:
@@ -144,12 +143,11 @@ class Weapon(Item):
         ]
     )
     dice_sides = models.IntegerField(
-        default=4,
-        validators=[
-            MinValueValidator(0)
-        ]
+        default=Dices.D4,
+        null=True,
+        choices=Dices
     )
-    modifier = models.IntegerField(
+    bonus = models.IntegerField(
         default=0,
         validators=[
             MinValueValidator(0)

@@ -3,7 +3,7 @@ from apps.core.choices import Stats, EquipmentTypes
 from apps.core.models import BaseModel, DescriptionModel
 
 
-class Category(BaseModel):
+class Category(DescriptionModel):
     equipment_type = models.CharField(
         max_length=1,
         null=True,
@@ -11,6 +11,11 @@ class Category(BaseModel):
         choices=EquipmentTypes
     )
 
+    class Meta:
+        ordering = ["name"]
+
+
+class CreatureType(DescriptionModel):
     class Meta:
         ordering = ["name"]
 

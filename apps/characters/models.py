@@ -73,24 +73,50 @@ class PlayableCharacter(Entity):
         editable=False
     )
 
-    # Traits
-    languages = models.ManyToManyField(
-        'rules.Language',
+    # Inventory
+    adventure_gear = models.ManyToManyField(
+        'actions.AdventureGear',
+        blank=True
     )
-    skills = models.ManyToManyField(
-        'rules.Skill',
-    )
-    armor_proficiencies = models.ManyToManyField(
-        'actions.Armor',
-        related_name='proficient_characters',
-    )
-    weapon_proficiencies = models.ManyToManyField(
-        'actions.Weapon',
-        related_name='proficient_characters',
-    )
-    tool_proficiencies = models.ManyToManyField(
+    tools = models.ManyToManyField(
         'actions.Tool',
-        related_name='proficient_characters',
+        blank=True
+    )
+    trinkets = models.ManyToManyField(
+        'actions.Trinket',
+        blank=True
+    )
+    
+    # Coins
+    copper_pieces = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    silver_pieces = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    electrum_pieces = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    gold_pieces = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    platinum_pieces = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
     )
 
     class Meta:

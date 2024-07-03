@@ -15,6 +15,12 @@ class ConditionViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ConditionSerializer
 
 
+class CreatureTypeViewSet(viewsets.ModelViewSet):
+    queryset = models.CreatureType.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = serializers.CreatureTypeSerializer
+
+
 class DamageTypeViewSet(viewsets.ModelViewSet):
     queryset = models.DamageType.objects.all()
     permission_classes = [permissions.AllowAny]

@@ -1,119 +1,66 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from apps.core.choices import Sizes
-from apps.core.models import BaseModel, PersonalCharacteristic
+from apps.core.choices import Aligments, Dices, Sizes, Stats
+from apps.core.models import ProficiencyTrait
 
 
-class EntityClass(BaseModel):
-    hit_dice = models.IntegerField(
-        validators=[
-            MaxValueValidator(20),
-            MinValueValidator(4)
-        ]
+class Race(ProficiencyTrait):
+    creature_type = models.ForeignKey(
+        'rules.CreatureType',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None
     )
-
-    # Saving Throws
-    st_str = models.BooleanField(
-        default=False
+    aligment = models.CharField(
+        max_length=2,
+        default=Aligments.NEUTRAL_NEUTRAL,
+        choices=Aligments
     )
-    st_dex = models.BooleanField(
-        default=False
-    )
-    st_con = models.BooleanField(
-        default=False
-    )
-    st_int = models.BooleanField(
-        default=False
-    )
-    st_wis = models.BooleanField(
-        default=False
-    )
-    st_cha = models.BooleanField(
-        default=False
-    )
-
-    # Traits
-    armor_proficiencies = models.ManyToManyField(
-        'actions.Armor',
-    )
-    weapon_proficiencies = models.ManyToManyField(
-        'actions.Weapon',
-    )
-    can_spellcasting = models.BooleanField(
-        default=False
-    )
-
-    # Traits Choices
-    max_tool_proficiencies_choices = models.IntegerField(
-        validators=[
-            MaxValueValidator(3),
-            MinValueValidator(0)
-        ]
-    )
-    tool_proficiencies_choices = models.ManyToManyField(
-        'actions.Tool',
-        blank=True
-    )
-    max_skill_choices = models.IntegerField(
-        validators=[
-            MaxValueValidator(3),
-            MinValueValidator(1)
-        ]
-    )
-    skill_choices = models.ManyToManyField(
-        'rules.SKill',
-    )
-
-    class Meta:
-        ordering = ["name"]
-
-
-class Race(BaseModel):
     is_playable = models.BooleanField(
         default=False
     )
 
-    # Inherited Stat Bonus
-    inh_str = models.IntegerField(
+    # Ability Score Increase
+    strength = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
-    inh_dex = models.IntegerField(
+    dexterity = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
-    inh_con = models.IntegerField(
+    constitution = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
-    inh_int = models.IntegerField(
+    intelligence = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
-    inh_wis = models.IntegerField(
+    wisdom = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
-    inh_cha = models.IntegerField(
+    charisma = models.IntegerField(
         default=0,
         validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
+            MaxValueValidator(5),
+            MinValueValidator(-5)
         ]
     )
 
@@ -124,92 +71,192 @@ class Race(BaseModel):
         choices=Sizes
     )
     speed = models.IntegerField(
+        default=0,
         validators=[
             MinValueValidator(0)
         ]
-    )
-    damage_immunities = models.ManyToManyField(
-        'rules.DamageType',
-        related_name='race_immunities',
-        blank=True
-    )
-    damage_resistances = models.ManyToManyField(
-        'rules.DamageType',
-        related_name='race_resistances',
-        blank=True
-    )
-    damage_vulnerabilities = models.ManyToManyField(
-        'rules.DamageType',
-        related_name='race_vulnerabilities',
-        blank=True
-    )
-    condition_immunities = models.ManyToManyField(
-        'rules.Condition',
-        blank=True
-    )
-
-    # Traits
-    language_choices = models.IntegerField(
-        validators=[
-            MaxValueValidator(2),
-            MinValueValidator(0)
-        ]
-    )
-    languages = models.ManyToManyField(
-        'rules.Language',
-        blank=True
     )
     features = models.ManyToManyField(
         'rules.Feature',
         blank=True
     )
 
-    class Meta:
-        ordering = ["name"]
-
-
-class Background(BaseModel):
-    # Traits
-    skills = models.ManyToManyField(
-        'rules.Skill'
+    # Innate Spellcasting
+    innate_spellcaster = models.BooleanField(
+        default=False
     )
-
-    # Traits Choices
-    language_choices = models.IntegerField(
+    ability = models.CharField(
+        max_length=3,
+        null=True,
+        default=None,
+        choices=Stats
+    )
+    cantrips = models.IntegerField(
+        default=0,
         validators=[
-            MaxValueValidator(2),
             MinValueValidator(0)
         ]
     )
-    max_tool_proficiencies_choices = models.IntegerField(
-        validators=[
-            MaxValueValidator(2),
-            MinValueValidator(1)
-        ]
-    )
-    tool_proficiencies_choices = models.ManyToManyField(
-        'actions.Tool',
+    spell_list = models.ForeignKey(
+        'traits.EntityClass',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None
     )
 
     class Meta:
         ordering = ["name"]
 
 
-class Bond(PersonalCharacteristic):
+class EntityClass(ProficiencyTrait):
+    hit_die = models.IntegerField(
+        default=Dices.D4,
+        choices=Dices
+    )
+
+    # Saving Throw Proficiencies
+    strength = models.BooleanField(
+        default=False
+    )
+    dexterity = models.BooleanField(
+        default=False
+    )
+    constitution = models.BooleanField(
+        default=False
+    )
+    intelligence = models.BooleanField(
+        default=False
+    )
+    wisdom = models.BooleanField(
+        default=False
+    )
+    charisma = models.BooleanField(
+        default=False
+    )
+
+    # Spellcasting
+    innate_spellcaster = models.BooleanField(
+        default=False
+    )
+    ability = models.CharField(
+        max_length=3,
+        null=True,
+        default=None,
+        choices=Stats
+    )
+    spell_list = models.ManyToManyField(
+        'actions.Spell',
+        blank=True
+    )
+
     class Meta:
-        order_with_respect_to = "background"
+        ordering = ["name"]
 
-
-class Flaw(PersonalCharacteristic):
+class ClassTable(models.Model):
+    entity_class = models.ForeignKey(
+        'traits.EntityClass',
+        on_delete=models.CASCADE
+    )
+    level = models.IntegerField(
+        validators=[
+            MaxValueValidator(20),
+            MinValueValidator(1)
+        ]
+    )
+    features = models.ManyToManyField(
+        'rules.Feature',
+        blank=True
+    )
+    known_cantrips = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    known_spells = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_1 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_2 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_3 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_4 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_5 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_6 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_7 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_8 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    spell_slot_9 = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    
     class Meta:
-        order_with_respect_to = "background"
+        unique_together = ['level', 'entity_class']
+    
 
-
-class Ideal(PersonalCharacteristic):
+class Background(ProficiencyTrait):
+    features = models.ManyToManyField(
+        'rules.Feature',
+        blank=True
+    )
+    
+    # Personal Characteristic
+    bond = models.TextField(
+        unique=True
+    )
+    flaw = models.TextField(
+        unique=True
+    )
+    ideal = models.TextField(
+        unique=True
+    )
+    personality = models.TextField(
+        unique=True
+    )
+    
     class Meta:
-        order_with_respect_to = "background"
-
-
-class Personality(PersonalCharacteristic):
-    class Meta:
-        order_with_respect_to = "background"
+        ordering = ["name"]

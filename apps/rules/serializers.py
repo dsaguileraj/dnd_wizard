@@ -14,6 +14,12 @@ class ConditionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CreatureTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CreatureType
+        fields = '__all__'
+
+
 class DamageTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DamageType
