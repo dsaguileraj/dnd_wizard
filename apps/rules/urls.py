@@ -12,7 +12,7 @@ router.register(r'feature', views.FeatureViewSet)
 router.register(r'language', views.LanguageViewSet)
 router.register(r'magic_school', views.MagicSchoolViewSet)
 router.register(r'skill', views.SkillViewSet)
-router.register(r'property', views.WeaponPropertyViewSet)
+router.register(r'property', views.ItemPropertyViewSet)
 
 
 urlpatterns = [

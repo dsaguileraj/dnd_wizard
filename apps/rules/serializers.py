@@ -50,7 +50,7 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class WeaponPropertySerializer(serializers.ModelSerializer):
+class ItemPropertySerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.WeaponProperty
+        model = models.ItemProperty
         fields = '__all__'

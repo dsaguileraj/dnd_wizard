@@ -13,6 +13,7 @@ class Aligments(TextChoices):
     CHOATIC_NEUTRAL = 'CN'
     CHOATIC_EVIL = 'CE'
 
+
 class Dices(IntegerChoices):
     D4 = 4
     D6 = 6
@@ -21,7 +22,8 @@ class Dices(IntegerChoices):
     D12 = 12
     D20 = 20
 
-class EquipmentTypes(TextChoices):
+
+class ItemTypes(TextChoices):
     ARMOR = 'A'
     GEAR = 'G'
     TOOL = 'T'
@@ -36,34 +38,9 @@ class Coins(TextChoices):
     PLATINUM = 'pp'
 
 
-class MeasureArea(TextChoices):
-    SQUARE = 'c2'
-    CENTIMETER = 'cm2'
-    KILOMETER = 'km2'
-    MILE = 'mi2'
-    METER = 'm2'
-    FOOT = 'ft2'
-    INCH = 'in2'
-    YAR = 'yd2'
-
-
-class MeasureLength(TextChoices):
-    SQUARE = 'c'
-    CENTIMETER = 'cm'
-    KILOMETER = 'km'
-    MILE = 'mi'
-    METER = 'm'
-    FOOT = 'ft'
-    INCH = 'in'
-    YAR = 'yd'
-
-
-class MeasureSpeed(TextChoices):
-    SQUARE4ACTION = 'c/a'
-    FOOT4ACTION = 'ft/a'
-    METER4ACTION = 'm/a'
-    KILOMETER4HOUR = 'km/h'
-    MILE4HOUR = 'mi/h'
+class SubDamageType(TextChoices):
+    MAGIC = 'M'
+    PSHYSIC = 'P'
 
 
 class MeasureTime(TextChoices):
@@ -72,13 +49,6 @@ class MeasureTime(TextChoices):
     MINUTE = 'min'
     HOUR = 'h'
     DAY = 'd'
-
-
-class MeasureVolume(TextChoices):
-    GALLON = 'gal'
-    LITER = 'lt'
-    MILILITER = 'ml'
-    PINT = 'pt'
 
 
 class Sizes(TextChoices):

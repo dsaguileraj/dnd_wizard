@@ -18,7 +18,7 @@ class Match(DescriptionModel):
     )
     
     class Meta:
-        ordering = ["name"]
+        ordering = ['name']
 
 
 class MatchPlayer(models.Model):
@@ -38,4 +38,4 @@ class MatchPlayer(models.Model):
     )
 
     class Meta:
-        unique_together = ('campaign', 'player')
+        unique_together = ['campaign', 'player']

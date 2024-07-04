@@ -51,7 +51,7 @@ class SkillViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.SkillSerializer
 
 
-class WeaponPropertyViewSet(viewsets.ModelViewSet):
-    queryset = models.WeaponProperty.objects.all()
+class ItemPropertyViewSet(viewsets.ModelViewSet):
+    queryset = models.ItemProperty.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = serializers.WeaponPropertySerializer
+    serializer_class = serializers.ItemPropertySerializer

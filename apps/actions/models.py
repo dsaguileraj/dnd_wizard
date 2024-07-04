@@ -9,37 +9,38 @@ class AdventureGear(Item):
         blank=True
     )
 
-    class Meta:
-        ordering = ["category", "name"]
-
 
 class Armor(Item):
     armor_class = models.IntegerField(
+        default=11,
         validators=[
             MinValueValidator(0)
         ]
     )
-    dex_bonus = models.BooleanField(
+    gives_dex_bonus = models.BooleanField(
         default=False
     )
-    max_dex_bonus = models.IntegerField(
+    dex_bonus = models.IntegerField(
+        null=True,
+        default=None,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    required_str = models.IntegerField(
         default=0,
         validators=[
             MinValueValidator(0)
         ]
     )
-    min_str = models.IntegerField(
-        default=0,
-        validators=[
-            MinValueValidator(0)
-        ]
+    property = models.ManyToManyField(
+        'rules.ItemProperty',
+        blank=True
     )
-    disadvantage_stealth = models.BooleanField(
-        default=False
+    compatibility = models.ManyToManyField(
+        'rules.CreatureType',
+        blank=True
     )
-
-    class Meta:
-        ordering = ["category", "name"]
 
 
 class Spell(DescriptionModel):
@@ -111,10 +112,7 @@ class Spell(DescriptionModel):
     )
 
     def __str__(self) -> str:
-        return f'{self.name} - {self.magic_school} [{self.level}]'
-
-    class Meta:
-        ordering = ["name"]
+        return f'{self.name} ({self.magic_school}) lvl: {self.level}'
 
 
 class Tool(Item):
@@ -122,29 +120,23 @@ class Tool(Item):
         blank=True
     )
 
-    class Meta:
-        ordering = ["category", "name"]
-
 
 class Trinket(models.Model):
     name = models.TextField(
         unique=True
     )
 
-    class Meta:
-        ordering = ["name"]
-
 
 class Weapon(Item):
-    hit_dices = models.IntegerField(
+    dices = models.IntegerField(
         default=1,
         validators=[
             MinValueValidator(0)
         ]
     )
-    dice_sides = models.IntegerField(
-        default=Dices.D4,
+    hit_dice = models.IntegerField(
         null=True,
+        default=Dices.D4,
         choices=Dices
     )
     bonus = models.IntegerField(
@@ -160,24 +152,33 @@ class Weapon(Item):
         default=None
     )
     property = models.ManyToManyField(
-        'rules.WeaponProperty',
+        'rules.ItemProperty',
         blank=True
+    )
+    melee_weapon = models.BooleanField(
+        default=False
+    )
+    melee_range = models.IntegerField(
+        null=True,
+        default=None,
+        validators=[
+            MinValueValidator(1)
+        ]
     )
     ranged_weapon = models.BooleanField(
         default=False
     )
-    normal_range = models.IntegerField(
-        default=0,
+    min_range = models.IntegerField(
+        null=True,
+        default=None,
         validators=[
-            MinValueValidator(0)
+            MinValueValidator(2)
         ]
     )
     max_range = models.IntegerField(
-        default=0,
+        null=True,
+        default=None,
         validators=[
-            MinValueValidator(0)
+            MinValueValidator(3)
         ]
     )
-
-    class Meta:
-        ordering = ["category", "name"]

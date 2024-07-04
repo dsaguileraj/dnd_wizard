@@ -1,19 +1,18 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from apps.core.choices import Aligments, Dices, Sizes, Stats
-from apps.core.models import ProficiencyTrait
+from apps.core.models import PersonalCharacteristic, ProficiencyTrait
 
 
 class Race(ProficiencyTrait):
-    creature_type = models.ForeignKey(
+    creature_type = models.ManyToManyField(
         'rules.CreatureType',
-        on_delete=models.SET_NULL,
-        null=True,
-        default=None
+        blank=True
     )
     aligment = models.CharField(
         max_length=2,
-        default=Aligments.NEUTRAL_NEUTRAL,
+        null=True,
+        default=None,
         choices=Aligments
     )
     is_playable = models.BooleanField(
@@ -70,18 +69,84 @@ class Race(ProficiencyTrait):
         default=Sizes.M,
         choices=Sizes
     )
-    speed = models.IntegerField(
-        default=0,
-        validators=[
-            MinValueValidator(0)
-        ]
-    )
     features = models.ManyToManyField(
         'rules.Feature',
         blank=True
     )
 
-    # Innate Spellcasting
+    # Immunities, Resistances & Vulneravilities
+    condition_immunity = models.ManyToManyField(
+        'rules.Condition',
+        related_name='condition_immunity_by_race',
+        blank=True
+    )
+    damage_immunity = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='damage_immunity_by_race',
+        blank=True
+    )
+    damage_resistance = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='damage_resistance_by_race',
+        blank=True
+    )
+    damage_vulnerability = models.ManyToManyField(
+        'rules.DamageType',
+        related_name='damage_vulnerability_by_race',
+        blank=True
+    )
+
+    # Armor Class
+    has_nature_armor = models.BooleanField(
+        default=False
+    )
+    nature_armor = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    armor = models.ForeignKey(
+        'actions.Armor',
+        on_delete=models.SET_NULL,
+        related_name='init_armor',
+        null=True,
+        default=None
+    )
+
+    # Speed
+    burrow = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    climb = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    fly = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    swim = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    walk = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+
+    # Spellcasting
     innate_spellcaster = models.BooleanField(
         default=False
     )
@@ -97,41 +162,19 @@ class Race(ProficiencyTrait):
             MinValueValidator(0)
         ]
     )
-    spell_list = models.ForeignKey(
+    cantrips_list = models.ForeignKey(
         'traits.EntityClass',
         on_delete=models.SET_NULL,
         null=True,
         default=None
     )
 
-    class Meta:
-        ordering = ["name"]
 
-
+# Class
 class EntityClass(ProficiencyTrait):
-    hit_die = models.IntegerField(
+    hit_dice = models.IntegerField(
         default=Dices.D4,
         choices=Dices
-    )
-
-    # Saving Throw Proficiencies
-    strength = models.BooleanField(
-        default=False
-    )
-    dexterity = models.BooleanField(
-        default=False
-    )
-    constitution = models.BooleanField(
-        default=False
-    )
-    intelligence = models.BooleanField(
-        default=False
-    )
-    wisdom = models.BooleanField(
-        default=False
-    )
-    charisma = models.BooleanField(
-        default=False
     )
 
     # Spellcasting
@@ -149,10 +192,8 @@ class EntityClass(ProficiencyTrait):
         blank=True
     )
 
-    class Meta:
-        ordering = ["name"]
 
-class ClassTable(models.Model):
+class ProgressTable(models.Model):
     entity_class = models.ForeignKey(
         'traits.EntityClass',
         on_delete=models.CASCADE
@@ -167,6 +208,8 @@ class ClassTable(models.Model):
         'rules.Feature',
         blank=True
     )
+
+    # Spellcasting
     known_cantrips = models.IntegerField(
         default=0,
         validators=[
@@ -233,30 +276,31 @@ class ClassTable(models.Model):
             MinValueValidator(0)
         ]
     )
-    
-    class Meta:
-        unique_together = ['level', 'entity_class']
-    
 
+    class Meta:
+        ordering = ['entity_class', 'level']
+        unique_together = ['entity_class', 'level']
+
+
+# Background
 class Background(ProficiencyTrait):
     features = models.ManyToManyField(
         'rules.Feature',
         blank=True
     )
-    
-    # Personal Characteristic
-    bond = models.TextField(
-        unique=True
-    )
-    flaw = models.TextField(
-        unique=True
-    )
-    ideal = models.TextField(
-        unique=True
-    )
-    personality = models.TextField(
-        unique=True
-    )
-    
-    class Meta:
-        ordering = ["name"]
+
+
+class Bond(PersonalCharacteristic):
+    ...
+
+
+class Flaw(PersonalCharacteristic):
+    ...
+
+
+class Ideal(PersonalCharacteristic):
+    ...
+
+
+class Personality(PersonalCharacteristic):
+    ...
