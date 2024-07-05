@@ -38,17 +38,17 @@ class Coins(TextChoices):
     PLATINUM = 'pp'
 
 
-class SubDamageType(TextChoices):
-    MAGIC = 'M'
-    PSHYSIC = 'P'
-
-
 class MeasureTime(TextChoices):
     ACTION = 'a'
     SECOND = 's'
     MINUTE = 'min'
     HOUR = 'h'
     DAY = 'd'
+
+
+class DamageSubtype(TextChoices):
+    MAGIC = 'M'
+    PSHYSIC = 'P'
 
 
 class Sizes(TextChoices):

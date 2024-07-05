@@ -10,14 +10,6 @@ export const ALIGMENTS = [
   { value: 'CE', label: 'Chaotic Evil' },
 ];
 
-export const EQUIPMENT_TYPES = [
-  { value: undefined, label: '---' },
-  { value: 'A', label: 'Armor' },
-  { value: 'G', label: 'Equipment' },
-  { value: 'T', label: 'Tool' },
-  { value: 'W', label: 'Weapon' },
-];
-
 export const COINS = [
   { value: 'cp', label: 'Copper' },
   { value: 'sp', label: 'Silver' },
@@ -26,41 +18,26 @@ export const COINS = [
   { value: 'pp', label: 'Platinum' },
 ];
 
-export const MEASURE_AREA = [
-  { value: 'c2', label: 'Square' },
-  { value: 'cm2', label: 'Centimeter' },
-  { value: 'km2', label: 'Kilometer' },
-  { value: 'mi2', label: 'Mile' },
-  { value: 'm2', label: 'Meter' },
-  { value: 'ft2', label: 'Foot' },
-  { value: 'in2', label: 'Inch' },
-  { value: 'yd2', label: 'Yard' },
+export const DAMAGE_SUBTYPE = [
+  { value: 'M', label: 'Magic' },
+  { value: 'P', label: 'Physic' },
 ];
 
-export const MEASURE_LENGTH = [
-  { value: 'c', label: 'Square' },
-  { value: 'cm', label: 'Centimeter' },
-  { value: 'km', label: 'Kilometer' },
-  { value: 'mi', label: 'Mile' },
-  { value: 'm', label: 'Meter' },
-  { value: 'ft', label: 'Foot' },
-  { value: 'in', label: 'Inch' },
-  { value: 'yd', label: 'Yard' },
+export const DICES = [
+  { value: 4, label: 'd4' },
+  { value: 6, label: 'd6' },
+  { value: 8, label: 'd8' },
+  { value: 10, label: 'd10' },
+  { value: 12, label: 'd12' },
+  { value: 20, label: 'd20' },
 ];
 
-export const MEASURE_MASS = [
-  { value: 'g', label: 'Gram' },
-  { value: 'kg', label: 'Kilogram' },
-  { value: 'lb', label: 'Pound' },
-  { value: 'oz', label: 'Ounce' },
-];
-
-export const MEASURE_SPEED = [
-  { value: 'c/a', label: 'Square/Action' },
-  { value: 'ft/a', label: 'Foot/Action' },
-  { value: 'm/a', label: 'Meter/Action' },
-  { value: 'km/h', label: 'Kilometer/Hour' },
-  { value: 'ni/h', label: 'Mile/Hour' },
+export const ITEM_TYPES = [
+  { value: undefined, label: '---' },
+  { value: 'A', label: 'Armor' },
+  { value: 'G', label: 'Equipment' },
+  { value: 'T', label: 'Tool' },
+  { value: 'W', label: 'Weapon' },
 ];
 
 export const MEASURE_TIME = [

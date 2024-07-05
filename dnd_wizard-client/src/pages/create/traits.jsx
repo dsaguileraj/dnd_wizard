@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance, getAllQuery } from '../../api.js';
 import { Form, InputCheck, InputNumber, InputSelect, InputText, InputTextArea } from '../../components/forms.jsx';
+import { SIZES } from '../../core/choices.js';
 
 export const BackgroundPostForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -346,17 +347,15 @@ export const RacePostForm = () => {
   const [inhCON, setInhCON] = useState(0);
   const [inhINT, setInhINT] = useState(0);
   const [inhWIS, setInhWIS] = useState(0);
-  const [inhCHA, setIntCHA] = useState(0);
+  const [inhCHA, setInhCHA] = useState(0);
   const [size, setSize] = useState('XS');
   const [speed, setSpeed] = useState(0);
   const [damageImmunities, setDamageImmunities] = useState(undefined);
-  const [damageImmunitiesList, setDamageImmunitiesList] = useState([]);
   const [damageResistances, setDamageResistances] = useState(undefined);
-  const [damageResistancesList, setDamageResistancesList] = useState([]);
   const [damageVulnerabilities, setDamageVulnerabilities] = useState(undefined);
-  const [damageVulnerabilitiesList, setDamageVulnerabilitiesList] = useState([]);
+  const [damageTypes, setDamageTypes] = useState([]);
   const [conditionImmunities, setConditionImmunities] = useState(undefined);
-  const [conditionImmunitiesList, setConditionImmunitiesList] = useState([]);
+  const [conditions, setConditions] = useState([]);
   const [maxLanguages, setMaxLanguages] = useState(0);
   const [languages, setLanguages] = useState(undefined);
   const [languagesList, setLanguagesList] = useState([]);
@@ -364,26 +363,20 @@ export const RacePostForm = () => {
   const [featuresList, setFeaturesList] = useState([]);
 
   useEffect(() => {
-    getAllQuery(setConditionImmunitiesList, 'rules', 'condition');
-    getAllQuery(setDamageImmunitiesList, 'rules', 'damage_type');
-    getAllQuery(setDamageResistancesList, 'rules', 'damage_type');
-    getAllQuery(setDamageVulnerabilitiesList, 'rules', 'damage_type');
+    getAllQuery(setConditions, 'rules', 'condition');
+    getAllQuery(setDamageTypes, 'rules', 'damage_type');
     getAllQuery(setFeaturesList, 'rules', 'feature');
     getAllQuery(setLanguagesList, 'rules', 'langauge');
-  }, [])
+  }, []);
 
-  let conditionImmunitiesOptions = [{ value: undefined, label: '---' }]
-  let damageImmunitiesOptions = [{ value: undefined, label: '---' }]
-  let damageResistancesOptions = [{ value: undefined, label: '---' }]
-  let damageVulnerabilitiesOptions = [{ value: undefined, label: '---' }]
-  let featuresOptions = [{ value: undefined, label: '---' }]
-  let languagesOptions = [{ value: undefined, label: '---' }]
-  conditionImmunitiesList.forEach(object => conditionImmunitiesOptions.push({ value: object.id, label: object.name }))
-  damageImmunitiesList.forEach(object => damageImmunitiesOptions.push({ value: object.id, label: object.name }))
-  damageResistancesList.forEach(object => damageResistancesOptions.push({ value: object.id, label: object.name }))
-  damageVulnerabilitiesList.forEach(object => damageVulnerabilitiesOptions.push({ value: object.id, label: object.name }))
-  featuresList.forEach(object => featuresOptions.push({ value: object.id, label: object.name }))
-  languagesList.forEach(object => languagesOptions.push({ value: object.id, label: object.name }))
+  let conditionsOptions = [{ value: undefined, label: '---' }];
+  let damageTypesOptions = [{ value: undefined, label: '---' }];
+  let featuresOptions = [{ value: undefined, label: '---' }];
+  let languagesOptions = [{ value: undefined, label: '---' }];
+  conditions.forEach(object => conditionsOptions.push({ value: object.id, label: object.name }));
+  damageTypes.forEach(object => damageTypesOptions.push({ value: object.id, label: object.name }));
+  featuresList.forEach(object => featuresOptions.push({ value: object.id, label: object.name }));
+  languagesList.forEach(object => languagesOptions.push({ value: object.id, label: object.name }));
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -391,7 +384,332 @@ export const RacePostForm = () => {
       .post('/traits/race/', {
         name: name,
         is_playable: isPlayable,
-        inhSTR: inhSTR
+        inh_str: inhSTR,
+        inh_dex: inhDEX,
+        inh_con: inhCON,
+        inh_int: inhINT,
+        inh_wis: inhWIS,
+        inh_cha: inhCHA,
+        size: size,
+        speed: speed,
+        damage_immunities: damageImmunities,
+        damage_resistances: damageResistances,
+        damage_vulnerabilities: damageVulnerabilities,
+        condition_immunities: conditionImmunities,
+        language_choices: maxLanguages,
+        languages: languages,
+        features: features,
       })
+      .then(response => {
+        console.log(response.data);
+        setErrorMessage('');
+        setName('');
+        setIsPlayable(false);
+        setInhSTR(0);
+        setInhDEX(0);
+        setInhCON(0);
+        setInhINT(0);
+        setInhWIS(0);
+        setIntCHA(0);
+        setSize('XS');
+        setSpeed(0);
+        setDamageImmunities(undefined);
+        setDamageImmunitiesList([]);
+        setDamageResistances(undefined);
+        setDamageResistancesList([]);
+        setDamageVulnerabilities(undefined);
+        setDamageVulnerabilitiesList([]);
+        setConditionImmunities(undefined);
+        setConditionImmunitiesList([]);
+        setMaxLanguages(0);
+        setLanguages(undefined);
+        setLanguagesList([]);
+        setFeatures(undefined);
+        setFeaturesList([]);
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage('An error occurred. Please try again later.');
+      });
   };
+  return (
+    <Form
+      errorMessage={errorMessage}
+      handleSubmit={handleSubmit}
+      header='Create Race'
+    >
+      <InputText
+        field={name}
+        handleChange={setName}
+        label='Name'
+      />
+      <InputCheck
+        field={isPlayable}
+        handleChange={setIsPlayable}
+        label='Playable?'
+      />
+      <h2>Inherited Stat Bonus</h2>
+      <InputNumber
+        field={inhSTR}
+        handleChange={setInhSTR}
+        label='STR'
+        max={2}
+      />
+      <InputNumber
+        field={inhDEX}
+        handleChange={setInhDEX}
+        label='DEX'
+        max={2}
+      />
+      <InputNumber
+        field={inhCON}
+        handleChange={setInhCON}
+        label='CON'
+        max={2}
+      />
+      <InputNumber
+        field={inhINT}
+        handleChange={setInhINT}
+        label='INT'
+        max={2}
+      />
+      <InputNumber
+        field={inhWIS}
+        handleChange={setInhWIS}
+        label='WIS'
+        max={2}
+      />
+      <InputNumber
+        field={inhCHA}
+        handleChange={setInhCHA}
+        label='CHA'
+        max={2}
+      />
+      <h2>Traits</h2>
+      <InputNumber
+        field={maxLanguages}
+        handleChange={setMaxLanguages}
+        label='Max Languages Choices'
+        max={2}
+      />
+      <InputSelect
+        field={languages}
+        handleChange={setLanguages}
+        label='Languages Available'
+        multiple={true}
+        options={languagesOptions}
+      />
+      <InputSelect
+        field={features}
+        handleChange={setFeatures}
+        label='Features'
+        options={featuresOptions}
+      />
+      <h3>Racial Traits</h3>
+      <InputSelect
+        field={size}
+        handleChange={setSize}
+        label='Size'
+        options={SIZES}
+      />
+      <InputNumber
+        field={speed}
+        handleChange={setSpeed}
+        label='Speed'
+      />
+      <InputSelect
+        field={damageImmunities}
+        handleChange={setDamageImmunities}
+        label='Damage Immunities'
+        multiple={true}
+        options={damageTypesOptions}
+      />
+      <InputSelect
+        field={damageResistances}
+        handleChange={setDamageResistances}
+        label='Damage Resistances'
+        multiple={true}
+        options={damageTypesOptions}
+      />
+      <InputSelect
+        field={damageImmunities}
+        handleChange={setDamageVulnerabilities}
+        label='Damage Vulnerabilities'
+        multiple={true}
+        options={damageTypesOptions}
+      />
+      <InputSelect
+        field={conditionImmunities}
+        handleChange={setConditionImmunities}
+        label='Conditions Immunities'
+        multiple={true}
+        options={conditionsOptions}
+      />
+    </Form>
+  );
+};
+
+export const FlawPostForm = () => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [name, setName] = useState('');
+  const [background, setBackground] = useState([1]);
+  const [backgroundList, setBackgroundList] = useState([]);
+
+  useEffect(() => {
+    getAllQuery(setBackgroundList, 'traits', 'background');
+  }, []);
+
+  let backgroundOptions = [];
+  backgroundList.forEach(object => backgroundOptions.push({ value: object.id, label: object.name }));
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosInstance
+      .post('/traits/flaw/', {
+        background: background,
+        name: name,
+      })
+      .then(response => {
+        console.log(response.data);
+        setErrorMessage('');
+        setName('');
+        setBackground([1]);
+        setBackgroundList([]);
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage('An error occurred. Please try again later.');
+      });
+  };
+
+  return (
+    <Form
+      errorMessage={errorMessage}
+      handleSubmit={handleSubmit}
+      header='Create Flaw'
+    >
+      <InputTextArea
+        field={name}
+        handleChange={setName}
+        label='Description'
+      />
+      <InputSelect
+        field={background}
+        handleChange={setBackground}
+        label='Background'
+        multiple={true}
+        options={backgroundOptions}
+      />
+    </Form>
+  );
+};
+
+export const IdealPostForm = () => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [name, setName] = useState('');
+  const [background, setBackground] = useState([1]);
+  const [backgroundList, setBackgroundList] = useState([]);
+
+  useEffect(() => {
+    getAllQuery(setBackgroundList, 'traits', 'background');
+  }, []);
+
+  let backgroundOptions = [];
+  backgroundList.forEach(object => backgroundOptions.push({ value: object.id, label: object.name }));
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosInstance
+      .post('/traits/ideal/', {
+        background: background,
+        name: name,
+      })
+      .then(response => {
+        console.log(response.data);
+        setErrorMessage('');
+        setName('');
+        setBackground([1]);
+        setBackgroundList([]);
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage('An error occurred. Please try again later.');
+      });
+  };
+
+  return (
+    <Form
+      errorMessage={errorMessage}
+      handleSubmit={handleSubmit}
+      header='Create Ideal'
+    >
+      <InputTextArea
+        field={name}
+        handleChange={setName}
+        label='Description'
+      />
+      <InputSelect
+        field={background}
+        handleChange={setBackground}
+        label='Background'
+        multiple={true}
+        options={backgroundOptions}
+      />
+    </Form>
+  );
+};
+
+export const PersonalityPostForm = () => {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [name, setName] = useState('');
+  const [background, setBackground] = useState([1]);
+  const [backgroundList, setBackgroundList] = useState([]);
+
+  useEffect(() => {
+    getAllQuery(setBackgroundList, 'traits', 'background');
+  }, []);
+
+  let backgroundOptions = [];
+  backgroundList.forEach(object => backgroundOptions.push({ value: object.id, label: object.name }));
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosInstance
+      .post('/traits/personality/', {
+        background: background,
+        name: name,
+      })
+      .then(response => {
+        console.log(response.data);
+        setErrorMessage('');
+        setName('');
+        setBackground([1]);
+        setBackgroundList([]);
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage('An error occurred. Please try again later.');
+      });
+  };
+
+  return (
+    <Form
+      errorMessage={errorMessage}
+      handleSubmit={handleSubmit}
+      header='Create Personality'
+    >
+      <InputTextArea
+        field={name}
+        handleChange={setName}
+        label='Description'
+      />
+      <InputSelect
+        field={background}
+        handleChange={setBackground}
+        label='Background'
+        multiple={true}
+        options={backgroundOptions}
+      />
+    </Form>
+  );
 };

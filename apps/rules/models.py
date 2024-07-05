@@ -1,5 +1,5 @@
 from django.db import models
-from apps.core.choices import ItemTypes, Stats, SubDamageType
+from apps.core.choices import ItemTypes, Stats, DamageSubtype
 from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
 
 
@@ -12,27 +12,23 @@ class Category(DescriptionModel):
     )
 
 
-class CreatureType(DescriptionModel):
-    ...
-
-
 class Condition(DescriptionModel):
     ...
 
 
+class CreatureType(DescriptionModel):
+    ...
+
+
 class DamageType(DescriptionModel):
-    sub_category = models.CharField(
+    subtype = models.CharField(
         max_length=1,
-        default=SubDamageType.PSHYSIC,
-        choices=SubDamageType
+        default=DamageSubtype.MAGIC,
+        choices=DamageSubtype
     )
 
 
-class Feature(ProficiencyTrait):
-    description = models.TextField(
-        unique=True
-    )
-
+class Feature(DescriptionModel, ProficiencyTrait):
     # Immunities, Resistances & Vulneravilities
     condition_immunity = models.ManyToManyField(
         'rules.Condition',

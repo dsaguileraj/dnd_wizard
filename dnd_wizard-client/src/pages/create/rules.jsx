@@ -1,339 +1,312 @@
 import { useState } from 'react';
-import { axiosInstance } from '../../api.js';
-import { Form, InputSelect, InputText, InputTextArea } from '../../components/forms.jsx';
-import { EQUIPMENT_TYPES, STATS } from '../../core/choices.js';
+import { axiosPOST } from '../../api.js';
+import { Form, InputSelect, InputText } from '../../components/forms.jsx';
+import { DAMAGE_SUBTYPE, ITEM_TYPES, STATS } from '../../core/choices.js';
+import { DescriptionModel, fieldsDescriptionModel } from '../../layouts/DescriptionModel.jsx';
+import { ProficiencyTrait, fieldsProficiencyTrait } from '../../layouts/ProficiencyTrait.jsx';
+import { ImmResVul, fieldsImmResVul } from '../../layouts/ImmResVul.jsx';
 
-export const CategoryPostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [type, setType] = useState(undefined);
+export const CategoryPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+    item_type: ITEM_TYPES[0].value,
+  });
 
   const handleSubmit = event => {
     event.preventDefault();
-    axiosInstance
-      .post('/rules/category/', {
-        name: name,
-        equipment_type: type,
+    axiosPOST(
+      '/rules/category/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+        item_type: ITEM_TYPES[0].value,
       })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setType(undefined);
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
+    );
   };
+
   return (
     <Form
-      errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      header='Create Category'
+      header={'Create Category'}
     >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
+      <DescriptionModel
+        data={form}
+        setData={setForm}
       />
       <InputSelect
-        field={type}
-        handleChange={setType}
-        label='Equipment Type'
-        options={EQUIPMENT_TYPES}
+        label={'Item Type'}
+        field={form.item_type}
+        setField={event => setForm({ ...form, item_type: event })}
+        options={ITEM_TYPES}
       />
     </Form>
   );
 };
 
-export const ConditionPostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+export const ConditionPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+  });
 
   const handleSubmit = event => {
     event.preventDefault();
-    axiosInstance
-      .post('/rules/condition/', {
-        name: name,
-        description: description,
+    axiosPOST(
+      '/rules/condition/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
       })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setDescription('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
+    );
   };
+
   return (
     <Form
-      errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      header='Create Condition'
+      header={'Create Condition'}
     >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-      <InputTextArea
-        field={description}
-        handleChange={setDescription}
-        label='Description'
+      <DescriptionModel
+        data={form}
+        setData={setForm}
       />
     </Form>
   );
 };
 
-export const DamageTypePostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+export const CreatureTypePOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+  });
 
   const handleSubmit = event => {
     event.preventDefault();
-    axiosInstance
-      .post('/rules/damage_type/', {
-        name: name,
+    axiosPOST(
+      '/rules/creature_type/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
       })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
+    );
   };
+
   return (
     <Form
-      errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      header='Create Damage Type'
+      header={'Create Creature Type'}
     >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-      <InputTextArea
-        field={description}
-        handleChange={setDescription}
-        label='Description'
+      <DescriptionModel
+        data={form}
+        setData={setForm}
       />
     </Form>
   );
 };
 
-export const FeaturePostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+export const DamageTypePOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+    subtype: DAMAGE_SUBTYPE[0].value,
+  });
 
   const handleSubmit = event => {
     event.preventDefault();
-    axiosInstance
-      .post('/rules/feature/', {
-        name: name,
-        description: description,
+    axiosPOST(
+      '/rules/damage_type/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+        subtype: DAMAGE_SUBTYPE[0].value,
       })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setDescription('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
+    );
   };
+
   return (
     <Form
-      errorMessage={errorMessage}
       handleSubmit={handleSubmit}
-      header='Create Feature'
+      header={'Create Creature Type'}
     >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-      <InputTextArea
-        field={description}
-        handleChange={setDescription}
-        label='Description'
-      />
-    </Form>
-  );
-};
-
-export const LanguagePostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axiosInstance
-      .post('/rules/language/', {
-        name: name,
-      })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
-  };
-  return (
-    <Form
-      errorMessage={errorMessage}
-      handleSubmit={handleSubmit}
-      header='Create Language'
-    >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-    </Form>
-  );
-};
-
-export const MagicSchoolPostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axiosInstance
-      .post('/rules/magic_school/', {
-        name: name,
-        description: description,
-      })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setDescription('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
-  };
-  return (
-    <Form
-      errorMessage={errorMessage}
-      handleSubmit={handleSubmit}
-      header='Create Magic School'
-    >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-      <InputTextArea
-        field={description}
-        handleChange={setDescription}
-        label='Description'
-      />
-    </Form>
-  );
-};
-
-export const SkillPostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [modifier, setModifier] = useState('STR');
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axiosInstance
-      .post('/rules/skill/', {
-        name: name,
-        modifier: modifier,
-      })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setModifier('STR');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
-  };
-  return (
-    <Form
-      errorMessage={errorMessage}
-      handleSubmit={handleSubmit}
-      header='Create Skill'
-    >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
+      <DescriptionModel
+        data={form}
+        setData={setForm}
       />
       <InputSelect
-        field={modifier}
-        handleChange={setModifier}
-        label='Modifier'
+        label={'Subtype'}
+        field={form.subtype}
+        setField={event => setForm({ ...form, subtype: event })}
+        options={ITEM_TYPES}
+      />
+    </Form>
+  );
+};
+
+export const FeaturePOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+    ...fieldsProficiencyTrait,
+    ...fieldsImmResVul,
+  });
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/rules/feature/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+        ...fieldsProficiencyTrait,
+        ...fieldsImmResVul,
+      })
+    );
+  };
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Feature'}
+    >
+      <DescriptionModel
+        data={form}
+        setData={setForm}
+      />
+      <ProficiencyTrait
+        data={form}
+        setData={setForm}
+      />
+      <ImmResVul
+        data={form}
+        setData={setForm}
+      />
+    </Form>
+  );
+};
+
+export const LanguagePOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+  });
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/rules/language/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+      })
+    );
+  };
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Language'}
+    >
+      <DescriptionModel
+        data={form}
+        setData={setForm}
+      />
+    </Form>
+  );
+};
+
+export const MagicSchoolPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+  });
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/rules/magic_school/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+      })
+    );
+  };
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Magic School'}
+    >
+      <DescriptionModel
+        data={form}
+        setData={setForm}
+      />
+    </Form>
+  );
+};
+
+export const PropertyPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+    item_type: ITEM_TYPES[0].value,
+  });
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/rules/property/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+        item_type: ITEM_TYPES[0].value,
+      })
+    );
+  };
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Item Property'}
+    >
+      <DescriptionModel
+        data={form}
+        setData={setForm}
+      />
+      <InputSelect
+        label={'Item Type'}
+        field={form.item_type}
+        setField={event => setForm({ ...form, item_type: event })}
+        options={ITEM_TYPES}
+      />
+    </Form>
+  );
+};
+
+export const SkillPOST = () => {
+  const [form, setForm] = useState({
+    name: '',
+    stat: STATS[0].value,
+  });
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/rules/skill/',
+      form,
+      setForm({
+        name: '',
+        stat: STATS[0].value,
+      })
+    );
+  };
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Skill'}
+    >
+      <InputText
+        label={'Name'}
+        field={form.name}
+        setField={event => setForm({ ...form, name: event })}
+      />
+      <InputSelect
+        label={'Ability Socre'}
+        field={form.stat}
+        setField={event => setForm({ ...form, stat: event })}
         options={STATS}
-      />
-    </Form>
-  );
-};
-
-export const PropertyPostForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    axiosInstance
-      .post('/rules/property/', {
-        name: name,
-        description: description,
-      })
-      .then(response => {
-        console.log(response.data);
-        setErrorMessage('');
-        setName('');
-        setDescription('');
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage('An error occurred. Please try again later.');
-      });
-  };
-  return (
-    <Form
-      errorMessage={errorMessage}
-      handleSubmit={handleSubmit}
-      header='Create Property'
-    >
-      <InputText
-        field={name}
-        handleChange={setName}
-        label='Name'
-      />
-      <InputTextArea
-        field={description}
-        handleChange={setDescription}
-        label='Description'
       />
     </Form>
   );

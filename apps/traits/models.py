@@ -1,10 +1,10 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from apps.core.choices import Aligments, Dices, Sizes, Stats
-from apps.core.models import PersonalCharacteristic, ProficiencyTrait
+from apps.core.models import BaseModel, PersonalCharacteristic, ProficiencyTrait
 
 
-class Race(ProficiencyTrait):
+class Race(BaseModel, ProficiencyTrait):
     creature_type = models.ManyToManyField(
         'rules.CreatureType',
         blank=True
@@ -156,7 +156,7 @@ class Race(ProficiencyTrait):
         default=None,
         choices=Stats
     )
-    cantrips = models.IntegerField(
+    known_cantrips = models.IntegerField(
         default=0,
         validators=[
             MinValueValidator(0)
@@ -171,7 +171,7 @@ class Race(ProficiencyTrait):
 
 
 # Class
-class EntityClass(ProficiencyTrait):
+class EntityClass(BaseModel, ProficiencyTrait):
     hit_dice = models.IntegerField(
         default=Dices.D4,
         choices=Dices
@@ -283,7 +283,7 @@ class ProgressTable(models.Model):
 
 
 # Background
-class Background(ProficiencyTrait):
+class Background(BaseModel, ProficiencyTrait):
     features = models.ManyToManyField(
         'rules.Feature',
         blank=True

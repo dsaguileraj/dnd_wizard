@@ -142,60 +142,60 @@ class PersonalCharacteristic(models.Model):
         ordering = ['background', 'description']
 
 
-class ProficiencyTrait(BaseModel):
+class ProficiencyTrait(models.Model):
     # Proficiencies
-    armors = models.IntegerField(
+    armor_choices = models.IntegerField(
         null=True,
         default=None,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
-    armors_list = models.ManyToManyField(
+    armor_list = models.ManyToManyField(
         'actions.Armor',
         blank=True
     )
-    languages = models.IntegerField(
+    language_choices = models.IntegerField(
         null=True,
         default=None,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
-    languages_list = models.ManyToManyField(
+    language_list = models.ManyToManyField(
         'rules.Language',
         blank=True
     )
-    skills = models.IntegerField(
+    skill_choices = models.IntegerField(
         null=True,
         default=None,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
-    skills_list = models.ManyToManyField(
+    skill_list = models.ManyToManyField(
         'rules.Skill',
         blank=True
     )
-    tools = models.IntegerField(
+    tool_choices = models.IntegerField(
         null=True,
         default=None,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
-    tools_list = models.ManyToManyField(
+    tool_list = models.ManyToManyField(
         'actions.Tool',
         blank=True
     )
-    weapons = models.IntegerField(
+    weapon_choices = models.IntegerField(
         null=True,
         default=None,
         validators=[
-            MinValueValidator(1)
+            MinValueValidator(0)
         ]
     )
-    weapons_list = models.ManyToManyField(
+    weapon_list = models.ManyToManyField(
         'actions.Weapon',
         blank=True
     )

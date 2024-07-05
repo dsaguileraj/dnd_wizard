@@ -4,12 +4,25 @@ export const axiosInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
 });
 
-export const getAllQuery = async (fn, app, model) => {
-  const request = await axiosInstance.get(`/${app}/${model}/`);
-  fn(request.data);
+export const axiosPOST = (url, data, setData) => {
+  axiosInstance
+    .post(url, data)
+    .then(response => {
+      console.log(response.data);
+      setData;
+    })
+    .catch(error => {
+      console.log(error);
+      alert('An error occurred. Please try again later.');
+    });
 };
 
-export const getQueryDetail = async (fn, app, model, id) => {
-  const request = await axiosInstance.get(`/${app}/${model}/${id}/`);
-  fn(request.data);
+export const axiosGET = async (fn, app, model, id = undefined) => {
+  if (id) {
+    const request = await axiosInstance.get(`/${app}/${model}/${id}/`);
+    fn(request.data);
+  } else {
+    const request = await axiosInstance.get(`/${app}/${model}/`);
+    fn(request.data);
+  }
 };
