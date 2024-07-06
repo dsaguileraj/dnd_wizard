@@ -68,6 +68,10 @@ class PlayableCharacter(Entity):
         'actions.Armor',
         blank=True
     )
+    spells = models.ManyToManyField(
+        'actions.Spell',
+        blank=True
+    )
     tools = models.ManyToManyField(
         'actions.Tool',
         blank=True
@@ -120,4 +124,15 @@ class NonPlayableCharacter(Entity):
     )
     legendary_creature = models.BooleanField(
         default=False
+    )
+    armor = models.ForeignKey(
+        'actions.Armor',
+        on_delete=models.SET_NULL,
+        related_name='init_armor',
+        null=True,
+        default=None
+    )
+    spells = models.ManyToManyField(
+        'actions.Spell',
+        blank=True
     )

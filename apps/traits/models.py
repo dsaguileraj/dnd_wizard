@@ -20,42 +20,42 @@ class Race(BaseModel, ProficiencyTrait):
     )
 
     # Ability Score Increase
-    strength = models.IntegerField(
+    str_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(-5)
         ]
     )
-    dexterity = models.IntegerField(
+    dex_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(-5)
         ]
     )
-    constitution = models.IntegerField(
+    con_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(-5)
         ]
     )
-    intelligence = models.IntegerField(
+    int_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(-5)
         ]
     )
-    wisdom = models.IntegerField(
+    wis_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
             MinValueValidator(-5)
         ]
     )
-    charisma = models.IntegerField(
+    cha_increase = models.IntegerField(
         default=0,
         validators=[
             MaxValueValidator(5),
@@ -106,14 +106,7 @@ class Race(BaseModel, ProficiencyTrait):
             MinValueValidator(0)
         ]
     )
-    armor = models.ForeignKey(
-        'actions.Armor',
-        on_delete=models.SET_NULL,
-        related_name='init_armor',
-        null=True,
-        default=None
-    )
-
+    
     # Speed
     burrow = models.IntegerField(
         default=0,
@@ -156,17 +149,16 @@ class Race(BaseModel, ProficiencyTrait):
         default=None,
         choices=Stats
     )
-    known_cantrips = models.IntegerField(
-        default=0,
+    known_spells = models.IntegerField(
+        null=True,
+        default=None,
         validators=[
             MinValueValidator(0)
         ]
     )
-    cantrips_list = models.ForeignKey(
+    spells_available = models.ManyToManyField(
         'traits.EntityClass',
-        on_delete=models.SET_NULL,
-        null=True,
-        default=None
+        blank=True
     )
 
 

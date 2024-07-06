@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react';
 import { axiosGET } from '../api.js';
-import { InputCheck, InputNumber, InputSelect, InputText } from '../components/forms.jsx';
+import { InputCheck, InputNumber, InputSelect } from '../components/forms.jsx';
 
 export const fieldsProficiencyTrait = {
-  armor_choices: undefined,
-  armor_list: [],
-  language_choices: undefined,
+  armor_choices: 0,
+  language_choices: 0,
   language_list: [],
-  skill_choices: undefined,
+  skill_choices: 0,
   skill_list: [],
-  tool_choices: undefined,
+  tool_choices: 0,
   tool_list: [],
-  weapon_choices: undefined,
+  weapon_choices: 0,
   weapon_list: [],
-  strength: false,
-  dexterity: false,
-  constitution: false,
-  intelligence: false,
-  wisdom: false,
-  charisma: false,
+  str_st: false,
+  dex_st: false,
+  con_st: false,
+  int_st: false,
+  wis_st: false,
+  cha_st: false,
 };
 
 export const ProficiencyTrait = ({ data, setData }) => {
+  const [allArmorList, setAllArmorList] = useState(false);
+  const [allLanguageList, setAllLanguageList] = useState(false);
+  const [allSkillList, setAllSkillList] = useState(false);
+  const [allToolList, setAllToolList] = useState(false);
+  const [allWeaponList, setAllWeaponList] = useState(false);
+  // Choices
   const [armors, setArmors] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -39,101 +44,157 @@ export const ProficiencyTrait = ({ data, setData }) => {
   return (
     <>
       <h2>Proficiencies</h2>
-      <InputNumber
-        label={'Armor Choices'}
-        field={data.armor_choices}
-        setField={event => setData({ ...data, armor_choices: event })}
-        required={false}
-      />
+      <h3>Armors</h3>
       <InputSelect
-        label={'Armor List'}
+        label={'Armor proficiencies available'}
         field={data.armor_list}
         setField={event => setData({ ...data, armor_list: event })}
         options={armors}
         required={false}
       />
-      <InputNumber
-        label={'Language Choices'}
-        field={data.language_choices}
-        setField={event => setData({ ...data, language_choices: event })}
-        required={false}
+      <InputCheck
+        label={'Gives proficient in this entire list?'}
+        field={allArmorList}
+        setField={event => {
+          setAllArmorList(event);
+          setData({ ...data, armor_choices: undefined });
+        }}
+        disabled={data.armor_list ? false : true}
       />
+      {allArmorList || setData({ ...data, armor_choices: 1 })}
+      <InputNumber
+        label={'Choices number'}
+        field={data.armor_choices}
+        setField={event => setData({ ...data, armor_choices: event })}
+        min={1}
+        disabled={allArmorList ? true : false || data.armor_list ? false : true}
+      />
+      <h3>Languages</h3>
       <InputSelect
-        label={'Language List'}
+        label={'Language proficiencies available'}
         field={data.language_list}
         setField={event => setData({ ...data, language_list: event })}
         options={languages}
         required={false}
       />
-      <InputNumber
-        label={'Skill Choices'}
-        field={data.skill_choices}
-        setField={event => setData({ ...data, skill_choices: event })}
-        required={false}
+      <InputCheck
+        label={'Gives proficient in this entire list?'}
+        field={allLanguageList}
+        setField={event => {
+          setAllLanguageList(event);
+          setData({ ...data, language_choices: undefined });
+        }}
+        disabled={data.language_list ? false : true}
       />
+      {allLanguageList || setData({ ...data, language_choices: 1 })}
+      <InputNumber
+        label={'Choices number'}
+        field={data.language_choices}
+        setField={event => setData({ ...data, language_choices: event })}
+        disabled={allLanguageList ? true : false || data.armor_list ? false : true}
+      />
+      <h3>Skills</h3>
       <InputSelect
-        label={'Skill List'}
+        label={'Skill proficiencies available'}
         field={data.skill_list}
         setField={event => setData({ ...data, skill_list: event })}
         options={skills}
         required={false}
       />
-      <InputNumber
-        label={'Tool Choices'}
-        field={data.tool_choices}
-        setField={event => setData({ ...data, tool_choices: event })}
-        required={false}
+      <InputCheck
+        label={'Gives proficient in this entire list?'}
+        field={allSkillList}
+        setField={event => {
+          setAllSkillList(event);
+          setData({ ...data, skill_choices: undefined });
+        }}
+        disabled={data.skill_list ? false : true}
       />
+      {allSkillList || setData({ ...data, skill_choices: 1 })}
+      <InputNumber
+        label={'Choices number'}
+        field={data.skill_choices}
+        setField={event => setData({ ...data, skill_choices: event })}
+        disabled={allSkillList ? true : false || data.skill_list ? false : true}
+      />
+      <h3>Tools</h3>
       <InputSelect
-        label={'Tool List'}
+        label={'Tool proficiencies available'}
         field={data.tool_list}
         setField={event => setData({ ...data, tool_list: event })}
         options={tools}
         required={false}
       />
-      <InputNumber
-        label={'Weapon Choices'}
-        field={data.weapon_choices}
-        setField={event => setData({ ...data, weapon_choices: event })}
-        required={false}
+      <InputCheck
+        label={'Gives proficient in this entire list?'}
+        field={allToolList}
+        setField={event => {
+          setAllToolList(event);
+          setData({ ...data, tool_choices: undefined });
+        }}
+        disabled={data.tool_list ? false : true}
       />
+      {allToolList || setData({ ...data, tool_choices: 1 })}
+      <InputNumber
+        label={'Choices number'}
+        field={data.tool_choices}
+        setField={event => setData({ ...data, tool_choices: event })}
+        disabled={allToolList ? true : false || data.tool_list ? false : true}
+      />
+      <h3>Weapons</h3>
       <InputSelect
-        label={'Weapon List'}
+        label={'Weapon proficiencies available'}
         field={data.weapon_list}
         setField={event => setData({ ...data, weapon_list: event })}
         options={weapons}
         required={false}
       />
+      <InputCheck
+        label={'Gives proficient in this entire list?'}
+        field={allWeaponList}
+        setField={event => {
+          setAllWeaponList(event);
+          setData({ ...data, weapon_choices: undefined });
+        }}
+        disabled={data.weapon_list ? false : true}
+      />
+      {allWeaponList || setData({ ...data, weapon_choices: 1 })}
+      <InputNumber
+        label={'Choices number'}
+        field={data.weapon_choices}
+        setField={event => setData({ ...data, weapon_choices: event })}
+        disabled={allWeaponList ? true : false || data.weapon_list ? false : true}
+      />
       <h3>Saving Throws Proficiencies</h3>
       <InputCheck
         label={'Strength'}
-        field={data.strength}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.str_st}
+        setField={event => setData({ ...data, str_st: event })}
       />
       <InputCheck
         label={'Dexterity'}
-        field={data.dexterity}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.dex_st}
+        setField={event => setData({ ...data, dex_st: event })}
       />
       <InputCheck
         label={'Constitution'}
-        field={data.constitution}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.con_st}
+        setField={event => setData({ ...data, con_st: event })}
       />
       <InputCheck
         label={'Intelligence'}
-        field={data.intelligence}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.int_st}
+        setField={event => setData({ ...data, int_st: event })}
       />
       <InputCheck
         label={'Wisdom'}
-        field={data.wisdom}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.wis_st}
+        setField={event => setData({ ...data, wis_st: event })}
       />
       <InputCheck
         label={'Charisma'}
-        field={data.charisma}
-        setField={event => setData({ ...data, strength: event })}
+        field={data.cha_st}
+        setField={event => setData({ ...data, cha_st: event })}
       />
     </>
   );

@@ -41,42 +41,42 @@ class Entity(BaseModel):
     )
 
     # Ability Score
-    strength = models.IntegerField(
+    str_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
             MinValueValidator(0)
         ]
     )
-    dexterity = models.IntegerField(
+    dex_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
             MinValueValidator(0)
         ]
     )
-    constitution = models.IntegerField(
+    con_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
             MinValueValidator(0)
         ]
     )
-    intelligence = models.IntegerField(
+    int_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
             MinValueValidator(0)
         ]
     )
-    wisdom = models.IntegerField(
+    wis_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
             MinValueValidator(0)
         ]
     )
-    charisma = models.IntegerField(
+    cha_score = models.IntegerField(
         default=10,
         validators=[
             MaxValueValidator(30),
@@ -85,10 +85,6 @@ class Entity(BaseModel):
     )
 
     # Actions
-    spells = models.ManyToManyField(
-        'actions.Spell',
-        blank=True
-    )
     weapons = models.ManyToManyField(
         'actions.Weapon',
         blank=True
@@ -201,22 +197,22 @@ class ProficiencyTrait(models.Model):
     )
 
     # Saving Throw Proficiencies
-    strength = models.BooleanField(
+    str_st = models.BooleanField(
         default=False
     )
-    dexterity = models.BooleanField(
+    dex_st = models.BooleanField(
         default=False
     )
-    constitution = models.BooleanField(
+    con_st = models.BooleanField(
         default=False
     )
-    intelligence = models.BooleanField(
+    int_st = models.BooleanField(
         default=False
     )
-    wisdom = models.BooleanField(
+    wis_st = models.BooleanField(
         default=False
     )
-    charisma = models.BooleanField(
+    cha_st = models.BooleanField(
         default=False
     )
 

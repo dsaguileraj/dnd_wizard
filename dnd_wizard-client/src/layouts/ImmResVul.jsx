@@ -20,7 +20,7 @@ export const ImmResVul = ({ data, setData }) => {
 
   return (
     <>
-      <h2>Immunities, Resistances & Vulneravilities</h2>
+      <h3>Immunities, Resistances & Vulneravilities</h3>
       <InputSelect
         label={'Condition Immunity'}
         field={data.condition_immunity}

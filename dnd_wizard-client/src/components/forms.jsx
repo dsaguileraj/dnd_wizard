@@ -13,7 +13,7 @@ export const Button = ({ label = 'Submit' }) => {
 };
 
 // Inputs
-export const InputCheck = ({ label, field, setField }) => {
+export const InputCheck = ({ label, field, setField, disabled = false }) => {
   return (
     <div>
       <label htmlFor={label}>{label}</label>
@@ -23,12 +23,13 @@ export const InputCheck = ({ label, field, setField }) => {
         id={label}
         value={field}
         onChange={event => setField(event.target.checked)}
+        disabled={disabled}
       />
     </div>
   );
 };
 
-export const InputText = ({ label, field, setField, required = true }) => {
+export const InputText = ({ label, field, setField, disabled = false, required = true }) => {
   return (
     <div>
       <label htmlFor={field}>{label}</label>
@@ -39,13 +40,14 @@ export const InputText = ({ label, field, setField, required = true }) => {
         maxLength={50}
         value={field}
         onChange={event => setField(event.target.value)}
+        disabled={disabled}
         required={required}
       />
     </div>
   );
 };
 
-export const InputTextArea = ({ label, field, setField, required = true }) => {
+export const InputTextArea = ({ label, field, setField, disabled = false, required = true }) => {
   return (
     <div>
       <label htmlFor={field}>{label}</label>
@@ -54,13 +56,14 @@ export const InputTextArea = ({ label, field, setField, required = true }) => {
         id={field}
         value={field}
         onChange={event => setField(event.target.value)}
+        disabled={disabled}
         required={required}
       ></textarea>
     </div>
   );
 };
 
-export const InputNumber = ({ label, field, setField, max = 9223372036854775807n, min = 0, required = true }) => {
+export const InputNumber = ({ label, field, setField, max = 9223372036854775807n, min = 0, disabled = false, required = true }) => {
   return (
     <div>
       <label htmlFor={field}>{label}</label>
@@ -72,13 +75,14 @@ export const InputNumber = ({ label, field, setField, max = 9223372036854775807n
         min={min}
         value={field}
         onChange={event => setField(event.target.value)}
+        disabled={disabled}
         required={required}
       />
     </div>
   );
 };
 
-export const InputSelect = ({ label, field, setField, options, multiple = false, required = true }) => {
+export const InputSelect = ({ label, field, setField, options, multiple = false, disabled = false, required = true }) => {
   let count = 0;
   return (
     <div>
@@ -89,6 +93,7 @@ export const InputSelect = ({ label, field, setField, options, multiple = false,
         value={field}
         multiple={multiple}
         onChange={event => setField(event.target.value)}
+        disabled={disabled}
         required={required}
       >
         {options.map(option => (
