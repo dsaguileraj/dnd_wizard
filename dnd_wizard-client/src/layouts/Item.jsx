@@ -12,11 +12,10 @@ export const fieldsItem = {
 };
 
 export const Item = ({ data, setData }) => {
+  // Choices
   const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    axiosGET(setCategories, 'rules', 'category');
-  }, []);
+  useEffect(() => axiosGET(setCategories, 'rules', 'category'), []);
 
   return (
     <>

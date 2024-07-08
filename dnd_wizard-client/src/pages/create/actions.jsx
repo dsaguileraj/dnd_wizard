@@ -1,722 +1,462 @@
-// import { useEffect, useState } from 'react';
-// import { axiosInstance, getAllQuery } from '../../api.js';
-// import { Form, InputCheck, InputNumber, InputSelect, InputText, InputTextArea } from '../../components/forms.jsx';
-// import { COINS } from '../../core/choices.js';
+import { useEffect, useState } from 'react';
+import { axiosGET, axiosPOST } from '../../api.js';
+import { Form, InputCheck, InputNumber, InputSelect, InputTextArea } from '../../components/forms.jsx';
+import { Item, fieldsItem } from '../../layouts/Item.jsx';
+import { DescriptionModel, fieldsDescriptionModel } from '../../layouts/DescriptionModel.jsx';
+import { DICES, MEASURE_TIME } from '../../core/choices.js';
 
-// export const AdventureGearPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
-//   const [category, setCategory] = useState(undefined);
-//   const [categoryList, setCategoryList] = useState([]);
-//   const [cost, setCost] = useState(0);
-//   const [coin, setCoin] = useState('cp');
-//   const [weight, setWeight] = useState(0);
-//   const [weightMeasure, setWeightMeasure] = useState('lb');
-//   const [description, setDescription] = useState('');
+export const AdventureGearPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsItem,
+    description: '',
+  });
 
-//   useEffect(() => {
-//     getAllQuery(setCategoryList, 'rules', 'category');
-//   }, []);
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/actions/equipment/',
+      form,
+      setForm({
+        ...fieldsItem,
+        description: '',
+      })
+    );
+  };
 
-//   let categoryOptions = [{ value: undefined, label: '---' }];
-//   categoryList.forEach(object => categoryOptions.push({ value: object.id, label: object.name }));
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Adventure Gear'}
+    >
+      <Item
+        data={form}
+        setData={setForm}
+      />
+      <InputTextArea
+        label={'Description'}
+        field={form.description}
+        setField={event => setForm({ ...form, description: event })}
+        required={false}
+      />
+    </Form>
+  );
+};
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/equipment/', {
-//         name: name,
-//         category: category,
-//         cost: cost,
-//         coin: coin,
-//         weight: weight,
-//         weight_measure: weightMeasure,
-//         description: description,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//         setCategory(undefined);
-//         setCost(0);
-//         setCoin('cp');
-//         setWeight(0);
-//         setWeightMeasure('lb');
-//         setDescription('');
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         setErrorMessage('An error occurred. Please try again later.');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Adventure Gear'
-//     >
-//       <InputText
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//       <InputSelect
-//         field={category}
-//         handleChange={setCategory}
-//         label='Category'
-//         options={categoryOptions}
-//       />
-//       <InputNumber
-//         field={cost}
-//         handleChange={setCost}
-//         label='Cost'
-//       />
-//       <InputSelect
-//         field={coin}
-//         handleChange={setCoin}
-//         label='Coin'
-//         options={COINS}
-//       />
-//       <InputNumber
-//         field={weight}
-//         handleChange={setWeight}
-//         label='Weight'
-//       />
-//       <InputSelect
-//         field={weightMeasure}
-//         handleChange={setWeightMeasure}
-//         label='Weight Measure'
-//         options={MEASURE_MASS}
-//       />
-//       <InputTextArea
-//         field={description}
-//         handleChange={setDescription}
-//         label='Description'
-//       />
-//     </Form>
-//   );
-// };
+export const ArmorPOST = () => {
+  // Choices
+  const [creatureTypes, setCreatureTypes] = useState([]);
+  const [properties, setProperties] = useState([]);
+  // Form
+  const [form, setForm] = useState({
+    ...fieldsItem,
+    armor_class: 0,
+    gives_dex_bonus: false,
+    dex_bonus: 0,
+    required_str: 0,
+    property: [],
+    compatibility: [],
+  });
 
-// export const ArmorPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
-//   const [category, setCategory] = useState(undefined);
-//   const [categoryList, setCategoryList] = useState([]);
-//   const [cost, setCost] = useState(0);
-//   const [coin, setCoin] = useState('cp');
-//   const [weight, setWeight] = useState(0);
-//   const [weightMeasure, setWeightMeasure] = useState('lb');
-//   const [armorClass, setArmorClass] = useState(0);
-//   const [dexBonus, setDexBonus] = useState(false);
-//   const [maxDexBonus, setMaxDexBonus] = useState(0);
-//   const [minStr, setMinStr] = useState(0);
-//   const [disadvantageStealth, setDisadvantageStealth] = useState(false);
+  useEffect(() => {
+    axiosGET(setCreatureTypes, 'rules', 'creature_type');
+    axiosGET(setProperties, 'rules', 'property');
+  }, []);
 
-//   useEffect(() => {
-//     getAllQuery(setCategoryList, 'rules', 'category');
-//   }, []);
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/actions/armor/',
+      form,
+      setForm({
+        ...fieldsItem,
+        armor_class: 0,
+        gives_dex_bonus: false,
+        dex_bonus: 0,
+        required_str: 0,
+        property: [],
+        compatibility: [],
+      })
+    );
+  };
 
-//   let categoryOptions = [{ value: undefined, label: '---' }];
-//   categoryList.forEach(object => categoryOptions.push({ value: object.id, label: object.name }));
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Armor'}
+    >
+      <Item
+        data={form}
+        setData={setForm}
+      />
+      <InputNumber
+        label={'Armor Class (AC)'}
+        field={form.armor_class}
+        setField={event => setForm({ ...form, armor_class: event })}
+      />
+      <InputCheck
+        label={'Gives DEX bonus?'}
+        field={form.gives_dex_bonus}
+        setField={event => setForm({ ...form, gives_dex_bonus: event })}
+      />
+      <InputNumber
+        label={'DEX bonus'}
+        field={form.dex_bonus}
+        setField={event => setForm({ ...form, dex_bonus: event })}
+        disabled={!form.gives_dex_bonus}
+      />
+      <InputNumber
+        label={'Required STR'}
+        field={form.required_str}
+        setField={event => setForm({ ...form, required_str: event })}
+      />
+      <InputSelect
+        label={'Property'}
+        field={form.property}
+        setField={event => setForm({ ...form, property: event })}
+        options={properties}
+        multiple={true}
+        required={false}
+      />
+      <InputSelect
+        label={'Compatible with'}
+        field={form.compatibility}
+        setField={event => setForm({ ...form, compatibility: event })}
+        options={creatureTypes}
+        multiple={true}
+      />
+    </Form>
+  );
+};
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/armor/', {
-//         name: name,
-//         category: category,
-//         cost: cost,
-//         coin: coin,
-//         weight: weight,
-//         weight_measure: weightMeasure,
-//         armor_class: armorClass,
-//         dex_bonus: dexBonus,
-//         max_dex_bonus: maxDexBonus,
-//         min_str: minStr,
-//         disadvantage_stealth: disadvantageStealth,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//         setCategory(undefined);
-//         setCost(0);
-//         setCoin('cp');
-//         setWeight(0);
-//         setWeightMeasure('lb');
-//         setArmorClass(0);
-//         setDexBonus(false);
-//         setMaxDexBonus(0);
-//         setMinStr(0);
-//         setDisadvantageStealth(false);
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         setErrorMessage('An error occurred. Please try again later.');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Armor'
-//     >
-//       <InputText
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//       <InputSelect
-//         field={category}
-//         handleChange={setCategory}
-//         label='Category'
-//         options={categoryOptions}
-//       />
-//       <InputNumber
-//         field={cost}
-//         handleChange={setCost}
-//         label='Cost'
-//       />
-//       <InputSelect
-//         field={coin}
-//         handleChange={setCoin}
-//         label='Coin'
-//         options={COINS}
-//       />
-//       <InputNumber
-//         field={weight}
-//         handleChange={setWeight}
-//         label='Weight'
-//       />
-//       <InputSelect
-//         field={weightMeasure}
-//         handleChange={setWeightMeasure}
-//         label='Weight Measure'
-//         options={MEASURE_MASS}
-//       />
-//       <InputNumber
-//         field={armorClass}
-//         handleChange={setArmorClass}
-//         label='Armor Class (AC)'
-//       />
-//       <InputCheck
-//         handleChange={setDexBonus}
-//         label='DEX Bonus'
-//       />
-//       <InputNumber
-//         field={maxDexBonus}
-//         handleChange={setMaxDexBonus}
-//         label='Max DEX Bonus'
-//       />
-//       <InputNumber
-//         field={minStr}
-//         handleChange={setMinStr}
-//         label='Min. STR'
-//       />
-//       <InputCheck
-//         handleChange={setDisadvantageStealth}
-//         label='Stealth Disadvantage'
-//       />
-//     </Form>
-//   );
-// };
+export const SpellPOST = () => {
+  // Choices
+  const [damageTypes, setDamageTypes] = useState([]);
+  const [magicSchools, setMagicSchools] = useState([]);
+  // Form
+  const [form, setForm] = useState({
+    ...fieldsDescriptionModel,
+    magic_school: undefined,
+    damage_type: undefined,
+    level: 0,
+    spell_range: 0,
+    // Components
+    verbal: false,
+    somatic: false,
+    material: false,
+    materials: '',
+    // Casting
+    is_ritual: false,
+    casting_time: 0,
+    casting_measure: MEASURE_TIME[0].value,
+    // Duration
+    need_concentration: false,
+    duration: 0,
+    duration_measure: MEASURE_TIME[0].value,
+  });
 
-// export const SpellPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
-//   const [description, setDescription] = useState('');
-//   const [entityClass, setEntityClass] = useState(1);
-//   const [entityClassList, setEntityClassList] = useState([]);
-//   const [magicSchool, setMagicSchool] = useState(1);
-//   const [magicSchoolList, setMagicSchoolList] = useState([]);
-//   const [damageType, setDamageType] = useState(1);
-//   const [damageTypeList, setDamageTypeList] = useState([]);
-//   const [level, setLevel] = useState(0);
-//   const [isRitual, setIsRitual] = useState(false);
-//   const [verbal, setVerbal] = useState(false);
-//   const [somatic, setSomatic] = useState(false);
-//   const [material, setMaterial] = useState(false);
-//   const [materials, setMaterials] = useState('');
-//   const [spellRange, setSpellRange] = useState(0);
-//   const [castingTime, setCastingTime] = useState(0);
-//   const [castingMeasure, setCastingMeasure] = useState('a');
-//   const [needConcentration, setNeedConcentration] = useState(false);
-//   const [duration, setDuration] = useState(0);
-//   const [durationMeasure, setDurationMeasure] = useState('a');
+  useEffect(() => {
+    axiosGET(setDamageTypes, 'rules', 'damage_type');
+    axiosGET(setMagicSchools, 'rules', 'magic_school');
+  }, []);
 
-//   useEffect(() => {
-//     getAllQuery(setEntityClassList, 'traits', 'class');
-//     getAllQuery(setMagicSchoolList, 'rules', 'magic_school');
-//     getAllQuery(setDamageTypeList, 'rules', 'damage_type');
-//   }, []);
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/actions/spell/',
+      form,
+      setForm({
+        ...fieldsDescriptionModel,
+        magic_school: undefined,
+        damage_type: undefined,
+        level: 0,
+        spell_range: 0,
+        // Components
+        verbal: false,
+        somatic: false,
+        material: false,
+        materials: '',
+        // Casting
+        is_ritual: false,
+        casting_time: 0,
+        casting_measure: MEASURE_TIME[0].value,
+        // Duration
+        need_concentration: false,
+        duration: 0,
+        duration_measure: MEASURE_TIME[0].value,
+      })
+    );
+  };
 
-//   let entityClassOptions = [];
-//   let magicSchoolOptions = [];
-//   let damageTypeOptions = [{ value: undefined, label: '---' }];
-//   entityClassList.forEach(object => entityClassOptions.push({ value: object.id, label: object.name }));
-//   magicSchoolList.forEach(object => magicSchoolOptions.push({ value: object.id, label: object.name }));
-//   damageTypeList.forEach(object => damageTypeOptions.push({ value: object.id, label: object.name }));
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Spell'}
+    >
+      <DescriptionModel
+        data={form}
+        setData={setForm}
+      />
+      <InputSelect
+        label={'Magic School'}
+        field={form.magic_school}
+        setField={event => setForm({ ...form, magic_school: event })}
+        options={magicSchools}
+      />
+      <InputSelect
+        label={'Damage Type'}
+        field={form.damage_type}
+        setField={event => setForm({ ...form, damage_type: event })}
+        options={damageTypes}
+      />
+      <InputNumber
+        label={'Level'}
+        field={form.level}
+        setField={event => setForm({ ...form, level: event })}
+        max={9}
+      />
+      <InputNumber
+        label={'Range'}
+        field={form.spell_range}
+        setField={event => setForm({ ...form, spell_range: event })}
+        min={-1}
+      />
+      <h2>Components</h2>
+      <InputCheck
+        label={'Verbal'}
+        field={form.verbal}
+        setField={event => setForm({ ...form, verbal: event })}
+      />
+      <InputCheck
+        label={'Somatic'}
+        field={form.somatic}
+        setField={event => setForm({ ...form, somatic: event })}
+      />
+      <InputCheck
+        label={'Material'}
+        field={form.material}
+        setField={event => setForm({ ...form, material: event })}
+      />
+      <InputTextArea
+        label={'Materials'}
+        field={form.materials}
+        setField={event => setForm({ ...form, materials: event })}
+        disabled={!form.material}
+      />
+      <h2>Casting</h2>
+      <InputNumber
+        label={'Time'}
+        field={form.casting_time}
+        setField={event => setForm({ ...form, casting_time: event })}
+        min={-1}
+      />
+      <InputSelect
+        label={'Measure'}
+        field={form.casting_measure}
+        setField={event => setForm({ ...form, casting_measure: event })}
+        options={MEASURE_TIME}
+      />
+      <InputCheck
+        label={'Is a ritual?'}
+        field={form.is_ritual}
+        setField={event => setForm({ ...form, is_ritual: event })}
+      />
+      <h2>Duration</h2>
+      <InputNumber
+        label={'Time'}
+        field={form.duration}
+        setField={event => setForm({ ...form, duration: event })}
+      />
+      <InputSelect
+        label={'Measure'}
+        field={form.duration_measure}
+        setField={event => setForm({ ...form, duration_measure: event })}
+        options={MEASURE_TIME}
+      />
+      <InputCheck
+        label={'Need concentration?'}
+        field={form.need_concentration}
+        setField={event => setForm({ ...form, need_concentration: event })}
+      />
+    </Form>
+  );
+};
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/spell/', {
-//         name: name,
-//         description: description,
-//         entity_class: entityClass,
-//         magic_school: magicSchool,
-//         damage_type: damageType,
-//         level: level,
-//         is_ritual: isRitual,
-//         verbal: verbal,
-//         somatic: somatic,
-//         material: material,
-//         materials: materials,
-//         spell_range: spellRange,
-//         casting_time: castingTime,
-//         casting_measure: castingMeasure,
-//         need_concentration: needConcentration,
-//         duration: duration,
-//         duration_measure: durationMeasure,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//         setDescription('');
-//         setEntityClass(1);
-//         setEntityClassList([]);
-//         setMagicSchool(1);
-//         setMagicSchoolList([]);
-//         setDamageType(1);
-//         setDamageTypeList([]);
-//         setLevel(0);
-//         setIsRitual(false);
-//         setVerbal(false);
-//         setSomatic(false);
-//         setMaterial(false);
-//         setMaterials('');
-//         setSpellRange(0);
-//         setCastingTime(0);
-//         setCastingMeasure('a');
-//         setNeedConcentration(false);
-//         setDuration(0);
-//         setDurationMeasure('a');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Spell'
-//     >
-//       <InputText
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//       <InputTextArea
-//         field={description}
-//         handleChange={setDescription}
-//         label='Description'
-//       />
-//       <InputSelect
-//         field={entityClass}
-//         handleChange={setEntityClass}
-//         label='Classes'
-//         multiple={true}
-//         options={entityClassOptions}
-//       />
-//       <InputSelect
-//         field={magicSchool}
-//         handleChange={setMagicSchool}
-//         label='Magic School'
-//         options={magicSchoolOptions}
-//       />
-//       <InputSelect
-//         field={damageType}
-//         handleChange={setDamageType}
-//         label='Damage Type'
-//         options={damageTypeOptions}
-//       />
-//       <InputNumber
-//         field={level}
-//         handleChange={setLevel}
-//         label='Level'
-//         max={9}
-//       />
-//       <InputNumber
-//         field={spellRange}
-//         handleChange={setSpellRange}
-//         label='Range'
-//       />
-//       <h2>Components</h2>
-//       <InputCheck
-//         field={verbal}
-//         handleChange={setVerbal}
-//         label='Verbal'
-//       />
-//       <InputCheck
-//         field={somatic}
-//         handleChange={setSomatic}
-//         label='Somatic'
-//       />
-//       <InputCheck
-//         field={material}
-//         handleChange={setMaterial}
-//         label='Material'
-//       />
-//       {material && (
-//         <InputTextArea
-//           field={materials}
-//           handleChange={setMaterials}
-//           label='Materials Description'
-//         />
-//       )}
-//       <h2>Casting</h2>
-//       <InputCheck
-//         field={isRitual}
-//         handleChange={setIsRitual}
-//         label='Ritual'
-//       />
-//       <InputNumber
-//         field={castingTime}
-//         handleChange={setCastingTime}
-//         label='Time'
-//       />
-//       <InputNumber
-//         field={castingMeasure}
-//         handleChange={setCastingMeasure}
-//         label='Measure'
-//       />
-//       <h2>Duration</h2>
-//       <InputCheck
-//         field={needConcentration}
-//         handleChange={setNeedConcentration}
-//         label='Need Concentration?'
-//       />
-//       <InputNumber
-//         field={duration}
-//         handleChange={setDuration}
-//         label='Time'
-//       />
-//       <InputNumber
-//         field={durationMeasure}
-//         handleChange={setDurationMeasure}
-//         label='Measure'
-//       />
-//     </Form>
-//   );
-// };
+export const ToolPOST = () => {
+  const [form, setForm] = useState({
+    ...fieldsItem,
+    description: '',
+  });
 
-// export const ToolPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
-//   const [category, setCategory] = useState(undefined);
-//   const [categoryList, setCategoryList] = useState([]);
-//   const [cost, setCost] = useState(0);
-//   const [coin, setCoin] = useState('cp');
-//   const [weight, setWeight] = useState(0);
-//   const [weightMeasure, setWeightMeasure] = useState('lb');
-//   const [description, setDescription] = useState('');
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/actions/tool/',
+      form,
+      setForm({
+        ...fieldsItem,
+        description: '',
+      })
+    );
+  };
 
-//   useEffect(() => {
-//     getAllQuery(setCategoryList, 'rules', 'category');
-//   }, []);
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Tool'}
+    >
+      <Item
+        data={form}
+        setData={setForm}
+      />
+      <InputTextArea
+        label={'Description'}
+        field={form.description}
+        setField={event => setForm({ ...form, description: event })}
+        required={false}
+      />
+    </Form>
+  );
+};
 
-//   let categoryOptions = [{ value: undefined, label: '---' }];
-//   categoryList.forEach(object => categoryOptions.push({ value: object.id, label: object.name }));
+export const TrinketPOST = () => {
+  const [form, setForm] = useState({
+    name: '',
+  });
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/tool/', {
-//         name: name,
-//         category: category,
-//         cost: cost,
-//         coin: coin,
-//         weight: weight,
-//         weight_measure: weightMeasure,
-//         description: description,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//         setCategory(undefined);
-//         setCost(0);
-//         setCoin('cp');
-//         setWeight(0);
-//         setWeightMeasure('lb');
-//         setDescription('');
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         setErrorMessage('An error occurred. Please try again later.');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Adventure Gear'
-//     >
-//       <InputText
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//       <InputSelect
-//         field={category}
-//         handleChange={setCategory}
-//         label='Category'
-//         options={categoryOptions}
-//       />
-//       <InputNumber
-//         field={cost}
-//         handleChange={setCost}
-//         label='Cost'
-//       />
-//       <InputSelect
-//         field={coin}
-//         handleChange={setCoin}
-//         label='Coin'
-//         options={COINS}
-//       />
-//       <InputNumber
-//         field={weight}
-//         handleChange={setWeight}
-//         label='Weight'
-//       />
-//       <InputSelect
-//         field={weightMeasure}
-//         handleChange={setWeightMeasure}
-//         label='Weight Measure'
-//         options={MEASURE_MASS}
-//       />
-//       <InputTextArea
-//         field={description}
-//         handleChange={setDescription}
-//         label='Description'
-//       />
-//     </Form>
-//   );
-// };
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST('/actions/trinket/', form, setForm({ name: '' }));
+  };
 
-// export const TrinketPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Trinket'}
+    >
+      <InputTextArea
+        label={'Description'}
+        field={form.name}
+        setField={event => setForm({ ...form, name: event })}
+      />
+    </Form>
+  );
+};
 
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/trinket/', {
-//         name: name,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         setErrorMessage('An error occurred. Please try again later.');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Trinket'
-//     >
-//       <InputTextArea
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//     </Form>
-//   );
-// };
+export const WeaponPOST = () => {
+  // Choices
+  const [damageTypes, setDamageTypes] = useState([]);
+  const [properties, setProperties] = useState([]);
+  // Form
+  const [form, setForm] = useState({
+    ...fieldsItem,
+    dices: 0,
+    hit_dice: undefined,
+    bonus: 0,
+    damage_type: undefined,
+    property: [],
+    melee_weapon: false,
+    melee_range: undefined,
+    ranged_weapon: false,
+    min_range: undefined,
+    max_range: undefined,
+  });
 
-// export const WeaponPostForm = () => {
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const [name, setName] = useState('');
-//   const [category, setCategory] = useState(undefined);
-//   const [categoryList, setCategoryList] = useState([]);
-//   const [cost, setCost] = useState(0);
-//   const [coin, setCoin] = useState('cp');
-//   const [weight, setWeight] = useState(0);
-//   const [weightMeasure, setWeightMeasure] = useState('lb');
-//   const [hitDices, setHitDice] = useState(1);
-//   const [diceSides, setDiceSides] = useState(4);
-//   const [modifier, setModifier] = useState(0);
-//   const [damageType, setDamageType] = useState(undefined);
-//   const [damageTypeList, setDamageTypeList] = useState([]);
-//   const [property, setProperty] = useState(undefined);
-//   const [propertylist, setPropertyList] = useState([]);
-//   const [rangedWeapon, setRangedWeapon] = useState(false);
-//   const [normalRange, setNormalRange] = useState(0);
-//   const [maxRange, setMaxRange] = useState(0);
+  useEffect(() => {
+    axiosGET(setDamageTypes, 'rules', 'damage_type');
+    axiosGET(setProperties, 'rules', 'property');
+  }, []);
 
-//   useEffect(() => {
-//     getAllQuery(setCategoryList, 'traits', 'category');
-//     getAllQuery(setDamageTypeList, 'rules', 'damage_type');
-//     getAllQuery(setPropertyList, 'rules', 'property');
-//   }, []);
+  const handleSubmit = event => {
+    event.preventDefault();
+    axiosPOST(
+      '/actions/weapon/',
+      form,
+      setForm({
+        ...fieldsItem,
+        dices: 0,
+        hit_dice: undefined,
+        bonus: 0,
+        damage_type: undefined,
+        property: [],
+        melee_weapon: false,
+        melee_range: undefined,
+        ranged_weapon: false,
+        min_range: undefined,
+        max_range: undefined,
+      })
+    );
+  };
 
-//   let categoryOptions = [{ value: undefined, label: '---' }];
-//   let damageTypeOptions = [{ value: undefined, label: '---' }];
-//   let propertyOptions = [{ value: undefined, label: '---' }];
-//   categoryList.forEach(object => categoryOptions.push({ value: object.id, label: object.name }));
-//   damageTypeList.forEach(object => damageTypeOptions.push({ value: object.id, label: object.name }));
-//   propertylist.forEach(object => propertyOptions.push({ value: object.id, label: object.name }));
-
-//   const handleSubmit = event => {
-//     event.preventDefault();
-//     axiosInstance
-//       .post('/actions/tool/', {
-//         name: name,
-//         category: category,
-//         cost: cost,
-//         coin: coin,
-//         weight: weight,
-//         weight_measure: weightMeasure,
-//         hit_dices: hitDices,
-//         dice_sides: diceSides,
-//         modifier: modifier,
-//         damage_type: damageType,
-//         property: property,
-//         ranged_weapon: rangedWeapon,
-//         normal_range: normalRange,
-//         max_range: maxRange,
-//       })
-//       .then(response => {
-//         console.log(response.data);
-//         setErrorMessage('');
-//         setName('');
-//         setCategory(undefined);
-//         setCost(0);
-//         setCoin('cp');
-//         setWeight(0);
-//         setWeightMeasure('lb');
-//         setHitDice(0);
-//         setDiceSides(0);
-//         setModifier(0);
-//         setDamageType(undefined);
-//         setDamageTypeList([]);
-//         setProperty(undefined);
-//         setPropertyList([]);
-//         setRangedWeapon(false);
-//         setNormalRange(0);
-//         setMaxRange(0);
-//       })
-//       .catch(error => {
-//         console.log(error);
-//         setErrorMessage('An error occurred. Please try again later.');
-//       });
-//   };
-//   return (
-//     <Form
-//       errorMessage={errorMessage}
-//       handleSubmit={handleSubmit}
-//       header='Create Weapon'
-//     >
-//       <InputText
-//         field={name}
-//         handleChange={setName}
-//         label='Name'
-//       />
-//       <InputSelect
-//         field={category}
-//         handleChange={setCategory}
-//         label='Category'
-//         options={categoryOptions}
-//       />
-//       <InputNumber
-//         field={cost}
-//         handleChange={setCost}
-//         label='Cost'
-//       />
-//       <InputSelect
-//         field={coin}
-//         handleChange={setCoin}
-//         label='Coin'
-//         options={COINS}
-//       />
-//       <InputNumber
-//         field={weight}
-//         handleChange={setWeight}
-//         label='Weight'
-//       />
-//       <InputSelect
-//         field={weightMeasure}
-//         handleChange={setWeightMeasure}
-//         label='Weight Measure'
-//         options={MEASURE_MASS}
-//       />
-//       <InputNumber
-//         field={hitDices}
-//         handleChange={setHitDice}
-//         label='Hit Dices'
-//       />
-//       {hitDices != 0 ? (
-//         <InputSelect
-//           field={diceSides}
-//           handleChange={setDiceSides}
-//           label='Dice Sides'
-//           options={[
-//             { value: 4, label: 'd4' },
-//             { value: 6, label: 'd6' },
-//             { value: 8, label: 'd8' },
-//             { value: 10, label: 'd10' },
-//             { value: 12, label: 'd12' },
-//           ]}
-//         />
-//       ) : (
-//         <InputSelect
-//           field={diceSides}
-//           handleChange={setDiceSides}
-//           label='Dice Sides'
-//           options={[{ value: 0, label: '---' }]}
-//         />
-//       )}
-//       <InputNumber
-//         field={modifier}
-//         handleChange={setModifier}
-//         label='Modifier'
-//       />
-//       <InputSelect
-//         field={damageType}
-//         handleChange={setDamageType}
-//         label='Damage Type'
-//         options={damageTypeOptions}
-//       />
-//       <InputSelect
-//         field={property}
-//         handleChange={setProperty}
-//         label='Properties'
-//         multiple={true}
-//         options={propertyOptions}
-//       />
-//       <InputCheck
-//         field={rangedWeapon}
-//         handleChange={setRangedWeapon}
-//         label='Ranged Weapon?'
-//       />
-//       {rangedWeapon && (
-//         <InputNumber
-//           field={normalRange}
-//           handleChange={setNormalRange}
-//           label='Normal Range'
-//         />
-//       )}
-//       {rangedWeapon && (
-//         <InputNumber
-//           field={maxRange}
-//           handleChange={setMaxRange}
-//           label='Max Range'
-//         />
-//       )}
-//     </Form>
-//   );
-// };
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      header={'Create Weapon'}
+    >
+      <Item
+        data={form}
+        setData={setForm}
+      />
+      <InputNumber
+        label={'Dices'}
+        field={form.dices}
+        setField={event => setForm({ ...form, dices: event })}
+      />
+      <InputSelect
+        label={'Hit Dice'}
+        field={form.hit_dice}
+        setField={event => setForm({ ...form, hit_dice: event })}
+        options={DICES}
+        disabled={!form.dices}
+      />
+      <InputNumber
+        label={'Bonus'}
+        field={form.bonus}
+        setField={event => setForm({ ...form, bonus: event })}
+      />
+      <InputSelect
+        label={'Damage Type'}
+        field={form.damage_type}
+        setField={event => setForm({ ...form, damage_type: event })}
+        required={false}
+      />
+      <InputSelect
+        label={'Property'}
+        field={form.property}
+        setField={event => setForm({ ...form, property: event })}
+        multiple={true}
+        required={false}
+      />
+      <InputCheck
+        label={'Is a melee weapon?'}
+        field={form.melee_weapon}
+        setField={event => setForm({ ...form, melee_weapon: event })}
+      />
+      <InputNumber
+        label={'Melee range'}
+        field={form.melee_range}
+        setField={event => setForm({ ...form, melee_range: event })}
+        min={1}
+        disabled={!form.melee_weapon}
+      />
+      <InputCheck
+        label={'Is a ranged weapon?'}
+        field={form.ranged_weapon}
+        setField={event => setForm({ ...form, ranged_weapon: event })}
+      />
+      <InputNumber
+        label={'Min range'}
+        field={form.min}
+        setField={event => setForm({ ...form, min: event })}
+        min={2}
+        disabled={!form.ranged_weapon}
+      />
+      <InputNumber
+        label={'Max range'}
+        field={form.max_range}
+        setField={event => setForm({ ...form, max_range: event })}
+        min={3}
+        disabled={!form.ranged_weapon}
+      />
+    </Form>
+  );
+};

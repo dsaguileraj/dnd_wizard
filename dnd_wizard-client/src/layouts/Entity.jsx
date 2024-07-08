@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { InputNumber, InputSelect } from '../components/forms.jsx';
+import { InputNumber, InputSelect, InputText } from '../components/forms.jsx';
 import { axiosGET } from '../api.js';
 
 export const fieldsEntity = {
+  name: '',
   race: undefined,
   hit_points: 1,
   str_score: 0,
@@ -16,6 +17,7 @@ export const fieldsEntity = {
 };
 
 export const Entity = ({ data, setData }) => {
+  // Choices
   const [races, setRaces] = useState([]);
   const [weapons, setWeapons] = useState([]);
 
@@ -26,6 +28,11 @@ export const Entity = ({ data, setData }) => {
 
   return (
     <>
+      <InputText
+        label={'Name'}
+        field={data.name}
+        setField={event => setData({ ...data, name: event })}
+      />
       <InputSelect
         label={'Race'}
         field={data.race}

@@ -8,11 +8,10 @@ export const fieldsPersonalCharacteristic = {
 };
 
 export const PersonalCharacteristic = ({ data, setData }) => {
+  // Choices
   const [backgrounds, setBackgrounds] = useState([]);
 
-  useEffect(() => {
-    axiosGET(setBackgrounds, 'traits', 'background');
-  }, []);
+  useEffect(() => axiosGET(setBackgrounds, 'traits', 'background'), []);
 
   return (
     <>

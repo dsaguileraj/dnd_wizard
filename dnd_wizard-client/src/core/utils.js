@@ -4,6 +4,11 @@ export const findFieldName = (query, id) => {
   return category ? category : '---';
 };
 
+export const spellcasterClass = (query, id) => {
+  const index = query.findIndex(dict => dict.id == id);
+  return query[index].innate_spellcaster
+}
+
 export const calculateLevel = experience => {
   const LEVELS = {
     1: 0,

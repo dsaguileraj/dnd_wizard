@@ -122,7 +122,7 @@ export const DamageTypePOST = () => {
   return (
     <Form
       handleSubmit={handleSubmit}
-      header={'Create Creature Type'}
+      header={'Create Damage Type'}
     >
       <DescriptionModel
         data={form}

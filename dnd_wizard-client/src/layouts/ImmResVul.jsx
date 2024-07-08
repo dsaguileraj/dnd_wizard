@@ -10,6 +10,7 @@ export const fieldsImmResVul = {
 };
 
 export const ImmResVul = ({ data, setData }) => {
+  // Choices
   const [conditions, setConditions] = useState([]);
   const [damageTypes, setDamageTypes] = useState([]);
 

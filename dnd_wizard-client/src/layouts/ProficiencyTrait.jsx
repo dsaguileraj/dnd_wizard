@@ -21,6 +21,7 @@ export const fieldsProficiencyTrait = {
 };
 
 export const ProficiencyTrait = ({ data, setData }) => {
+  // Validators
   const [allArmorList, setAllArmorList] = useState(false);
   const [allLanguageList, setAllLanguageList] = useState(false);
   const [allSkillList, setAllSkillList] = useState(false);
@@ -61,13 +62,14 @@ export const ProficiencyTrait = ({ data, setData }) => {
         }}
         disabled={data.armor_list ? false : true}
       />
-      {allArmorList || setData({ ...data, armor_choices: 1 })}
+      {allArmorList ? setData({ ...data, armor_choices: undefined }) : setData({ ...data, armor_choices: 1 })}
       <InputNumber
         label={'Choices number'}
         field={data.armor_choices}
         setField={event => setData({ ...data, armor_choices: event })}
+        max={data.armor_list.length()}
         min={1}
-        disabled={allArmorList ? true : false || data.armor_list ? false : true}
+        disabled={allArmorList || data.armor_list ? false : true}
       />
       <h3>Languages</h3>
       <InputSelect
@@ -86,12 +88,14 @@ export const ProficiencyTrait = ({ data, setData }) => {
         }}
         disabled={data.language_list ? false : true}
       />
-      {allLanguageList || setData({ ...data, language_choices: 1 })}
+      {allLanguageList ? setData({ ...data, language_choices: undefined }) : setData({ ...data, language_choices: 1 })}
       <InputNumber
         label={'Choices number'}
         field={data.language_choices}
         setField={event => setData({ ...data, language_choices: event })}
-        disabled={allLanguageList ? true : false || data.armor_list ? false : true}
+        max={data.language_list.length()}
+        min={1}
+        disabled={allLanguageList || data.armor_list ? false : true}
       />
       <h3>Skills</h3>
       <InputSelect
@@ -110,12 +114,14 @@ export const ProficiencyTrait = ({ data, setData }) => {
         }}
         disabled={data.skill_list ? false : true}
       />
-      {allSkillList || setData({ ...data, skill_choices: 1 })}
+      {allSkillList ? setData({ ...data, skill_choices: undefined }) : setData({ ...data, skill_choices: 1 })}
       <InputNumber
         label={'Choices number'}
         field={data.skill_choices}
         setField={event => setData({ ...data, skill_choices: event })}
-        disabled={allSkillList ? true : false || data.skill_list ? false : true}
+        max={data.skill_list.length()}
+        min={1}
+        disabled={allSkillList || data.skill_list ? false : true}
       />
       <h3>Tools</h3>
       <InputSelect
@@ -134,12 +140,14 @@ export const ProficiencyTrait = ({ data, setData }) => {
         }}
         disabled={data.tool_list ? false : true}
       />
-      {allToolList || setData({ ...data, tool_choices: 1 })}
+      {allToolList ? setData({ ...data, tool_choices: undefined }) : setData({ ...data, tool_choices: 1 })}
       <InputNumber
         label={'Choices number'}
         field={data.tool_choices}
         setField={event => setData({ ...data, tool_choices: event })}
-        disabled={allToolList ? true : false || data.tool_list ? false : true}
+        max={data.tool_list.length()}
+        min={1}
+        disabled={allToolList || data.tool_list ? false : true}
       />
       <h3>Weapons</h3>
       <InputSelect
@@ -158,14 +166,16 @@ export const ProficiencyTrait = ({ data, setData }) => {
         }}
         disabled={data.weapon_list ? false : true}
       />
-      {allWeaponList || setData({ ...data, weapon_choices: 1 })}
+      {allWeaponList ? setData({ ...data, weapon_choices: undefined }) : setData({ ...data, weapon_choices: 1 })}
       <InputNumber
         label={'Choices number'}
         field={data.weapon_choices}
         setField={event => setData({ ...data, weapon_choices: event })}
-        disabled={allWeaponList ? true : false || data.weapon_list ? false : true}
+        max={data.weapon_list.length()}
+        min={1}
+        disabled={allWeaponList || data.weapon_list ? false : true}
       />
-      <h3>Saving Throws Proficiencies</h3>
+      <h3>Saving Throws</h3>
       <InputCheck
         label={'Strength'}
         field={data.str_st}
