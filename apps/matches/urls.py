@@ -4,9 +4,9 @@ from . import views
 
 router = DefaultRouter()
 
-router.register(r'match', views.MatchViewSet)
-router.register(r'match_player', views.MatchPlayerViewSet)
+router.register(r"match", views.MatchViewSet)
+router.register(r"match_player", views.MatchPlayerViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path("", include(router.urls))
 ]

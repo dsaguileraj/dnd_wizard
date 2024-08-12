@@ -1,8 +1,7 @@
 from django.apps import AppConfig
 
-app_label = 'actions'
-
 
 class ActionsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.actions'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.actions"
+    label = "actions"

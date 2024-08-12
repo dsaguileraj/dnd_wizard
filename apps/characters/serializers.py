@@ -5,10 +5,10 @@ from . import models
 class PlayableCharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PlayableCharacter
-        fields = '__all__'
+        fields = "__all__"
 
 
 class NonPlayableCharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.NonPlayableCharacter
-        fields = '__all__'
+        fields = "__all__"
