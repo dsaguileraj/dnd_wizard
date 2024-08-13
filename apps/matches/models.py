@@ -11,13 +11,3 @@ class Match(DescriptionModel):
 
     class Meta:
         ordering = ["name"]
-
-
-class MatchPlayer(models.Model):
-    campaign = models.ForeignKey("matches.Match", on_delete=models.CASCADE)
-    player = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    character = models.ForeignKey(
-        "characters.PlayableCharacter", on_delete=models.SET_NULL, null=True)
-
-    class Meta:
-        unique_together = ["campaign", "player"]
