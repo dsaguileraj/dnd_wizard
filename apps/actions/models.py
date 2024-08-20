@@ -54,7 +54,7 @@ class Trinket(models.Model):
 
 class Weapon(Item):
     dices = models.PositiveSmallIntegerField(default=0)
-    hit_dice = models.SmallIntegerField(null=True, default=None, choices=Dices)
+    hit_dice = models.PositiveSmallIntegerField(null=True, default=None, choices=Dices)
     bonus = models.PositiveSmallIntegerField(default=0)
     damage_type = models.ForeignKey(
         "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None)
