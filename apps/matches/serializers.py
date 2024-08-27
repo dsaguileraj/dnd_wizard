@@ -1,15 +1,9 @@
 from rest_framework import serializers
-from . import models
+from .models import Match
 
 
 class MatchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Match
+        model = Match
         fields = "__all__"
         read_only_fields = ("created_at",)
-
-
-class MatchPlayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.MatchPlayer
-        fields = "__all__"
