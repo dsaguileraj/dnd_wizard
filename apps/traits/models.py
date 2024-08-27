@@ -40,14 +40,14 @@ class Race(BaseModel, ProficiencyTrait):
 
     # Armor Class
     has_nature_armor = models.BooleanField(default=False)
-    nature_armor = models.SmallIntegerField(default=0)
+    nature_armor = models.PositiveSmallIntegerField(default=0)
 
     # Speed
-    burrow = models.SmallIntegerField(default=0)
-    climb = models.SmallIntegerField(default=0)
-    fly = models.SmallIntegerField(default=0)
-    swim = models.SmallIntegerField(default=0)
-    walk = models.SmallIntegerField(default=0)
+    burrow = models.PositiveSmallIntegerField(default=0)
+    climb = models.PositiveSmallIntegerField(default=0)
+    fly = models.PositiveSmallIntegerField(default=0)
+    swim = models.PositiveSmallIntegerField(default=0)
+    walk = models.PositiveSmallIntegerField(default=0)
 
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
@@ -76,17 +76,17 @@ class ProgressTable(models.Model):
     features = models.ManyToManyField("rules.Feature", blank=True)
 
     # Spellcasting
-    known_cantrips = models.SmallIntegerField(default=0)
-    known_spells = models.SmallIntegerField(default=0)
-    spell_slot_1 = models.SmallIntegerField(default=0)
-    spell_slot_2 = models.SmallIntegerField(default=0)
-    spell_slot_3 = models.SmallIntegerField(default=0)
-    spell_slot_4 = models.SmallIntegerField(default=0)
-    spell_slot_5 = models.SmallIntegerField(default=0)
-    spell_slot_6 = models.SmallIntegerField(default=0)
-    spell_slot_7 = models.SmallIntegerField(default=0)
-    spell_slot_8 = models.SmallIntegerField(default=0)
-    spell_slot_9 = models.SmallIntegerField(default=0)
+    known_cantrips = models.PositiveSmallIntegerField(default=0)
+    known_spells = models.PositiveSmallIntegerField(default=0)
+    spell_slot_1 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_2 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_3 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_4 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_5 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_6 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_7 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_8 = models.PositiveSmallIntegerField(default=0)
+    spell_slot_9 = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         ordering = ["entity_class", "level"]
