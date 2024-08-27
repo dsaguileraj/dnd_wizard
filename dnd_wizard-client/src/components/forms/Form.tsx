@@ -4,14 +4,20 @@ import Button from "@components/common/Button";
 interface FormProps {
   header: string;
   children: React.ReactNode;
-  onSubmit?: () => void;
+  className?: string;
+  onSubmit: () => void;
 }
 
-const Form: React.FC<FormProps> = ({ header, children, onSubmit }) => {
+const Form: React.FC<FormProps> = ({
+  header,
+  children,
+  className,
+  onSubmit,
+}) => {
   return (
     <>
       <h1>{header}</h1>
-      <form onSubmit={onSubmit}>
+      <form className={className} onSubmit={onSubmit}>
         {children}
         <Button />
       </form>
