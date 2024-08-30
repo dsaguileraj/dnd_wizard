@@ -6,6 +6,7 @@ import Select from "@components/forms/Select";
 import { Weapon } from "@core/interfaces/actions";
 import { Entity } from "@core/interfaces/core";
 import { Race } from "@core/interfaces/traits";
+import { getOptions } from "@utils/forms";
 
 export const ENTITY_FIELDS: Entity = {
   name: "",
@@ -20,15 +21,12 @@ export const ENTITY_FIELDS: Entity = {
   weapons: [],
 };
 
-interface EntityFieldsProps {
+interface Props {
   value: Entity;
   setValue: (value: Entity) => void;
 }
 
-export const EntityFields: React.FC<EntityFieldsProps> = ({
-  value,
-  setValue,
-}) => {
+export const EntityFields: React.FC<Props> = ({ value, setValue }) => {
   const [races, setRaces] = useState<Race[]>([]);
   const [weapons, setWeapons] = useState<Weapon[]>([]);
 
@@ -48,9 +46,9 @@ export const EntityFields: React.FC<EntityFieldsProps> = ({
       />
       <Select
         label={"Race"}
-        value={value.race}
+        value={value?.race}
         setValue={setValue}
-        options={races}
+        options={getOptions(races)}
       />
       <InputNumber
         label={"Hit Points"}
@@ -102,9 +100,9 @@ export const EntityFields: React.FC<EntityFieldsProps> = ({
       />
       <Select
         label={"Weapons"}
-        value={value.weapons}
+        value={value?.weapons}
         setValue={setValue}
-        options={weapons}
+        options={getOptions(weapons)}
         multiple={true}
       />
     </>

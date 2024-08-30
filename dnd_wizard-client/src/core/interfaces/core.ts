@@ -22,7 +22,7 @@ export interface Entity extends BaseInterface {
 export interface Item extends BaseInterface {
   category?: number;
   cost: number;
-  coin: number;
+  coin: undefined | "cp" | "sp" | "ep" | "gp" | "pp";
   weight: number;
 }
 
