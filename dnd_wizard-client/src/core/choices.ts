@@ -27,6 +27,7 @@ export const ITEM_TYPES = [
 ];
 
 export const COINS = [
+  { value: undefined, label: "---" },
   { value: "cp", label: "Copper" },
   { value: "sp", label: "Silver" },
   { value: "ep", label: "Electrum" },
