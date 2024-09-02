@@ -100,7 +100,7 @@ export const EntityFields: React.FC<Props> = ({ value, setValue }) => {
       />
       <Select
         label={"Weapons"}
-        value={value?.weapons}
+        value={value.weapons}
         setValue={setValue}
         options={getOptions(weapons)}
         multiple={true}

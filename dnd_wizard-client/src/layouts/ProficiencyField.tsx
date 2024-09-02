@@ -52,7 +52,7 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
       <h4>Armors</h4>
       <Select
         label={"Proficiencies Available"}
-        value={value?.armor_list}
+        value={value.armor_list}
         setValue={setValue}
         options={getOptions(armors)}
         disabled={value.armor_choices ? false : true}
@@ -62,12 +62,12 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
         value={value.armor_choices}
         setValue={setValue}
         min={0}
-        max={value.armor_list?.length}
+        max={value.armor_list.length}
       />
       <h4>Languages</h4>
       <Select
         label={"Proficiencies Available"}
-        value={value?.language_list}
+        value={value.language_list}
         setValue={setValue}
         options={getOptions(languages)}
         disabled={value.language_choices ? false : true}
@@ -77,12 +77,12 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
         value={value.language_choices}
         setValue={setValue}
         min={0}
-        max={value.language_list?.length}
+        max={value.language_list.length}
       />
       <h4>Skills</h4>
       <Select
         label={"Proficiencies Available"}
-        value={value?.skill_list}
+        value={value.skill_list}
         setValue={setValue}
         options={getOptions(skills)}
         disabled={value.skill_choices ? false : true}
@@ -92,12 +92,12 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
         value={value.skill_choices}
         setValue={setValue}
         min={0}
-        max={value.skill_list?.length}
+        max={value.skill_list.length}
       />
       <h4>Tools</h4>
       <Select
         label={"Proficiencies Available"}
-        value={value?.tool_list}
+        value={value.tool_list}
         setValue={setValue}
         options={getOptions(tools)}
         disabled={value.tool_choices ? false : true}
@@ -107,12 +107,12 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
         value={value.tool_choices}
         setValue={setValue}
         min={0}
-        max={value.tool_list?.length}
+        max={value.tool_list.length}
       />
       <h4>Weapons</h4>
       <Select
         label={"Proficiencies Available"}
-        value={value?.weapon_list}
+        value={value.weapon_list}
         setValue={setValue}
         options={getOptions(weapons)}
         disabled={value.weapon_choices ? false : true}
@@ -122,7 +122,7 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
         value={value.weapon_choices}
         setValue={setValue}
         min={0}
-        max={value.weapon_list?.length}
+        max={value.weapon_list.length}
       />
       <h3>Saving Throws</h3>
       <InputCheck label={"STR"} value={value.str_st} setValue={setValue} />
