@@ -9,7 +9,7 @@ export interface Armor extends Item {
   gives_dex_bonus: boolean;
   dex_bonus: number;
   required_str: number;
-  property?: number[];
+  property: number[];
 }
 
 export interface Spell extends DescriptionInterface {
@@ -42,7 +42,7 @@ export interface Weapon extends Item {
   hit_dice?: number;
   bonus: number;
   damage_type?: number;
-  property?: number[];
+  property: number[];
   melee_weapon: boolean;
   ranged_weapon: boolean;
   min_range?: number;

@@ -1,11 +1,12 @@
 import {
   BaseInterface,
+  ImmResVul,
   PersonalCharacteristic,
   ProficiencyTrait,
 } from "./core";
 
-export interface Race extends BaseInterface, ProficiencyTrait {
-  creature_type?: number[];
+export interface Race extends BaseInterface, ImmResVul, ProficiencyTrait {
+  creature_type: number[];
   str_increase: number;
   dex_increase: number;
   con_increase: number;
@@ -13,11 +14,7 @@ export interface Race extends BaseInterface, ProficiencyTrait {
   wis_increase: number;
   cha_increase: number;
   size: string;
-  features?: number[];
-  condition_immunity?: number[];
-  damage_immunity?: number[];
-  damage_resistance?: number[];
-  damage_vulnerability?: number[];
+  features: number[];
   has_nature_armor: boolean;
   nature_armor: number;
   burrow: number;
@@ -28,20 +25,20 @@ export interface Race extends BaseInterface, ProficiencyTrait {
   innate_spellcaster: boolean;
   ability?: string;
   known_spells: number;
-  spells_available?: number[];
+  spells_available: number[];
 }
 
 export interface EntityClass extends BaseInterface, ProficiencyTrait {
   hit_dice: number;
   innate_spellcaster: boolean;
   ability?: string;
-  spell_list?: number[];
+  spell_list: number[];
 }
 
 export interface ProgressTable {
   entity_class: number;
   level: number;
-  features?: number[];
+  features: number[];
   known_cantrips: number;
   known_spells: number;
   spell_slot_1: number;
@@ -56,7 +53,7 @@ export interface ProgressTable {
 }
 
 export interface Background extends BaseInterface, ProficiencyTrait {
-  features?: number[];
+  features: number[];
 }
 
 export interface Bond extends PersonalCharacteristic {}
