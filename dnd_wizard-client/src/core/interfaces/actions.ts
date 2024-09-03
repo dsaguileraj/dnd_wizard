@@ -1,4 +1,4 @@
-import { DescriptionInterface, Item } from "./core";
+import { DescriptionInterface, Item } from "@core/interfaces/core";
 
 export interface AdventureGear extends Item {
   description?: string;

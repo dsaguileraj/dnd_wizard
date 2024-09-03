@@ -3,7 +3,7 @@ import {
   ImmResVul,
   PersonalCharacteristic,
   ProficiencyTrait,
-} from "./core";
+} from "@core/interfaces/core";
 
 export interface Race extends BaseInterface, ImmResVul, ProficiencyTrait {
   creature_type: number[];

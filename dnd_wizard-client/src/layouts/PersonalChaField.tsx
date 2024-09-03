@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { axiosGET } from "@api/api";
+import { axiosGET } from "@api/core";
+import { conditionInstance } from "@api/rules";
 import Select from "@components/forms/Select";
 import TextArea from "@components/forms/TextArea";
 import { PersonalCharacteristic } from "@core/interfaces/core";
@@ -20,7 +21,7 @@ export const ImmResVulFields: React.FC<Props> = ({ value, setValue }) => {
   const [backgrounds, setBackgrounds] = useState<Background[]>([]);
 
   useEffect(() => {
-    axiosGET("rules/condition/", setBackgrounds);
+    axiosGET(conditionInstance, setBackgrounds);
   }, []);
 
   return (
