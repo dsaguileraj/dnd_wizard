@@ -1,4 +1,4 @@
-import { Entity } from "./core";
+import { Entity } from "@core/interfaces/core";
 
 export interface PlayableCharacter extends Entity {
   player: number;

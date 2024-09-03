@@ -1,4 +1,4 @@
-import { DescriptionInterface } from "./core";
+import { DescriptionInterface } from "@core/interfaces/core";
 
 export interface Match extends DescriptionInterface {
   dungeon_master?: number;

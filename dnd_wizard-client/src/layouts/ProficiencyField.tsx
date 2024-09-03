@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { axiosGET } from "@api/api";
+import { armorInstance, toolInstance, weaponInstance } from "@api/actions";
+import { axiosGET } from "@api/core";
+import { languageInstance, skillInstance } from "@api/rules";
 import InputCheck from "@components/forms/InputCheck";
 import InputNumber from "@components/forms/InputNumber";
 import Select from "@components/forms/Select";
@@ -39,11 +41,11 @@ export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
   const [weapons, setWeapons] = useState<Category[]>([]);
 
   useEffect(() => {
-    axiosGET("actions/armor/", setArmors);
-    axiosGET("rules/language/", setLanguages);
-    axiosGET("rules/skill/", setSkills);
-    axiosGET("actions/tool/", setTools);
-    axiosGET("actions/weapon/", setWeapons);
+    axiosGET(armorInstance, setArmors);
+    axiosGET(languageInstance, setLanguages);
+    axiosGET(skillInstance, setSkills);
+    axiosGET(toolInstance, setTools);
+    axiosGET(weaponInstance, setWeapons);
   }, []);
 
   return (

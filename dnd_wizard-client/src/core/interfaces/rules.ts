@@ -3,7 +3,7 @@ import {
   DescriptionInterface,
   ImmResVul,
   ProficiencyTrait,
-} from "./core";
+} from "@core/interfaces/core";
 
 export interface Category extends DescriptionInterface {
   item_type?: number;
