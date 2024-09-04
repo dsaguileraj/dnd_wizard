@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
-import { weaponInstance } from "@api/actions";
-import { raceInstance } from "@api/traits";
+import { weaponURL } from "@api/actions";
+import { raceURL } from "@api/traits";
 import InputNumber from "@components/forms/InputNumber";
 import InputText from "@components/forms/InputText";
 import Select from "@components/forms/Select";
@@ -33,8 +33,8 @@ export const Entity: React.FC<Props> = ({ value, setValue }) => {
   const [weapons, setWeapons] = useState<WeaponProps[]>([]);
 
   useEffect(() => {
-    axiosGET(raceInstance, setRaces);
-    axiosGET(weaponInstance, setWeapons);
+    axiosGET(raceURL, setRaces);
+    axiosGET(weaponURL, setWeapons);
   }, []);
 
   return (

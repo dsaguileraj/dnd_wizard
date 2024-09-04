@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
-import { conditionInstance } from "@api/rules";
+import { conditionURL } from "@api/rules";
 import Select from "@components/forms/Select";
 import TextArea from "@components/forms/TextArea";
 import { PersonalTraitProps } from "@core/interfaces/core";
@@ -21,7 +21,7 @@ export const PersonalTrait: React.FC<Props> = ({ value, setValue }) => {
   const [backgrounds, setBackgrounds] = useState<BackgroundProps[]>([]);
 
   useEffect(() => {
-    axiosGET(conditionInstance, setBackgrounds);
+    axiosGET(conditionURL, setBackgrounds);
   }, []);
 
   return (

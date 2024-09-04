@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
-import { conditionInstance, damageTypeInstance } from "@api/rules";
+import { conditionURL, damageTypeURL } from "@api/rules";
 import Select from "@components/forms/Select";
 import { ImmResVulProps } from "@core/interfaces/core";
 import { ConditionProps, DamageTypeProps } from "@core/interfaces/rules";
@@ -23,8 +23,8 @@ export const ImmResVul: React.FC<Props> = ({ value, setValue }) => {
   const [damageTypes, setDamageTypes] = useState<DamageTypeProps[]>([]);
 
   useEffect(() => {
-    axiosGET(conditionInstance, setConditions);
-    axiosGET(damageTypeInstance, setDamageTypes);
+    axiosGET(conditionURL, setConditions);
+    axiosGET(damageTypeURL, setDamageTypes);
   }, []);
 
   return (

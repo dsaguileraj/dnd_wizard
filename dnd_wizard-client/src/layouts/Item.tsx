@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
-import { categoryInstance } from "@api/rules";
+import { categoryURL } from "@api/rules";
 import InputNumber from "@components/forms/InputNumber";
 import InputText from "@components/forms/InputText";
 import Select from "@components/forms/Select";
@@ -25,7 +25,7 @@ interface Props {
 export const Item: React.FC<Props> = ({ value, setValue }) => {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
 
-  useEffect(() => axiosGET(categoryInstance, setCategories), []);
+  useEffect(() => axiosGET(categoryURL, setCategories), []);
 
   return (
     <>

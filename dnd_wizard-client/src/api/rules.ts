@@ -3,38 +3,38 @@ import { URL } from "@api/core";
 
 const BASE_URL = `${URL}/rules`;
 
-export const categoryInstance = axios.create({
+export const categoryURL = axios.create({
   baseURL: `${BASE_URL}/category/`,
 });
 
-export const conditionInstance = axios.create({
+export const conditionURL = axios.create({
   baseURL: `${BASE_URL}/condition/`,
 });
 
-export const creatureTypeInstance = axios.create({
+export const creatureTypeURL = axios.create({
   baseURL: `${BASE_URL}/creature_type/`,
 });
 
-export const damageTypeInstance = axios.create({
+export const damageTypeURL = axios.create({
   baseURL: `${BASE_URL}/damage_type/`,
 });
 
-export const featureInstance = axios.create({
+export const featureURL = axios.create({
   baseURL: `${BASE_URL}/feature/`,
 });
 
-export const languageInstance = axios.create({
+export const languageURL = axios.create({
   baseURL: `${BASE_URL}/language/`,
 });
 
-export const magicSchoolInstance = axios.create({
+export const magicSchoolURL = axios.create({
   baseURL: `${BASE_URL}/magic_school/`,
 });
 
-export const skillInstance = axios.create({
+export const skillURL = axios.create({
   baseURL: `${BASE_URL}/skill/`,
 });
 
-export const propertyInstance = axios.create({
+export const propertyURL = axios.create({
   baseURL: `${BASE_URL}/property/`,
 });

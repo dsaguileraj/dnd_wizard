@@ -3,10 +3,10 @@ import { URL } from "@api/core";
 
 const BASE_URL = `${URL}/characters`;
 
-export const playableInstance = axios.create({
+export const playableURL = axios.create({
   baseURL: `${BASE_URL}/playable/`,
 });
 
-export const nonPlayableInstance = axios.create({
+export const nonPlayableURL = axios.create({
   baseURL: `${BASE_URL}/non-playable/`,
 });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { armorInstance, toolInstance, weaponInstance } from "@api/actions";
+import { armorURL, toolURL, weaponURL } from "@api/actions";
 import { axiosGET } from "@api/core";
-import { languageInstance, skillInstance } from "@api/rules";
+import { languageURL, skillURL } from "@api/rules";
 import InputCheck from "@components/forms/InputCheck";
 import InputNumber from "@components/forms/InputNumber";
 import Select from "@components/forms/Select";
@@ -42,11 +42,11 @@ export const ProficiencyTrait: React.FC<Props> = ({ value, setValue }) => {
   const [weapons, setWeapons] = useState<WeaponProps[]>([]);
 
   useEffect(() => {
-    axiosGET(armorInstance, setArmors);
-    axiosGET(languageInstance, setLanguages);
-    axiosGET(skillInstance, setSkills);
-    axiosGET(toolInstance, setTools);
-    axiosGET(weaponInstance, setWeapons);
+    axiosGET(armorURL, setArmors);
+    axiosGET(languageURL, setLanguages);
+    axiosGET(skillURL, setSkills);
+    axiosGET(toolURL, setTools);
+    axiosGET(weaponURL, setWeapons);
   }, []);
 
   return (
