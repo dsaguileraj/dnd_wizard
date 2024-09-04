@@ -1,6 +1,6 @@
-import { DescriptionInterface } from "@core/interfaces/core";
+import { DescriptionProps } from "@core/interfaces/core";
 
-export interface Match extends DescriptionInterface {
+export interface MatchProps extends DescriptionProps {
   dungeon_master?: number;
   characters: number[];
   create_at?: Date;

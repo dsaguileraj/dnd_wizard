@@ -1,13 +1,13 @@
-export interface BaseInterface {
+export interface BaseProps {
   id?: number;
   name: string;
 }
 
-export interface DescriptionInterface extends BaseInterface {
+export interface DescriptionProps extends BaseProps {
   description: string;
 }
 
-export interface Entity extends BaseInterface {
+export interface EntityProps extends BaseProps {
   race?: number;
   hit_points: number;
   str_score: number;
@@ -19,26 +19,26 @@ export interface Entity extends BaseInterface {
   weapons: number[];
 }
 
-export interface Item extends BaseInterface {
+export interface ItemProps extends BaseProps {
   category?: number;
   cost: number;
   coin: undefined | "cp" | "sp" | "ep" | "gp" | "pp";
   weight: number;
 }
 
-export interface ImmResVul {
+export interface ImmResVulProps {
   condition_immunity: number[];
   damage_immunity: number[];
   damage_resistance: number[];
   damage_vulnerability: number[];
 }
 
-export interface PersonalCharacteristic {
+export interface PersonalTraitProps {
   background: number;
   description: string;
 }
 
-export interface ProficiencyTrait {
+export interface ProficiencyTraitProps {
   armor_choices: number;
   armor_list: number[];
   language_choices: number;

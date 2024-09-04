@@ -1,11 +1,11 @@
 import {
-  BaseInterface,
-  ImmResVul,
-  PersonalCharacteristic,
-  ProficiencyTrait,
+  BaseProps,
+  ImmResVulProps,
+  PersonalTraitProps,
+  ProficiencyTraitProps,
 } from "@core/interfaces/core";
 
-export interface Race extends BaseInterface, ImmResVul, ProficiencyTrait {
+export interface Race extends BaseProps, ImmResVulProps, ProficiencyTraitProps {
   creature_type: number[];
   str_increase: number;
   dex_increase: number;
@@ -28,7 +28,7 @@ export interface Race extends BaseInterface, ImmResVul, ProficiencyTrait {
   spells_available: number[];
 }
 
-export interface EntityClass extends BaseInterface, ProficiencyTrait {
+export interface EntityClass extends BaseProps, ProficiencyTraitProps {
   hit_dice: number;
   innate_spellcaster: boolean;
   ability?: string;
@@ -52,14 +52,14 @@ export interface ProgressTable {
   spell_slot_9: number;
 }
 
-export interface Background extends BaseInterface, ProficiencyTrait {
+export interface Background extends BaseProps, ProficiencyTraitProps {
   features: number[];
 }
 
-export interface Bond extends PersonalCharacteristic {}
+export interface Bond extends PersonalTraitProps {}
 
-export interface Flaw extends PersonalCharacteristic {}
+export interface Flaw extends PersonalTraitProps {}
 
-export interface Ideal extends PersonalCharacteristic {}
+export interface Ideal extends PersonalTraitProps {}
 
-export interface Personality extends PersonalCharacteristic {}
+export interface Personality extends PersonalTraitProps {}
