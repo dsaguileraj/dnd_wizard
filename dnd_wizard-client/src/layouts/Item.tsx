@@ -19,7 +19,7 @@ export const ITEM: ItemProps = {
 
 interface Props {
   value: ItemProps;
-  setValue: (value: ItemProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const Item: React.FC<Props> = ({ value, setValue }) => {

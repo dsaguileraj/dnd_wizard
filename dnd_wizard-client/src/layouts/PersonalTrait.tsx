@@ -14,7 +14,7 @@ export const PERSONAL_TRAIT: PersonalTraitProps = {
 
 interface Props {
   value: PersonalTraitProps;
-  setValue: (value: PersonalTraitProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const PersonalTrait: React.FC<Props> = ({ value, setValue }) => {

@@ -25,7 +25,7 @@ export const ENTITY: EntityProps = {
 
 interface Props {
   value: EntityProps;
-  setValue: (value: EntityProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const Entity: React.FC<Props> = ({ value, setValue }) => {

@@ -15,7 +15,7 @@ export const IMM_RES_VUL: ImmResVulProps = {
 
 interface Props {
   value: ImmResVulProps;
-  setValue: (value: ImmResVulProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const ImmResVul: React.FC<Props> = ({ value, setValue }) => {

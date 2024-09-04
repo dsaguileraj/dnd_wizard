@@ -31,7 +31,7 @@ export const PROFICIENCY_TRAIT: ProficiencyTraitProps = {
 
 interface Props {
   value: ProficiencyTraitProps;
-  setValue: (value: ProficiencyTraitProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const ProficiencyTrait: React.FC<Props> = ({ value, setValue }) => {

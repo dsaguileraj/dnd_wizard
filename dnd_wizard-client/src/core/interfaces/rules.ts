@@ -6,7 +6,7 @@ import {
 } from "@core/interfaces/core";
 
 export interface CategoryProps extends DescriptionProps {
-  item_type?: number;
+  item_type?: string;
 }
 
 export interface ConditionProps extends DescriptionProps {}

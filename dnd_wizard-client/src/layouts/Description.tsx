@@ -10,7 +10,7 @@ export const DESCRIPTION: DescriptionProps = {
 
 interface Props {
   value: DescriptionProps;
-  setValue: (value: DescriptionProps) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export const Description: React.FC<Props> = ({ value, setValue }) => {

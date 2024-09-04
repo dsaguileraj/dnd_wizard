@@ -20,6 +20,7 @@ export const DICES = [
 ];
 
 export const ITEM_TYPES = [
+  { value: undefined, label: "---" },
   { value: "A", label: "Armor" },
   { value: "G", label: "Gear" },
   { value: "T", label: "Tool" },
