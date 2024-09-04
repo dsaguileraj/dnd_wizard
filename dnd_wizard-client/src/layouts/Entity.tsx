@@ -5,12 +5,12 @@ import { raceInstance } from "@api/traits";
 import InputNumber from "@components/forms/InputNumber";
 import InputText from "@components/forms/InputText";
 import Select from "@components/forms/Select";
-import { Weapon } from "@core/interfaces/actions";
-import { Entity } from "@core/interfaces/core";
-import { Race } from "@core/interfaces/traits";
+import { WeaponProps } from "@core/interfaces/actions";
+import { EntityProps } from "@core/interfaces/core";
+import { RaceProps } from "@core/interfaces/traits";
 import { getOptions } from "@utils/forms";
 
-export const ENTITY_FIELDS: Entity = {
+export const ENTITY: EntityProps = {
   name: "",
   race: undefined,
   hit_points: 1,
@@ -24,13 +24,13 @@ export const ENTITY_FIELDS: Entity = {
 };
 
 interface Props {
-  value: Entity;
-  setValue: (value: Entity) => void;
+  value: EntityProps;
+  setValue: (value: EntityProps) => void;
 }
 
-export const EntityFields: React.FC<Props> = ({ value, setValue }) => {
-  const [races, setRaces] = useState<Race[]>([]);
-  const [weapons, setWeapons] = useState<Weapon[]>([]);
+export const Entity: React.FC<Props> = ({ value, setValue }) => {
+  const [races, setRaces] = useState<RaceProps[]>([]);
+  const [weapons, setWeapons] = useState<WeaponProps[]>([]);
 
   useEffect(() => {
     axiosGET(raceInstance, setRaces);

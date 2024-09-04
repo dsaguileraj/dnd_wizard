@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
 import { conditionInstance, damageTypeInstance } from "@api/rules";
 import Select from "@components/forms/Select";
-import { ImmResVul } from "@core/interfaces/core";
-import { Condition, DamageType } from "@core/interfaces/rules";
+import { ImmResVulProps } from "@core/interfaces/core";
+import { ConditionProps, DamageTypeProps } from "@core/interfaces/rules";
 import { getOptions } from "@utils/forms";
 
-export const ImmResVul_FIELDS: ImmResVul = {
+export const IMM_RES_VUL: ImmResVulProps = {
   condition_immunity: [],
   damage_immunity: [],
   damage_resistance: [],
@@ -14,13 +14,13 @@ export const ImmResVul_FIELDS: ImmResVul = {
 };
 
 interface Props {
-  value: ImmResVul;
-  setValue: (value: ImmResVul) => void;
+  value: ImmResVulProps;
+  setValue: (value: ImmResVulProps) => void;
 }
 
-export const ImmResVulFields: React.FC<Props> = ({ value, setValue }) => {
-  const [conditions, setConditions] = useState<Condition[]>([]);
-  const [damageTypes, setDamageTypes] = useState<DamageType[]>([]);
+export const ImmResVul: React.FC<Props> = ({ value, setValue }) => {
+  const [conditions, setConditions] = useState<ConditionProps[]>([]);
+  const [damageTypes, setDamageTypes] = useState<DamageTypeProps[]>([]);
 
   useEffect(() => {
     axiosGET(conditionInstance, setConditions);

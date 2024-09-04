@@ -5,7 +5,7 @@ import {
   ProficiencyTraitProps,
 } from "@core/interfaces/core";
 
-export interface Race extends BaseProps, ImmResVulProps, ProficiencyTraitProps {
+export interface RaceProps extends BaseProps, ImmResVulProps, ProficiencyTraitProps {
   creature_type: number[];
   str_increase: number;
   dex_increase: number;
@@ -28,7 +28,7 @@ export interface Race extends BaseProps, ImmResVulProps, ProficiencyTraitProps {
   spells_available: number[];
 }
 
-export interface EntityClass extends BaseProps, ProficiencyTraitProps {
+export interface EntityClassProps extends BaseProps, ProficiencyTraitProps {
   hit_dice: number;
   innate_spellcaster: boolean;
   ability?: string;
@@ -52,14 +52,14 @@ export interface ProgressTable {
   spell_slot_9: number;
 }
 
-export interface Background extends BaseProps, ProficiencyTraitProps {
+export interface BackgroundProps extends BaseProps, ProficiencyTraitProps {
   features: number[];
 }
 
-export interface Bond extends PersonalTraitProps {}
+export interface BondProps extends PersonalTraitProps {}
 
-export interface Flaw extends PersonalTraitProps {}
+export interface FlawProps extends PersonalTraitProps {}
 
-export interface Ideal extends PersonalTraitProps {}
+export interface IdealProps extends PersonalTraitProps {}
 
-export interface Personality extends PersonalTraitProps {}
+export interface PersonalityProps extends PersonalTraitProps {}

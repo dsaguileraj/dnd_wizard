@@ -5,11 +5,11 @@ import InputNumber from "@components/forms/InputNumber";
 import InputText from "@components/forms/InputText";
 import Select from "@components/forms/Select";
 import { COINS } from "@core/choices";
-import { Item } from "@core/interfaces/core";
-import { Category } from "@core/interfaces/rules";
+import { ItemProps } from "@core/interfaces/core";
+import { CategoryProps } from "@core/interfaces/rules";
 import { getOptions } from "@utils/forms";
 
-export const ITEM_FIELDS: Item = {
+export const ITEM: ItemProps = {
   name: "",
   category: undefined,
   cost: 0,
@@ -18,12 +18,12 @@ export const ITEM_FIELDS: Item = {
 };
 
 interface Props {
-  value: Item;
-  setValue: (value: Item) => void;
+  value: ItemProps;
+  setValue: (value: ItemProps) => void;
 }
 
-export const ItemFields: React.FC<Props> = ({ value, setValue }) => {
-  const [categories, setCategories] = useState<Category[]>([]);
+export const Item: React.FC<Props> = ({ value, setValue }) => {
+  const [categories, setCategories] = useState<CategoryProps[]>([]);
 
   useEffect(() => axiosGET(categoryInstance, setCategories), []);
 
