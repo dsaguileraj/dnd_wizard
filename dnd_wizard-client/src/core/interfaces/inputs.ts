@@ -1,7 +1,9 @@
+import React from "react";
+
 interface BaseProps {
   label: string;
   value: any;
-  setValue: (value: any) => void;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
   className?: string;
   disabled?: boolean;
   readOnly?: boolean;

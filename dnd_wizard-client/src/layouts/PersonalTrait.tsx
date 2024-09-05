@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { axiosGET } from "@api/core";
-import { conditionInstance } from "@api/rules";
+import { conditionURL } from "@api/rules";
 import Select from "@components/forms/Select";
 import TextArea from "@components/forms/TextArea";
-import { PersonalCharacteristic } from "@core/interfaces/core";
-import { Background } from "@core/interfaces/traits";
+import { PersonalTraitProps } from "@core/interfaces/core";
+import { BackgroundProps } from "@core/interfaces/traits";
 import { getOptions } from "@utils/forms";
 
-export const ImmResVul_FIELDS: PersonalCharacteristic = {
+export const PERSONAL_TRAIT: PersonalTraitProps = {
   background: 1,
   description: "",
 };
 
 interface Props {
-  value: PersonalCharacteristic;
-  setValue: (value: PersonalCharacteristic) => void;
+  value: PersonalTraitProps;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export const ImmResVulFields: React.FC<Props> = ({ value, setValue }) => {
-  const [backgrounds, setBackgrounds] = useState<Background[]>([]);
+export const PersonalTrait: React.FC<Props> = ({ value, setValue }) => {
+  const [backgrounds, setBackgrounds] = useState<BackgroundProps[]>([]);
 
   useEffect(() => {
-    axiosGET(conditionInstance, setBackgrounds);
+    axiosGET(conditionURL, setBackgrounds);
   }, []);
 
   return (

@@ -1,6 +1,6 @@
-import { Entity } from "@core/interfaces/core";
+import { EntityProps } from "@core/interfaces/core";
 
-export interface PlayableCharacter extends Entity {
+export interface PlayableCharacterProps extends EntityProps {
   player: number;
   experience: number;
   inspiration: boolean;
@@ -22,7 +22,7 @@ export interface PlayableCharacter extends Entity {
   platinum: number;
 }
 
-export interface NonPlayableCharacter extends Entity {
+export interface NonPlayableCharacterProps extends EntityProps {
   challenge: number;
   legendary_creature: boolean;
   armor?: number;

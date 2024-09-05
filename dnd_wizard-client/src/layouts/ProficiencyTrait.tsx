@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { armorInstance, toolInstance, weaponInstance } from "@api/actions";
+import { armorURL, toolURL, weaponURL } from "@api/actions";
 import { axiosGET } from "@api/core";
-import { languageInstance, skillInstance } from "@api/rules";
+import { languageURL, skillURL } from "@api/rules";
 import InputCheck from "@components/forms/InputCheck";
 import InputNumber from "@components/forms/InputNumber";
 import Select from "@components/forms/Select";
-import { ProficiencyTrait } from "@core/interfaces/core";
-import { Category } from "@core/interfaces/rules";
+import { ArmorProps, ToolProps, WeaponProps } from "@core/interfaces/actions";
+import { ProficiencyTraitProps } from "@core/interfaces/core";
+import { LanguageProps, SkillProps } from "@core/interfaces/rules";
 import { getOptions } from "@utils/forms";
 
-export const PROFICIENCY_FIELDS: ProficiencyTrait = {
+export const PROFICIENCY_TRAIT: ProficiencyTraitProps = {
   armor_choices: 0,
   armor_list: [],
   language_choices: 0,
@@ -29,23 +30,23 @@ export const PROFICIENCY_FIELDS: ProficiencyTrait = {
 };
 
 interface Props {
-  value: ProficiencyTrait;
-  setValue: (value: ProficiencyTrait) => void;
+  value: ProficiencyTraitProps;
+  setValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export const ProficiencyField: React.FC<Props> = ({ value, setValue }) => {
-  const [armors, setArmors] = useState<Category[]>([]);
-  const [languages, setLanguages] = useState<Category[]>([]);
-  const [skills, setSkills] = useState<Category[]>([]);
-  const [tools, setTools] = useState<Category[]>([]);
-  const [weapons, setWeapons] = useState<Category[]>([]);
+export const ProficiencyTrait: React.FC<Props> = ({ value, setValue }) => {
+  const [armors, setArmors] = useState<ArmorProps[]>([]);
+  const [languages, setLanguages] = useState<LanguageProps[]>([]);
+  const [skills, setSkills] = useState<SkillProps[]>([]);
+  const [tools, setTools] = useState<ToolProps[]>([]);
+  const [weapons, setWeapons] = useState<WeaponProps[]>([]);
 
   useEffect(() => {
-    axiosGET(armorInstance, setArmors);
-    axiosGET(languageInstance, setLanguages);
-    axiosGET(skillInstance, setSkills);
-    axiosGET(toolInstance, setTools);
-    axiosGET(weaponInstance, setWeapons);
+    axiosGET(armorURL, setArmors);
+    axiosGET(languageURL, setLanguages);
+    axiosGET(skillURL, setSkills);
+    axiosGET(toolURL, setTools);
+    axiosGET(weaponURL, setWeapons);
   }, []);
 
   return (

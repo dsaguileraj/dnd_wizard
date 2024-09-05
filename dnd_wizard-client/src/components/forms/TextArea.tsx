@@ -1,7 +1,7 @@
 import React from "react";
 import { TextAreaProps } from "@core/interfaces/inputs";
 
-const InputText: React.FC<TextAreaProps> = ({
+const TextArea: React.FC<TextAreaProps> = ({
   label,
   value,
   setValue,
@@ -35,4 +35,4 @@ const InputText: React.FC<TextAreaProps> = ({
   );
 };
 
-export default InputText;
+export default TextArea;

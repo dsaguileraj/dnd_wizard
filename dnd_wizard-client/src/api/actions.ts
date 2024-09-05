@@ -3,26 +3,26 @@ import { URL } from "@api/core";
 
 const BASE_URL = `${URL}/actions`;
 
-export const armorInstance = axios.create({
+export const armorURL = axios.create({
   baseURL: `${BASE_URL}/armor/`,
 });
 
-export const equipmentInstance = axios.create({
+export const equipmentURL = axios.create({
   baseURL: `${BASE_URL}/equipment/`,
 });
 
-export const spellInstance = axios.create({
+export const spellURL = axios.create({
   baseURL: `${BASE_URL}/spell/`,
 });
 
-export const toolInstance = axios.create({
+export const toolURL = axios.create({
   baseURL: `${BASE_URL}/tool/`,
 });
 
-export const trinketInstance = axios.create({
+export const trinketURL = axios.create({
   baseURL: `${BASE_URL}/trinket/`,
 });
 
-export const weaponInstance = axios.create({
+export const weaponURL = axios.create({
   baseURL: `${BASE_URL}/weapon/`,
 });

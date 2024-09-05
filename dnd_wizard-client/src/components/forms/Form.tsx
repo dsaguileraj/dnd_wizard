@@ -5,7 +5,7 @@ interface FormProps {
   header: string;
   children: React.ReactNode;
   className?: string;
-  onSubmit: () => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const Form: React.FC<FormProps> = ({
