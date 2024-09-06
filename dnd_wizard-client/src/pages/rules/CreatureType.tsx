@@ -1,4 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { axiosPOST } from "@api/core";
+import { creatureTypeURL } from "@api/rules";
+import Form from "@components/forms/Form";
+import { CreatureTypeProps } from "@core/interfaces/rules";
+import { Description, DESCRIPTION } from "@layouts/Description";
 
 export const CreatureTypeGET: React.FC = () => {
   return (
@@ -17,10 +22,18 @@ export const CreatureTypeLIST: React.FC = () => {
 };
 
 export const CreatureTypePOST: React.FC = () => {
+  const DATA = { ...DESCRIPTION };
+  const [form, setForm] = useState<CreatureTypeProps>(DATA);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    axiosPOST(creatureTypeURL, form, setForm(DATA));
+  };
+
   return (
-    <>
-      <h1>CreatureTypePOST</h1>
-    </>
+    <Form header={"Create Creature Type"} onSubmit={handleSubmit}>
+      <Description value={form} setValue={setForm} />
+    </Form>
   );
 };
 
