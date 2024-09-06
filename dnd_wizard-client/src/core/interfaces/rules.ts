@@ -23,7 +23,7 @@ export interface FeatureProps
     ImmResVulProps {}
 
 export interface ItemPropertyProps extends DescriptionProps {
-  item_type?: number;
+  item_type?: string;
 }
 
 export interface LanguageProps extends DescriptionProps {}
