@@ -11,6 +11,7 @@ export const ALIGMENTS = [
 ];
 
 export const DICES = [
+  { value: undefined, label: "---" },
   { value: 4, label: "d4" },
   { value: 6, label: "d6" },
   { value: 8, label: "d8" },
