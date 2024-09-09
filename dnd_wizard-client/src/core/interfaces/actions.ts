@@ -33,7 +33,7 @@ export interface ToolProps extends ItemProps {
   description?: string;
 }
 
-export interface TrinketProps extends ItemProps {
+export interface TrinketProps {
   name: string;
 }
 
