@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { weaponURL } from "@api/actions";
 import { axiosGET, axiosPOST } from "@api/core";
-import Form from "@components/forms/Form";
-import TextArea from "@components/forms/TextArea";
-import { WeaponProps } from "@core/interfaces/actions";
-import { Item, ITEM } from "@layouts/Item";
+import { progressURL } from "@api/traits";
+import { damageTypeURL } from "@api/rules";
 import { DICES } from "@core/choices";
+import { WeaponProps } from "@core/interfaces/actions";
+import { DamageTypeProps, ItemPropertyProps } from "@core/interfaces/rules";
+import Form from "@components/forms/Form";
+import InputCheck from "@components/forms/InputCheck";
 import InputNumber from "@components/forms/InputNumber";
 import Select from "@components/forms/Select";
-import { DamageTypeProps, ItemPropertyProps } from "@core/interfaces/rules";
-import { damageTypeURL } from "@api/rules";
+import { Item, ITEM } from "@layouts/Item";
 import { getOptions } from "@utils/forms";
-import { progressURL } from "@api/traits";
-import InputCheck from "@components/forms/InputCheck";
 
 export const WeaponGET: React.FC = () => {
   return (
