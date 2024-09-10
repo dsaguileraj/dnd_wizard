@@ -1,4 +1,9 @@
-import React from "react";
+import { axiosPOST } from "@api/core";
+import { bondURL } from "@api/traits";
+import Form from "@components/forms/Form";
+import { BondProps } from "@core/interfaces/traits";
+import { PERSONAL_TRAIT, PersonalTrait } from "@layouts/PersonalTrait";
+import React, { useState } from "react";
 
 export const BondGET: React.FC = () => {
   return (
@@ -9,10 +14,18 @@ export const BondGET: React.FC = () => {
 };
 
 export const BondLIST: React.FC = () => {
+  const DATA: BondProps = { ...PERSONAL_TRAIT };
+  const [form, setForm] = useState<BondProps>(DATA);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    axiosPOST(bondURL, form, setForm(DATA));
+  };
+
   return (
-    <>
-      <h1>BondLIST</h1>
-    </>
+    <Form header={"Create Bond"} onSubmit={handleSubmit}>
+      <PersonalTrait value={form} setValue={setForm} />
+    </Form>
   );
 };
 

@@ -6,6 +6,7 @@ import {
 } from "@core/interfaces/core";
 
 export interface RaceProps extends BaseProps, ImmResVulProps, ProficiencyTraitProps {
+  aligment?: string,
   creature_type: number[];
   str_increase: number;
   dex_increase: number;
@@ -16,6 +17,7 @@ export interface RaceProps extends BaseProps, ImmResVulProps, ProficiencyTraitPr
   size: string;
   features: number[];
   has_nature_armor: boolean;
+  is_playable: boolean,
   nature_armor: number;
   burrow: number;
   climb: number;
@@ -29,7 +31,7 @@ export interface RaceProps extends BaseProps, ImmResVulProps, ProficiencyTraitPr
 }
 
 export interface EntityClassProps extends BaseProps, ProficiencyTraitProps {
-  hit_dice: number;
+  hit_dice?: number;
   innate_spellcaster: boolean;
   ability?: string;
   spell_list: number[];

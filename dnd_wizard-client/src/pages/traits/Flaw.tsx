@@ -1,4 +1,9 @@
-import React from "react";
+import { axiosPOST } from "@api/core";
+import { flawURL } from "@api/traits";
+import Form from "@components/forms/Form";
+import { FlawProps } from "@core/interfaces/traits";
+import { PERSONAL_TRAIT, PersonalTrait } from "@layouts/PersonalTrait";
+import React, { useState } from "react";
 
 export const FlawGET: React.FC = () => {
   return (
@@ -17,10 +22,18 @@ export const FlawLIST: React.FC = () => {
 };
 
 export const FlawPOST: React.FC = () => {
+  const DATA: FlawProps = { ...PERSONAL_TRAIT };
+  const [form, setForm] = useState<FlawProps>(DATA);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    axiosPOST(flawURL, form, setForm(DATA));
+  };
+
   return (
-    <>
-      <h1>FlawPOST</h1>
-    </>
+    <Form header={"Create Flaw"} onSubmit={handleSubmit}>
+      <PersonalTrait value={form} setValue={setForm} />
+    </Form>
   );
 };
 
