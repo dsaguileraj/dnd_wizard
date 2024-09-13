@@ -1,11 +1,6 @@
 import { spellURL } from "@api/actions";
 import { axiosGET, axiosPOST } from "@api/core";
-import {
-  conditionURL,
-  creatureTypeURL,
-  damageTypeURL,
-  featureURL,
-} from "@api/rules";
+import { creatureTypeURL, featureURL } from "@api/rules";
 import { raceURL } from "@api/traits";
 import Form from "@components/forms/Form";
 import InputCheck from "@components/forms/InputCheck";
@@ -14,12 +9,7 @@ import InputText from "@components/forms/InputText";
 import Select from "@components/forms/Select";
 import { ALIGMENTS, SIZES, STATS } from "@core/choices";
 import { SpellProps } from "@core/interfaces/actions";
-import {
-  ConditionProps,
-  CreatureTypeProps,
-  DamageTypeProps,
-  FeatureProps,
-} from "@core/interfaces/rules";
+import { CreatureTypeProps, FeatureProps } from "@core/interfaces/rules";
 import { RaceProps } from "@core/interfaces/traits";
 import { IMM_RES_VUL, ImmResVul } from "@layouts/ImmResVul";
 import { PROFICIENCY_TRAIT, ProficiencyTrait } from "@layouts/ProficiencyTrait";
