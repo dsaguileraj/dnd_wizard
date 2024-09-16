@@ -24,7 +24,7 @@ export const RaceGET: React.FC = () => {
   );
 };
 
-export const RaceLIST: React.FC = () => {
+export const RacePOST: React.FC = () => {
   const DATA: RaceProps = {
     ...PROFICIENCY_TRAIT,
     ...IMM_RES_VUL,
@@ -246,10 +246,10 @@ export const RaceLIST: React.FC = () => {
   );
 };
 
-export const RacePOST: React.FC = () => {
+export const RaceLIST: React.FC = () => {
   return (
     <>
-      <h1>RacePOST</h1>
+      <h1>RaceLIST</h1>
     </>
   );
 };
