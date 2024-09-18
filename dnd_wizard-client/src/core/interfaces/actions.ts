@@ -1,18 +1,18 @@
-import { DescriptionInterface, Item } from "./core";
+import { DescriptionProps, ItemProps } from "@core/interfaces/core";
 
-export interface AdventureGear extends Item {
+export interface AdventureGearProps extends ItemProps {
   description?: string;
 }
 
-export interface Armor extends Item {
+export interface ArmorProps extends ItemProps {
   armor_class: number;
   gives_dex_bonus: boolean;
   dex_bonus: number;
   required_str: number;
-  property?: number[];
+  property: number[];
 }
 
-export interface Spell extends DescriptionInterface {
+export interface SpellProps extends DescriptionProps {
   magic_school?: number;
   damage_type?: number;
   level: number;
@@ -29,20 +29,20 @@ export interface Spell extends DescriptionInterface {
   duration_measure: string;
 }
 
-export interface Tool extends Item {
+export interface ToolProps extends ItemProps {
   description?: string;
 }
 
-export interface Trinket extends Item {
+export interface TrinketProps {
   name: string;
 }
 
-export interface Weapon extends Item {
+export interface WeaponProps extends ItemProps {
   dices: number;
   hit_dice?: number;
   bonus: number;
   damage_type?: number;
-  property?: number[];
+  property: number[];
   melee_weapon: boolean;
   ranged_weapon: boolean;
   min_range?: number;

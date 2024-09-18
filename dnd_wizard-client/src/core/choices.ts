@@ -11,6 +11,7 @@ export const ALIGMENTS = [
 ];
 
 export const DICES = [
+  { value: undefined, label: "---" },
   { value: 4, label: "d4" },
   { value: 6, label: "d6" },
   { value: 8, label: "d8" },
@@ -20,6 +21,7 @@ export const DICES = [
 ];
 
 export const ITEM_TYPES = [
+  { value: undefined, label: "---" },
   { value: "A", label: "Armor" },
   { value: "G", label: "Gear" },
   { value: "T", label: "Tool" },
@@ -27,6 +29,7 @@ export const ITEM_TYPES = [
 ];
 
 export const COINS = [
+  { value: undefined, label: "---" },
   { value: "cp", label: "Copper" },
   { value: "sp", label: "Silver" },
   { value: "ep", label: "Electrum" },

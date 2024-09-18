@@ -1,6 +1,6 @@
-import { Entity } from "./core";
+import { EntityProps } from "@core/interfaces/core";
 
-export interface PlayableCharacter extends Entity {
+export interface PlayableCharacterProps extends EntityProps {
   player: number;
   experience: number;
   inspiration: boolean;
@@ -10,11 +10,11 @@ export interface PlayableCharacter extends Entity {
   flaw?: number;
   ideal?: number;
   personality?: number;
-  adventure_gears?: number[];
-  armor?: number[];
-  spells?: number[];
-  tools?: number[];
-  trinkets?: number[];
+  adventure_gears: number[];
+  armor: number[];
+  spells: number[];
+  tools: number[];
+  trinkets: number[];
   copper: number;
   silver: number;
   electrum: number;
@@ -22,9 +22,9 @@ export interface PlayableCharacter extends Entity {
   platinum: number;
 }
 
-export interface NonPlayableCharacter extends Entity {
+export interface NonPlayableCharacterProps extends EntityProps {
   challenge: number;
   legendary_creature: boolean;
   armor?: number;
-  spells?: number[];
+  spells: number[];
 }

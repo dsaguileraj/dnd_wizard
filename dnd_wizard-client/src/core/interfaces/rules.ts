@@ -1,32 +1,35 @@
-import { BaseInterface, DescriptionInterface, ProficiencyTrait } from "./core";
+import {
+  BaseProps,
+  DescriptionProps,
+  ImmResVulProps,
+  ProficiencyTraitProps,
+} from "@core/interfaces/core";
 
-export interface Category extends DescriptionInterface {
-  item_type?: number;
+export interface CategoryProps extends DescriptionProps {
+  item_type?: string;
 }
 
-export interface Condition extends DescriptionInterface {}
+export interface ConditionProps extends DescriptionProps {}
 
-export interface CreatureType extends DescriptionInterface {}
+export interface CreatureTypeProps extends DescriptionProps {}
 
-export interface DamageType extends DescriptionInterface {
+export interface DamageTypeProps extends DescriptionProps {
   subtype: string;
 }
 
-export interface Feature extends DescriptionInterface, ProficiencyTrait {
-  condition_immunity?: number[];
-  damage_immunity?: number[];
-  damage_resistance?: number[];
-  damage_vulnerability?: number[];
+export interface FeatureProps
+  extends DescriptionProps,
+    ProficiencyTraitProps,
+    ImmResVulProps {}
+
+export interface ItemPropertyProps extends DescriptionProps {
+  item_type?: string;
 }
 
-export interface ItemProperty extends DescriptionInterface {
-  item_type?: number;
-}
+export interface LanguageProps extends DescriptionProps {}
 
-export interface Language extends DescriptionInterface {}
+export interface MagicSchoolProps extends DescriptionProps {}
 
-export interface MagicSchool extends DescriptionInterface {}
-
-export interface Skill extends BaseInterface {
+export interface SkillProps extends BaseProps {
   stat: string;
 }
