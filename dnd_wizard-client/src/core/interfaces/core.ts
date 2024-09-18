@@ -34,6 +34,7 @@ export interface ImmResVulProps {
 }
 
 export interface PersonalTraitProps {
+  id?: number;
   background: number;
   description: string;
 }
