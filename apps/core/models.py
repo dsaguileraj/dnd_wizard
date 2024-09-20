@@ -24,22 +24,29 @@ class DescriptionModel(BaseModel):
 
 class Entity(BaseModel):
     race = models.ForeignKey(
-        "traits.Race", on_delete=models.SET_NULL, null=True, default=None)
+        "traits.Race", on_delete=models.SET_NULL, blank=True, null=True, default=None
+    )
     hit_points = models.PositiveSmallIntegerField(default=10)
 
     # Ability Score
     str_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
     dex_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
     con_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
     int_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
     wis_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
     cha_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)])
+        default=10, validators=[MaxValueValidator(30)]
+    )
 
     # Actions
     weapons = models.ManyToManyField("actions.Weapon", blank=True)
@@ -74,10 +81,12 @@ class Entity(BaseModel):
 
 class Item(BaseModel):
     category = models.ForeignKey(
-        "rules.Category", on_delete=models.SET_NULL, null=True, default=None)
+        "rules.Category", on_delete=models.SET_NULL, blank=True,  null=True, default=None
+    )
     cost = models.PositiveSmallIntegerField(default=0)
-    coin = models.CharField(max_length=2, null=True,
-                            default=None, choices=Coins)
+    coin = models.CharField(
+        max_length=2, blank=True, null=True, default=None, choices=Coins
+    )
     weight = models.FloatField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
@@ -86,7 +95,8 @@ class Item(BaseModel):
 
 class PersonalCharacteristic(models.Model):
     background = models.ForeignKey(
-        "traits.Background", on_delete=models.CASCADE)
+        "traits.Background", on_delete=models.SET_NULL, blank=True,  null=True, default=None
+    )
     description = models.TextField()
 
     class Meta:
