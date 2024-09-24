@@ -93,18 +93,6 @@ class Item(BaseModel):
         abstract = True
 
 
-class PersonalCharacteristic(models.Model):
-    background = models.ForeignKey(
-        "traits.Background", on_delete=models.SET_NULL, blank=True,  null=True, default=None
-    )
-    description = models.TextField()
-
-    class Meta:
-        abstract = True
-        ordering = ["background", "description"]
-        unique_together = ["background", "description"]
-
-
 class ProficiencyTrait(models.Model):
     # Proficiencies
     armor_choices = models.PositiveSmallIntegerField(default=0)
