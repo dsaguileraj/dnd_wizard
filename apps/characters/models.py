@@ -6,7 +6,9 @@ from dnd_wizard.utils import LEVELS
 
 
 class PlayableCharacter(Entity):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    player = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, default=None
+    )
     experience = models.PositiveSmallIntegerField(default=0)
     inspiration = models.BooleanField(default=False)
 
@@ -59,7 +61,7 @@ class NonPlayableCharacter(Entity):
     )
     legendary_creature = models.BooleanField(default=False)
     armor = models.ForeignKey(
-        "actions.Armor", related_name="init_armor", on_delete=models.SET_NULL, blank=True, null=True, default=None
+        "actions.Armor", related_name="init_armor", on_delete=models.SET_NULL, null=True, default=None
     )
     spells = models.ManyToManyField("actions.Spell", blank=True)
 

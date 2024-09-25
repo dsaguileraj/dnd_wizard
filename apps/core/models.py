@@ -24,7 +24,7 @@ class DescriptionModel(BaseModel):
 
 class Entity(BaseModel):
     race = models.ForeignKey(
-        "traits.Race", on_delete=models.SET_NULL, blank=True, null=True, default=None
+        "traits.Race", on_delete=models.SET_NULL, null=True, default=None
     )
     hit_points = models.PositiveSmallIntegerField(default=10)
 
@@ -81,11 +81,11 @@ class Entity(BaseModel):
 
 class Item(BaseModel):
     category = models.ForeignKey(
-        "rules.Category", on_delete=models.SET_NULL, blank=True,  null=True, default=None
+        "rules.Category", on_delete=models.SET_NULL, null=True, default=None
     )
     cost = models.PositiveSmallIntegerField(default=0)
     coin = models.CharField(
-        max_length=2, blank=True, null=True, default=None, choices=Coins
+        max_length=2, null=True, default=None, choices=Coins
     )
     weight = models.FloatField(default=0, validators=[MinValueValidator(0)])
 

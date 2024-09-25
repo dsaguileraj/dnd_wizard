@@ -5,8 +5,11 @@ from apps.core.models import DescriptionModel
 
 class Match(DescriptionModel):
     dungeon_master = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, default=None)
-    characters = models.ManyToManyField("characters.PlayableCharacter")
+        User, on_delete=models.SET_NULL, null=True, default=None
+    )
+    characters = models.ManyToManyField(
+        "characters.PlayableCharacter", blank=True
+    )
     created_at = models.DateField(auto_now_add=True, editable=False)
 
     class Meta:

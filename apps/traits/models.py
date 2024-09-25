@@ -7,7 +7,7 @@ from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
 class Race(BaseModel, ProficiencyTrait):
     creature_type = models.ManyToManyField("rules.CreatureType", blank=True)
     aligment = models.CharField(
-        max_length=2, blank=True, null=True, default=None, choices=Aligments
+        max_length=2, null=True, default=None, choices=Aligments
     )
     is_playable = models.BooleanField(default=False)
 
@@ -63,7 +63,7 @@ class Race(BaseModel, ProficiencyTrait):
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
-        max_length=3, blank=True, null=True, default=None, choices=Stats
+        max_length=3, null=True, default=None, choices=Stats
     )
     known_spells = models.PositiveSmallIntegerField(default=0)
     spells_available = models.ManyToManyField("traits.EntityClass", blank=True)
@@ -76,14 +76,14 @@ class EntityClass(BaseModel, ProficiencyTrait):
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
-        max_length=3, blank=True, null=True, default=None, choices=Stats
+        max_length=3, null=True, default=None, choices=Stats
     )
     spell_list = models.ManyToManyField("actions.Spell", blank=True)
 
 
 class ProgressTable(models.Model):
     entity_class = models.ForeignKey(
-        "traits.EntityClass", blank=True, null=True, on_delete=models.CASCADE
+        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
     )
     level = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(20), MinValueValidator(1)]
