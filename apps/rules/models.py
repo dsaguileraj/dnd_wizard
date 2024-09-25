@@ -5,7 +5,7 @@ from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
 
 class Category(DescriptionModel):
     item_type = models.CharField(
-        max_length=1, blank=True, null=True, default=None, choices=ItemTypes
+        max_length=1, null=True, default=None, choices=ItemTypes
     )
 
 
@@ -41,7 +41,7 @@ class Feature(DescriptionModel, ProficiencyTrait):
 
 class ItemProperty(DescriptionModel):
     item_type = models.CharField(
-        max_length=1, blank=True, null=True, default=None, choices=ItemTypes
+        max_length=1, null=True, default=None, choices=ItemTypes
     )
 
 
