@@ -6,29 +6,24 @@ from dnd_wizard.utils import LEVELS
 
 
 class PlayableCharacter(Entity):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    player = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, default=None
+    )
     experience = models.PositiveSmallIntegerField(default=0)
     inspiration = models.BooleanField(default=False)
 
     # Traits
     entity_class = models.ForeignKey(
-        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None)
-
-    # Background
+        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
+    )
     background = models.ForeignKey(
-        "traits.Background", on_delete=models.SET_NULL, null=True, default=None)
-    bond = models.ForeignKey(
-        "traits.Bond", on_delete=models.SET_NULL, null=True, default=None)
-    flaw = models.ForeignKey(
-        "traits.Flaw", on_delete=models.SET_NULL, null=True, default=None)
-    ideal = models.ForeignKey(
-        "traits.Ideal", on_delete=models.SET_NULL, null=True, default=None)
-    personality = models.ForeignKey(
-        "traits.Personality", on_delete=models.SET_NULL, null=True, default=None)
+        "traits.Background", on_delete=models.SET_NULL, null=True, default=None
+    )
 
     # Inventory
     adventure_gears = models.ManyToManyField(
-        "actions.AdventureGear", blank=True)
+        "actions.AdventureGear", blank=True
+    )
     armor = models.ManyToManyField("actions.Armor", blank=True)
     spells = models.ManyToManyField("actions.Spell", blank=True)
     tools = models.ManyToManyField("actions.Tool", blank=True)
@@ -62,10 +57,12 @@ class PlayableCharacter(Entity):
 
 class NonPlayableCharacter(Entity):
     challenge = models.PositiveSmallIntegerField(
-        default=1, validators=[MaxValueValidator(34), MinValueValidator(1)])
+        default=1, validators=[MaxValueValidator(34), MinValueValidator(1)]
+    )
     legendary_creature = models.BooleanField(default=False)
     armor = models.ForeignKey(
-        "actions.Armor", related_name="init_armor", on_delete=models.SET_NULL, null=True, default=None)
+        "actions.Armor", related_name="init_armor", on_delete=models.SET_NULL, null=True, default=None
+    )
     spells = models.ManyToManyField("actions.Spell", blank=True)
 
     @property

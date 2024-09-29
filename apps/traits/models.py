@@ -1,28 +1,35 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from apps.core.choices import Aligments, Dices, Sizes, Stats
-from apps.core.models import BaseModel, PersonalCharacteristic, ProficiencyTrait
+from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
 
 
 class Race(BaseModel, ProficiencyTrait):
     creature_type = models.ManyToManyField("rules.CreatureType", blank=True)
     aligment = models.CharField(
-        max_length=2, null=True, default=None, choices=Aligments)
+        max_length=2, null=True, default=None, choices=Aligments
+    )
     is_playable = models.BooleanField(default=False)
 
     # Ability Score Increase
     str_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
     dex_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
     con_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
     int_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
     wis_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
     cha_increase = models.SmallIntegerField(
-        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)])
+        default=0, validators=[MaxValueValidator(5), MinValueValidator(-5)]
+    )
 
     # Racial Traits
     size = models.CharField(max_length=3, default=Sizes.M, choices=Sizes)
@@ -30,13 +37,17 @@ class Race(BaseModel, ProficiencyTrait):
 
     # Immunities, Resistances & Vulneravilities
     condition_immunity = models.ManyToManyField(
-        "rules.Condition", related_name="condition_immunity_by_race", blank=True)
+        "rules.Condition", related_name="condition_immunity_by_race", blank=True
+    )
     damage_immunity = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_immunity_by_race", blank=True)
+        "rules.DamageType", related_name="damage_immunity_by_race", blank=True
+    )
     damage_resistance = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_resistance_by_race", blank=True)
+        "rules.DamageType", related_name="damage_resistance_by_race", blank=True
+    )
     damage_vulnerability = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_vulnerability_by_race", blank=True)
+        "rules.DamageType", related_name="damage_vulnerability_by_race", blank=True
+    )
 
     # Armor Class
     has_nature_armor = models.BooleanField(default=False)
@@ -52,7 +63,8 @@ class Race(BaseModel, ProficiencyTrait):
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
-        max_length=3, null=True, default=None, choices=Stats)
+        max_length=3, null=True, default=None, choices=Stats
+    )
     known_spells = models.PositiveSmallIntegerField(default=0)
     spells_available = models.ManyToManyField("traits.EntityClass", blank=True)
 
@@ -64,15 +76,18 @@ class EntityClass(BaseModel, ProficiencyTrait):
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
-        max_length=3, null=True, default=None, choices=Stats)
+        max_length=3, null=True, default=None, choices=Stats
+    )
     spell_list = models.ManyToManyField("actions.Spell", blank=True)
 
 
 class ProgressTable(models.Model):
     entity_class = models.ForeignKey(
-        "traits.EntityClass", on_delete=models.CASCADE)
+        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
+    )
     level = models.PositiveSmallIntegerField(
-        validators=[MaxValueValidator(20), MinValueValidator(1)])
+        validators=[MaxValueValidator(20), MinValueValidator(1)]
+    )
     features = models.ManyToManyField("rules.Feature", blank=True)
 
     # Spellcasting
@@ -95,20 +110,5 @@ class ProgressTable(models.Model):
 
 # Background
 class Background(BaseModel, ProficiencyTrait):
+    description = models.TextField(blank=True)
     features = models.ManyToManyField("rules.Feature", blank=True)
-
-
-class Bond(PersonalCharacteristic):
-    ...
-
-
-class Flaw(PersonalCharacteristic):
-    ...
-
-
-class Ideal(PersonalCharacteristic):
-    ...
-
-
-class Personality(PersonalCharacteristic):
-    ...

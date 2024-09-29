@@ -18,9 +18,11 @@ class Armor(Item):
 
 class Spell(DescriptionModel):
     magic_school = models.ForeignKey(
-        "rules.MagicSchool", on_delete=models.SET_NULL, null=True, default=None)
+        "rules.MagicSchool", on_delete=models.SET_NULL, null=True, default=None
+    )
     damage_type = models.ForeignKey(
-        "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None)
+        "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None
+    )
     level = models.PositiveSmallIntegerField(validators=[MaxValueValidator(9)])
     spell_range = models.SmallIntegerField(validators=[MinValueValidator(-1)])
 
@@ -57,11 +59,14 @@ class Weapon(Item):
     hit_dice = models.PositiveSmallIntegerField(null=True, default=None, choices=Dices)
     bonus = models.PositiveSmallIntegerField(default=0)
     damage_type = models.ForeignKey(
-        "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None)
+        "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None
+    )
     property = models.ManyToManyField("rules.ItemProperty", blank=True)
     melee_weapon = models.BooleanField(default=False)
     ranged_weapon = models.BooleanField(default=False)
     min_range = models.PositiveSmallIntegerField(
-        null=True, default=None, validators=[MinValueValidator(2)])
+        null=True, default=None, validators=[MinValueValidator(2)]
+    )
     max_range = models.PositiveSmallIntegerField(
-        null=True, default=None, validators=[MinValueValidator(3)])
+        null=True, default=None, validators=[MinValueValidator(3)]
+    )
