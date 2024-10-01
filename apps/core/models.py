@@ -95,20 +95,11 @@ class Item(BaseModel):
 
 class ProficiencyTrait(models.Model):
     # Proficiencies
-    armor_choices = models.PositiveSmallIntegerField(default=0)
-    armor_list = models.ManyToManyField("actions.Armor", blank=True)
-
-    language_choices = models.PositiveSmallIntegerField(default=0)
-    language_list = models.ManyToManyField("rules.Language", blank=True)
-
-    skill_choices = models.PositiveSmallIntegerField(default=0)
-    skill_list = models.ManyToManyField("rules.Skill", blank=True)
-
-    tool_choices = models.PositiveSmallIntegerField(default=0)
-    tool_list = models.ManyToManyField("actions.Tool", blank=True)
-
-    weapon_choices = models.PositiveSmallIntegerField(default=0)
-    weapon_list = models.ManyToManyField("actions.Weapon", blank=True)
+    armors = models.ManyToManyField("actions.Armor", blank=True)
+    languages = models.ManyToManyField("rules.Language", blank=True)
+    skills = models.ManyToManyField("rules.Skill", blank=True)
+    tools = models.ManyToManyField("actions.Tool", blank=True)
+    weapons = models.ManyToManyField("actions.Weapon", blank=True)
 
     # Saving Throw Proficiencies
     str_st = models.BooleanField(default=False)
