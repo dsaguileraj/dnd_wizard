@@ -33,6 +33,7 @@ class Race(BaseModel, ProficiencyTrait):
 
     # Racial Traits
     size = models.CharField(max_length=3, default=Sizes.M, choices=Sizes)
+    speed = models.PositiveSmallIntegerField(default=0)
     features = models.ManyToManyField("rules.Feature", blank=True)
 
     # Immunities, Resistances & Vulneravilities
@@ -49,24 +50,17 @@ class Race(BaseModel, ProficiencyTrait):
         "rules.DamageType", related_name="damage_vulnerability_by_race", blank=True
     )
 
-    # Armor Class
-    has_nature_armor = models.BooleanField(default=False)
-    nature_armor = models.PositiveSmallIntegerField(default=0)
-
-    # Speed
-    burrow = models.PositiveSmallIntegerField(default=0)
-    climb = models.PositiveSmallIntegerField(default=0)
-    fly = models.PositiveSmallIntegerField(default=0)
-    swim = models.PositiveSmallIntegerField(default=0)
-    walk = models.PositiveSmallIntegerField(default=0)
-
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
         max_length=3, null=True, default=None, choices=Stats
     )
-    known_spells = models.PositiveSmallIntegerField(default=0)
-    spells_available = models.ManyToManyField("traits.EntityClass", blank=True)
+    known_cantrips = models.PositiveSmallIntegerField(
+        null=True, default=None, validators=[MinValueValidator(1)]
+    )
+    spell_list = models.ForeignKey(
+        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
+    )
 
 
 # Class
@@ -109,6 +103,9 @@ class ProgressTable(models.Model):
 
 
 # Background
-class Background(BaseModel, ProficiencyTrait):
-    description = models.TextField(blank=True)
+class Background(DescriptionModel, ProficiencyTrait):
     features = models.ManyToManyField("rules.Feature", blank=True)
+    personality = models.TextField()
+    ideal = models.TextField()
+    bond = models.TextField()
+    flaw = models.TextField()
