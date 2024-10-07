@@ -26,26 +26,28 @@ class Entity(BaseModel):
     race = models.ForeignKey(
         "traits.Race", on_delete=models.SET_NULL, null=True, default=None
     )
-    hit_points = models.PositiveSmallIntegerField(default=10)
+    hit_points = models.IntegerField(
+        default=10, validators=[MinValueValidator(0)]
+    )
 
     # Ability Score
-    str_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    str_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    dex_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    dex_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    con_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    con_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    int_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    int_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    wis_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    wis_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    cha_score = models.PositiveSmallIntegerField(
-        default=10, validators=[MaxValueValidator(30)]
+    cha_score = models.IntegerField(
+        default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
 
     # Actions
@@ -80,10 +82,7 @@ class Entity(BaseModel):
 
 
 class Item(BaseModel):
-    category = models.ForeignKey(
-        "rules.Category", on_delete=models.SET_NULL, null=True, default=None
-    )
-    cost = models.PositiveSmallIntegerField(default=0)
+    cost = models.IntegerField(default=0, validators=[MinValueValidator(1)])
     coin = models.CharField(
         max_length=2, null=True, default=None, choices=Coins
     )
@@ -95,19 +94,19 @@ class Item(BaseModel):
 
 class ProficiencyTrait(models.Model):
     # Proficiencies
-    armors = models.ManyToManyField("actions.Armor", blank=True)
-    languages = models.ManyToManyField("rules.Language", blank=True)
-    skills = models.ManyToManyField("rules.Skill", blank=True)
-    tools = models.ManyToManyField("actions.Tool", blank=True)
-    weapons = models.ManyToManyField("actions.Weapon", blank=True)
+    prof_armor = models.ManyToManyField("actions.Armor", blank=True)
+    prof_language = models.ManyToManyField("rules.Language", blank=True)
+    prof_skill = models.ManyToManyField("rules.Skill", blank=True)
+    prof_tool = models.ManyToManyField("actions.Tool", blank=True)
+    prof_weapon = models.ManyToManyField("actions.Weapon", blank=True)
 
-    # Saving Throw Proficiencies
-    str_st = models.BooleanField(default=False)
-    dex_st = models.BooleanField(default=False)
-    con_st = models.BooleanField(default=False)
-    int_st = models.BooleanField(default=False)
-    wis_st = models.BooleanField(default=False)
-    cha_st = models.BooleanField(default=False)
+    # Saving Throws
+    st_str = models.BooleanField(default=False)
+    st_dex = models.BooleanField(default=False)
+    st_con = models.BooleanField(default=False)
+    st_int = models.BooleanField(default=False)
+    st_wis = models.BooleanField(default=False)
+    st_cha = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
