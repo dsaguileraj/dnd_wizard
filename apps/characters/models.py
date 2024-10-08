@@ -1,40 +1,26 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from apps.core.models import Entity
+from apps.core.models import Base, Entity
 from dnd_wizard.utils import LEVELS
 
 
 class PlayableCharacter(Entity):
     player = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, default=None
+        User, on_delete=models.CASCADE, null=True, default=None
     )
-    experience = models.PositiveSmallIntegerField(default=0)
+    experience = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
     inspiration = models.BooleanField(default=False)
 
     # Traits
-    entity_class = models.ForeignKey(
-        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
-    )
     background = models.ForeignKey(
         "traits.Background", on_delete=models.SET_NULL, null=True, default=None
     )
-
-    # Inventory
-    adventure_gears = models.ManyToManyField(
-        "actions.AdventureGear", blank=True
+    entity_class = models.ForeignKey(
+        "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
     )
-    armor = models.ManyToManyField("actions.Armor", blank=True)
-    spells = models.ManyToManyField("actions.Spell", blank=True)
-    tools = models.ManyToManyField("actions.Tool", blank=True)
-    trinkets = models.ManyToManyField("actions.Trinket", blank=True)
-
-    # Coins
-    copper = models.PositiveSmallIntegerField(default=0)
-    silver = models.PositiveSmallIntegerField(default=0)
-    electrum = models.PositiveSmallIntegerField(default=0)
-    gold = models.PositiveSmallIntegerField(default=0)
-    platinum = models.PositiveSmallIntegerField(default=0)
 
     @property
     def level(self) -> int:
@@ -56,14 +42,10 @@ class PlayableCharacter(Entity):
 
 
 class NonPlayableCharacter(Entity):
-    challenge = models.PositiveSmallIntegerField(
-        default=1, validators=[MaxValueValidator(34), MinValueValidator(1)]
+    challenge = models.IntegerField(
+        default=1, validators=[MinValueValidator(1), MaxValueValidator(34)]
     )
     legendary_creature = models.BooleanField(default=False)
-    armor = models.ForeignKey(
-        "actions.Armor", related_name="init_armor", on_delete=models.SET_NULL, null=True, default=None
-    )
-    spells = models.ManyToManyField("actions.Spell", blank=True)
 
     @property
     def proficiency_bonus(self) -> int:
@@ -74,3 +56,40 @@ class NonPlayableCharacter(Entity):
             return base_bonus
         else:
             return base_bonus + 1
+
+
+class Inventory(Base):
+    character = models.ForeignKey(
+        "characters.PlayableCharacter", on_delete=models.CASCADE
+    )
+
+    # Coins
+    cp = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
+    sp = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
+    ep = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
+    gp = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
+    pp = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
+    )
+
+    # Items
+    armors = models.ManyToManyField(
+        "actions.Armor", blank=True
+    )
+    gears = models.ManyToManyField(
+        "actions.AdventureGear", blank=True
+    )
+    tools = models.ManyToManyField(
+        "actions.Tool", blank=True
+    )
+    weapons = models.ManyToManyField(
+        "actions.Weapon", blank=True
+    )

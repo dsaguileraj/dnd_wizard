@@ -1,57 +1,39 @@
 from django.db import models
 from apps.core.choices import ItemTypes, Stats, DamageSubtype
-from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
+from apps.core.models import Description, Name, ProficiencyTrait
 
 
-class Category(DescriptionModel):
-    item_type = models.CharField(
-        max_length=1, null=True, default=None, choices=ItemTypes
-    )
-
-
-class Condition(DescriptionModel):
+class Condition(Description, Name):
     ...
 
 
-class CreatureType(DescriptionModel):
+class CreatureType(Description, Name):
     ...
 
 
-class DamageType(DescriptionModel):
+class DamageType(Description, Name):
     subtype = models.CharField(
         max_length=1, default=DamageSubtype.MAGIC, choices=DamageSubtype
     )
 
 
-class Feature(DescriptionModel, ProficiencyTrait):
-    # Immunities, Resistances & Vulneravilities
-    condition_immunity = models.ManyToManyField(
-        "rules.Condition", related_name="condition_immunity_by_feature", blank=True
-    )
-    damage_immunity = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_immunity_by_feature", blank=True
-    )
-    damage_resistance = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_resistance_by_feature", blank=True
-    )
-    damage_vulnerability = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_vulnerability_by_feature", blank=True
-    )
+class Feature(Description, Name, ProficiencyTrait):
+    ...
 
 
-class ItemProperty(DescriptionModel):
+class ItemProperty(Description, Name):
     item_type = models.CharField(
         max_length=1, null=True, default=None, choices=ItemTypes
     )
 
 
-class Language(DescriptionModel):
+class Language(Description, Name):
     ...
 
 
-class MagicSchool(DescriptionModel):
+class MagicSchool(Description, Name):
     ...
 
 
-class Skill(BaseModel):
+class Skill(Name):
     stat = models.CharField(max_length=3, choices=Stats)

@@ -4,8 +4,13 @@ from dnd_wizard.utils import calculate_modifier
 from .choices import Coins
 
 
-class BaseModel(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+class Base(models.Model):
+    class Meta:
+        abstract = True
+
+
+class Name(Base):
+    name = models.TextField(unique=True)
 
     def __str__(self) -> str:
         return self.name
@@ -15,14 +20,14 @@ class BaseModel(models.Model):
         ordering = ["name"]
 
 
-class DescriptionModel(BaseModel):
+class Description(Base):
     description = models.TextField(unique=True)
 
     class Meta:
         abstract = True
 
 
-class Entity(BaseModel):
+class Entity(Name):
     race = models.ForeignKey(
         "traits.Race", on_delete=models.SET_NULL, null=True, default=None
     )
@@ -31,68 +36,77 @@ class Entity(BaseModel):
     )
 
     # Ability Score
-    str_score = models.IntegerField(
+    as_str = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    dex_score = models.IntegerField(
+    as_dex = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    con_score = models.IntegerField(
+    as_con = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    int_score = models.IntegerField(
+    as_int = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    wis_score = models.IntegerField(
+    as_wis = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    cha_score = models.IntegerField(
+    as_cha = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
 
-    # Actions
-    weapons = models.ManyToManyField("actions.Weapon", blank=True)
+    # Equipment
+    l_hand = models.ForeignKey(
+        "actions.Weapon", on_delete=models.SET_NULL, null=True, default=None
+    )
+    r_hand = models.ForeignKey(
+        "actions.Weapon", on_delete=models.SET_NULL, null=True, default=None
+    )
+    armor = models.ForeignKey(
+        "actions.Armor", on_delete=models.SET_NULL, null=True, default=None
+    )
+    spells = models.ManyToManyField("actions.Spell", blank=True)
 
     @property
-    def str_modifier(self) -> int:
-        return calculate_modifier(self.str_score)
+    def mod_str(self) -> int:
+        return calculate_modifier(self.as_str)
 
     @property
-    def dex_modifier(self) -> int:
-        return calculate_modifier(self.dex_score)
+    def mod_dex(self) -> int:
+        return calculate_modifier(self.as_dex)
 
     @property
-    def con_modifier(self) -> int:
-        return calculate_modifier(self.con_score)
+    def mod_con(self) -> int:
+        return calculate_modifier(self.as_con)
 
     @property
-    def int_modifier(self) -> int:
-        return calculate_modifier(self.int_score)
+    def mod_int(self) -> int:
+        return calculate_modifier(self.as_int)
 
     @property
-    def wis_modifier(self) -> int:
-        return calculate_modifier(self.wis_score)
+    def mod_wis(self) -> int:
+        return calculate_modifier(self.as_wis)
 
     @property
-    def cha_modifier(self) -> int:
-        return calculate_modifier(self.cha_score)
+    def mod_cha(self) -> int:
+        return calculate_modifier(self.as_cha)
 
     class Meta:
         abstract = True
 
 
-class Item(BaseModel):
-    cost = models.IntegerField(default=0, validators=[MinValueValidator(1)])
+class Item(Name):
     coin = models.CharField(
         max_length=2, null=True, default=None, choices=Coins
     )
+    cost = models.IntegerField(default=0, validators=[MinValueValidator(1)])
     weight = models.FloatField(default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         abstract = True
 
 
-class ProficiencyTrait(models.Model):
+class ProficiencyTrait(Base):
     # Proficiencies
     prof_armor = models.ManyToManyField("actions.Armor", blank=True)
     prof_language = models.ManyToManyField("rules.Language", blank=True)
