@@ -1,10 +1,10 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from apps.core.choices import Aligments, Dices, Sizes, Stats
-from apps.core.models import BaseModel, DescriptionModel, ProficiencyTrait
+from apps.core.models import Base, Description, Name, ProficiencyTrait
 
 
-class Race(BaseModel, ProficiencyTrait):
+class Race(Name, ProficiencyTrait):
     creature_type = models.ManyToManyField("rules.CreatureType", blank=True)
     aligment = models.CharField(
         max_length=2, null=True, default=None, choices=Aligments
@@ -36,20 +36,6 @@ class Race(BaseModel, ProficiencyTrait):
     speed = models.IntegerField(default=0)
     features = models.ManyToManyField("rules.Feature", blank=True)
 
-    # Immunities, Resistances & Vulneravilities
-    condition_immunity = models.ManyToManyField(
-        "rules.Condition", related_name="condition_immunity_by_race", blank=True
-    )
-    damage_immunity = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_immunity_by_race", blank=True
-    )
-    damage_resistance = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_resistance_by_race", blank=True
-    )
-    damage_vulnerability = models.ManyToManyField(
-        "rules.DamageType", related_name="damage_vulnerability_by_race", blank=True
-    )
-
     # Spellcasting
     innate_spellcaster = models.BooleanField(default=False)
     ability = models.CharField(
@@ -64,7 +50,7 @@ class Race(BaseModel, ProficiencyTrait):
 
 
 # Class
-class EntityClass(BaseModel, ProficiencyTrait):
+class EntityClass(Name, ProficiencyTrait):
     hit_dice = models.IntegerField(default=Dices.D4, choices=Dices)
 
     # Spellcasting
@@ -75,7 +61,7 @@ class EntityClass(BaseModel, ProficiencyTrait):
     spell_list = models.ManyToManyField("actions.Spell", blank=True)
 
 
-class ProgressTable(models.Model):
+class ProgressTable(Base):
     entity_class = models.ForeignKey(
         "traits.EntityClass", on_delete=models.SET_NULL, null=True, default=None
     )
@@ -125,7 +111,7 @@ class ProgressTable(models.Model):
 
 
 # Background
-class Background(DescriptionModel, ProficiencyTrait):
+class Background(Description, Name, ProficiencyTrait):
     features = models.ManyToManyField("rules.Feature", blank=True)
     personality = models.TextField()
     ideal = models.TextField()
