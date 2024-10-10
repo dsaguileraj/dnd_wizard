@@ -10,7 +10,7 @@ class PlayableCharacter(Entity):
         User, on_delete=models.CASCADE, null=True, default=None
     )
     experience = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(355000)]
     )
     inspiration = models.BooleanField(default=False)
 
@@ -65,19 +65,19 @@ class Inventory(Base):
 
     # Coins
     cp = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)]
     )
     sp = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)]
     )
     ep = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)]
     )
     gp = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)]
     )
     pp = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(999999)]
     )
 
     # Items
