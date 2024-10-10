@@ -10,14 +10,14 @@ class AdventureGear(Description, Item):
 
 class Armor(Item):
     # (Field) category
-    armor_class = models.IntegerField(
+    defense = models.IntegerField(
         default=11, validators=[MinValueValidator(11), MaxValueValidator(20)]
     )
-    required_str = models.IntegerField(
+    min_str = models.IntegerField(
         default=1, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
     dex_bonus = models.BooleanField(default=False)
-    property = models.ManyToManyField("rules.ItemProperty", blank=True)
+    stealth = models.BooleanField(default=False)
 
 
 class Spell(Description, Name):
@@ -28,9 +28,11 @@ class Spell(Description, Name):
         "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None
     )
     level = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(9)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(9)]
     )
-    spell_range = models.IntegerField(validators=[MinValueValidator(-1)])
+    spell_range = models.IntegerField(
+        null=True, default=None, validators=[MinValueValidator(0), MaxValueValidator(500000)]
+    )
 
     # Components
     verbal = models.BooleanField(default=False)
@@ -40,18 +42,17 @@ class Spell(Description, Name):
 
     # Casting Time
     is_ritual = models.BooleanField(default=False)
-    casting_time = models.IntegerField(validators=[MinValueValidator(-1)])
+    casting_time = models.IntegerField(
+        null=True, default=None, validators=[MinValueValidator(0), MaxValueValidator(500000)]
+    )
     casting_measure = models.CharField(max_length=3, choices=MeasureTime)
 
     # Duration
     need_concentration = models.BooleanField(default=False)
     duration = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(500000)]
     )
     duration_measure = models.CharField(max_length=3, choices=MeasureTime)
-
-    def __str__(self) -> str:
-        return f"{self.name} ({self.magic_school}) lvl: {self.level}"
 
 
 class Tool(Description, Item):
@@ -64,24 +65,30 @@ class Weapon(Item):
 
     # Damage
     dices = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(5)]
     )
     hit_dice = models.IntegerField(
-        null=True, default=None, choices=Dices)
-    bonus = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
+        null=True, default=None, choices=Dices
     )
-    damage_type = models.ForeignKey(
-        "rules.DamageType", on_delete=models.SET_NULL, null=True, default=None
-    )
+    damage_type = models.ManyToManyField("rules.DamageType")
 
     # Properties
-    property = models.ManyToManyField("rules.ItemProperty", blank=True)
-    melee_weapon = models.BooleanField(default=False)
-    ranged_weapon = models.BooleanField(default=False)
-    min_range = models.PositiveSmallIntegerField(
-        null=True, default=None, validators=[MinValueValidator(2)]
+    ammunition = models.BooleanField(default=False)
+    finesse = models.BooleanField(default=False)
+    heavy = models.BooleanField(default=False)
+    light = models.BooleanField(default=False)
+    loading = models.BooleanField(default=False)
+    range = models.BooleanField(default=False)
+    reach = models.BooleanField(default=False)
+    special = models.BooleanField(default=False)
+    thrown = models.BooleanField(default=False)
+    two_handed = models.BooleanField(default=False)
+    versatile = models.BooleanField(default=False)
+    
+    # Range
+    min_range = models.IntegerField(
+        null=True, default=None, validators=[MinValueValidator(1), MaxValueValidator(25)]
     )
-    max_range = models.PositiveSmallIntegerField(
-        null=True, default=None, validators=[MinValueValidator(3)]
+    max_range = models.IntegerField(
+        null=True, default=None, validators=[MinValueValidator(2), MaxValueValidator(100)]
     )
