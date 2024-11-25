@@ -1,6 +1,7 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from dnd_wizard.utils import calculate_modifier
+from .choices import Coins
 
 
 class Base(models.Model):
@@ -43,8 +44,8 @@ class Entity(Name):
     as_cha = models.IntegerField(
         default=10, validators=[MinValueValidator(1), MaxValueValidator(30)]
     )
-    
-    # Weapons
+
+    # Armor
     # Spells
 
     @property
@@ -70,6 +71,21 @@ class Entity(Name):
     @property
     def mod_cha(self) -> int:
         return calculate_modifier(self.as_cha)
+
+    class Meta:
+        abstract = True
+
+
+class Item(Name):
+    coin = models.CharField(
+        max_length=2, null=True, default=None, choices=Coins
+    )
+    cost = models.IntegerField(
+        default=0, validators=[MinValueValidator(1), MaxValueValidator(99999)]
+    )
+    weight = models.FloatField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(99999)]
+    )
 
     class Meta:
         abstract = True

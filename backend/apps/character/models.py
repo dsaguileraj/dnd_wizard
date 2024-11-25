@@ -11,6 +11,14 @@ class PlayableCharacter(Entity):
         default=0, validators=[MinValueValidator(0), MaxValueValidator(355000)]
     )
 
+    # Equipment
+    l_hand = models.ForeignKey(
+        "action.Weapon", on_delete=models.SET_NULL, null=True, default=None, related_name='playable_l_hand'
+    )
+    r_hand = models.ForeignKey(
+        "action.Weapon", on_delete=models.SET_NULL, null=True, default=None, related_name='playable_r_hand'
+    )
+
     @property
     def level(self) -> int:
         """Calculate the PC level based on her experience points.
@@ -43,6 +51,14 @@ class PlayableCharacter(Entity):
 class NonPlayableCharacter(Entity):
     challenge = models.IntegerField(
         default=1, validators=[MinValueValidator(1), MaxValueValidator(34)]
+    )
+
+    # Equipment
+    l_hand = models.ForeignKey(
+        "action.Weapon", on_delete=models.SET_NULL, null=True, default=None, related_name='non_playable_l_hand'
+    )
+    r_hand = models.ForeignKey(
+        "action.Weapon", on_delete=models.SET_NULL, null=True, default=None, related_name='non_playable_r_hand'
     )
 
     @property
