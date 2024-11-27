@@ -21,5 +21,6 @@ from rest_framework.documentation import include_docs_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/documentation/', include_docs_urls(title='D&D Wizard API')),
+    path('api/action/', include('apps.action.urls')),
     path('api/character/', include('apps.character.urls')),
 ]
